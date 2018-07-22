@@ -11,11 +11,12 @@ setup(name='fast_arrow',
     author='Weston Platter',
     author_email='westonplatter@gmail.com',
     url='https://github.com/westonplatter/fast_arrow/',
+    python_requires=">=3.4",
     packages=['fast_arrow'],
-    # install_requires=[
-    #     'click',
-    #     'Robinhood==1.0.1',
-    # ],
+    install_requires=[
+        'click',
+        'requests',
+    ],
     # dependency_links=[
     #     # # this git commit hash is master as of July 14th. It's 64 commits ahead of release 1.0.1
     #     # 'https://github.com/Jamonek/Robinhood/archive/d21b1907dfa0ec9ba04177e597350b7d2a1ef31e.zip#egg=Robinhood-1.0.1',
@@ -26,4 +27,8 @@ setup(name='fast_arrow',
         [console_scripts]
         fa=fast_arrow.cli:cli
     ''',
+    project_urls={
+        'Bug Tracker': 'https://github.com/westonplatter/fast_arrow/issues',
+        'Source Code': 'https://github.com/westonplatter/fast_arrow',
+    }
 )
