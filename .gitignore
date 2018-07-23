@@ -1,4 +1,6 @@
 config.debug.ini
+config.test.ini
+config.dev.ini
 dev_data/*
 
 # Byte-compiled / optimized / DLL files

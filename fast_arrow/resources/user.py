@@ -6,5 +6,5 @@ class User(object):
     @classmethod
     def fetch(cls, token):
         url = 'https://api.robinhood.com/user/'
-        resj = http_get(url, token=token)
+        resj = get(url, token=token)
         return resj
