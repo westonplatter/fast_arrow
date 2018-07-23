@@ -1,8 +1,10 @@
-from fast_arrow.api_requestor import http_get, gen_url
+from fast_arrow.api_requestor import get
+
 
 class User(object):
 
     @classmethod
     def fetch(cls, token):
-        data = http_get(gen_url('user'), token=token)
-        return data
+        url = 'https://api.robinhood.com/user/'
+        resj = http_get(url, token=token)
+        return resj
