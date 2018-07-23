@@ -1,25 +1,27 @@
 import fast_arrow
+from fast_arrow.api_requestor import post
 
-from fast_arrow.api_requestor import gen_url, http_get, http_post
 
-class Session(object):
-
+class Auth(object):
     @classmethod
     def login(cls, username, password, mfa_code=None):
+        url = 'https://api.robinhood.com/api-token-auth/'
+
         payload = {
             'username': username,
             'password': password
         }
-
         if mfa_code:
             payload['mfa_code'] = mfa_code
 
-        resj = http_post(gen_url('login'), None, payload)
+        resj = post(url, None, payload)
 
         if 'token' in resj.keys():
             return resj['token']
 
+
     @classmethod
     def logout(cls):
-         resj = http_post(gen_url('logout'), timeout=15)
-         return resj
+        url = 'https://api.robinhood.com/api-token-logout/'
+        resj = post(login_url(), timeout=15)
+        return resj

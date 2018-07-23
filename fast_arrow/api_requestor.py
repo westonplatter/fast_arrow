@@ -1,15 +1,5 @@
 import requests
 
-def gen_url(endpoint):
-    endpoints = {
-        'login': 'https://api.robinhood.com/api-token-auth/',
-        'logout': 'https://api.robinhood.com/api-token-logout/',
-        'positions': 'https://api.robinhood.com/positions/',
-        'option_positions': 'https://api.robinhood.com/options/positions/',
-        'user': 'https://api.robinhood.com/user/',
-    }
-    return endpoints[endpoint]
-
 
 def gen_headers(token):
     headers = {
@@ -26,13 +16,13 @@ def gen_headers(token):
     return headers
 
 
-def http_get(url, token=None):
+def get(url, token=None):
     headers = gen_headers(token)
     res = requests.get(url, headers=headers, timeout=15)
     return res.json()
 
 
-def http_post(url, token=None, payload=None):
+def post(url, token=None, payload=None):
     headers = gen_headers(token)
     res = requests.post(url, headers=headers, data=payload, timeout=15)
     return res.json()

@@ -1,23 +1,22 @@
-# from __future__ import absolute_import, division, print_function
-
 import click
 import functools
-
-from fast_arrow.auth import Session
+import configparser
+from fast_arrow.resources.auth import Auth
 from fast_arrow.resources.user import User
+from fast_arrow.resources.position import Position
+from fast_arrow.resources.option_position import OptionPosition
+
 
 def get_username_password(config_file):
-    import configparser
     config = configparser.ConfigParser()
     config.read(config_file)
+    return [config['account']['username'], config['account']['password']]
 
-    username = config['account']['username']
-    password = config['account']['password']
 
-    account = {
-            'username': username,
-            'password': password}
-    return account
+def get_token(config_file):
+    username, password = get_username_password(config_file)
+    token = Auth.login(username, password)
+    return token
 
 
 def common_options(func):
@@ -32,30 +31,29 @@ def common_options(func):
 def cli():
     pass
 
-@cli.command()
-@common_options
-def check(debug):
-    click.echo("fa.check -- you're good to go")
-
-@cli.command()
-@common_options
-def get_token(debug):
-    account = get_username_password('config.debug.ini')
-    u = account['username']
-    p = account['password']
-    token = Session.login(u, p)
-    click.echo(token)
 
 @cli.command()
 @common_options
 def get_user(debug):
-    account = get_username_password('config.debug.ini')
-    u = account['username']
-    p = account['password']
-    token = Session.login(u, p)
+    token = get_token('config.debug.ini')
     data = User.fetch(token)
     print(data)
 
+
+@cli.command()
+@common_options
+def get_positions(debug):
+    token = get_token('config.debug.ini')
+    data = Position.all(token)
+    print(data)
+
+
+@cli.command()
+@common_options
+def get_option_positions(debug):
+    token = get_token('config.debug.ini')
+    data = OptionPosition.all(token)
+    print(data)
 
 
 if __name__ == '__main__':
