@@ -9,6 +9,7 @@ click = "*"
 requests = "*"
 tox = "*"
 coveralls = "*"
+yarl = "==1.1.1"
 
 [dev-packages]
 vcrpy = "*"
