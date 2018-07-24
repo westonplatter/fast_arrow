@@ -7,10 +7,15 @@ name = "pypi"
 fast-arrow = {editable = true, path = "."}
 click = "*"
 requests = "*"
+tox = "*"
+coveralls = "*"
 
 [dev-packages]
 vcrpy = "*"
 pytest = "*"
+pytest-cov = "*"
+detox = "*"
+"flake8" = "*"
 
 [requires]
 python_version = "3.6"

@@ -14,6 +14,22 @@ RISK.
 ## philosophy
 
 ## development
+Install (pipenv)[https://github.com/pypa/pipenv], and then run,
+```
+pipenv install --dev
+```
+
+Run the test suite via,
+```
+make test
+```
+
+Run the test suite against a specific python version,
+```
+pipenv run tox -e py36
+```
+
+
 
 ## license
 See LICENSE file.

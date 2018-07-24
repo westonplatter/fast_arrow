@@ -1,7 +1,27 @@
+import os
+import sys
 from setuptools import setup
+from setuptools.command.test import test as TestCommand
+
+
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass into pytest")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = '-n auto'
+
+    def run_tests(self):
+        import shlex
+        import pytest
+        errno = pytest.main(shlex.split(self.pytest_args))
+        sys.exit(errno)
+
+
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
+
 
 setup(name='fast_arrow',
     version='0.0.1',
@@ -22,6 +42,7 @@ setup(name='fast_arrow',
         'pytest',
         'vcrpy'
     ],
+    cmdclass={'test': PyTest},
     entry_points='''
         [console_scripts]
         fa=fast_arrow.cli:cli

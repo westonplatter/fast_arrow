@@ -1,0 +1,22 @@
+sudo: false
+
+language: python
+
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7-dev"
+
+cache:
+  pip: false
+
+install:
+  - pip install --upgrade pipenv
+  - pipenv install --dev
+
+script:
+  - make ci
+
+after_success:
+  make coveralls
