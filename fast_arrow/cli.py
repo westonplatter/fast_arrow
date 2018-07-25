@@ -45,7 +45,8 @@ def get_user(debug):
 def get_positions(debug):
     token = get_token('config.debug.ini')
     data = Position.all(token)
-    print(data)
+    if debug:
+        import pdb; pdb.set_trace()
 
 
 @cli.command()
@@ -53,7 +54,8 @@ def get_positions(debug):
 def get_option_positions(debug):
     token = get_token('config.debug.ini')
     data = OptionPosition.all(token)
-    print(data)
+    if debug:
+        import pdb; pdb.set_trace()
 
 
 if __name__ == '__main__':

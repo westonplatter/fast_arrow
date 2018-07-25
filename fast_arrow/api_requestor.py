@@ -16,13 +16,19 @@ def gen_headers(token):
     return headers
 
 
-def get(url, token=None):
+def get(url, token=None, uncompressed=False):
+    """
+    Execute HTTP GET
+    """
     headers = gen_headers(token)
     res = requests.get(url, headers=headers, timeout=15)
     return res.json()
 
 
-def post(url, token=None, payload=None):
+def post(url, token=None, payload=None, uncompressed=False):
+    """
+    Execute HTTP POST
+    """
     headers = gen_headers(token)
     res = requests.post(url, headers=headers, data=payload, timeout=15)
     return res.json()

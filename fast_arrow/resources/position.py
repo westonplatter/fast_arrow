@@ -5,6 +5,15 @@ class Position(object):
 
     @classmethod
     def all(cls, token):
+        """
+        fetch all positions
+        """
         url = 'https://api.robinhood.com/positions/'
+        positions = []
+
         resj = get(url, token)
-        return resj
+        positions.extend(resj["results"])
+        while resj["next"]:
+            resj = get(resj["next"], token)
+            positions.extend(resj["results"])
+        return positions

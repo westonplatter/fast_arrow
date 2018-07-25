@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Accept-Language: ['en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5']
+      Authorization: [Token 123]
+      Connection: [keep-alive]
+      Content-Type: [application/x-www-form-urlencoded; charset=utf-8]
+      User-Agent: [Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)]
+      X-Robinhood-API-Version: [1.0.0]
+    method: GET
+    uri: https://api.robinhood.com/positions/
+  response:
+    body: {string: '{"previous": null, "results": [{"shares_held_for_stock_grants": "0.0000", "account": "https://api.robinhood.com/accounts/890/", "pending_average_buy_price": "0.0000", "shares_held_for_options_events": "0.0000", "intraday_average_buy_price": "0.0000", "url": "https://api.robinhood.com/positions/890/48ea0f47-4ea4-4da5-bd60-fa393a697e65/", "shares_held_for_options_collateral": "0.0000", "created_at": "2016-08-23T13:36:29.580989Z", "updated_at": "2017-08-23T14:19:37.838077Z", "shares_held_for_buys": "0.0000", "average_buy_price": "0.3467", "instrument": "https://api.robinhood.com/instruments/48ea0f47-4ea4-4da5-bd60-fa393a697e65/", "intraday_quantity": "0.0000", "shares_held_for_sells": "0.0000", "shares_pending_from_options_events": "0.0000", "quantity": "0.0000"}, {"shares_held_for_stock_grants": "0.0000", "account": "https://api.robinhood.com/accounts/890/", "pending_average_buy_price": "0.0000", "shares_held_for_options_events": "0.0000", "intraday_average_buy_price": "0.0000", "url": "https://api.robinhood.com/positions/890/e9fa67f0-1f77-46b0-8a5e-262e88097f75/", "shares_held_for_options_collateral": "0.0000", "created_at": "2016-08-26T13:39:44.023973Z", "updated_at": "2016-09-09T17:02:12.317092Z", "shares_held_for_buys": "0.0000", "average_buy_price": "0.0000", "instrument": "https://api.robinhood.com/instruments/e9fa67f0-1f77-46b0-8a5e-262e88097f75/", "intraday_quantity": "0.0000", "shares_held_for_sells": "0.0000", "shares_pending_from_options_events": "0.0000", "quantity": "0.0000"}, {"shares_held_for_stock_grants": "0.0000", "account": "https://api.robinhood.com/accounts/890/", "pending_average_buy_price": "0.0000", "shares_held_for_options_events": "0.0000", "intraday_average_buy_price": "26.3600", "url": "https://api.robinhood.com/positions/890/3c82016d-6d1a-493d-b667-9d79b5c0bc8f/", "shares_held_for_options_collateral": "0.0000", "created_at": "2016-08-30T14:11:59.894795Z", "updated_at": "2018-02-06T17:19:32.633430Z", "shares_held_for_buys": "0.0000", "average_buy_price": "26.3600", "instrument": "https://api.robinhood.com/instruments/3c82016d-6d1a-493d-b667-9d79b5c0bc8f/", "intraday_quantity": "0.0000", "shares_held_for_sells": "0.0000", "shares_pending_from_options_events": "0.0000", "quantity": "0.0000"}], "next": null}'}
+    headers:
+      Allow: ['GET, PUT, PATCH, HEAD, OPTIONS']
+      Connection: [keep-alive]
+      Content-Language: [en-us]
+      Content-Length: ['2300']
+      Content-Type: [application/json]
+      Date: ['Mon, 23 Jul 2018 22:31:47 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: ['Accept-Language, Cookie']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Robinhood-API-Version: [1.231.2]
+    status: {code: 200, message: OK}
+version: 1

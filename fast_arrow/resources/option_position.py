@@ -5,6 +5,10 @@ class OptionPosition(object):
 
     @classmethod
     def all(cls, token):
+        """
+        fetch all option positions
+        NOTE: http response body is a list, not a dictionary like "positions"
+        """
         url = 'https://api.robinhood.com/options/positions/'
-        resj = get(url, token)
-        return resj
+        option_positions = get(url, token)
+        return option_positions
