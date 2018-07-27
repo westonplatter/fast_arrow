@@ -1,7 +1,7 @@
 import requests
 
 
-def gen_headers(token):
+def gen_headers(token, bearer):
     headers = {
         "Accept": "*/*",
         "Accept-Encoding": "gzip, deflate",
@@ -12,23 +12,25 @@ def gen_headers(token):
         "User-Agent": "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)"
     }
     if token:
-        headers['Authorization'] = "Token {0}".format(token)
+        headers["Authorization"] = "Token {0}".format(token)
+    if bearer:
+        headers["Authorization"] = "Bearer {0}".format(bearer)
     return headers
 
 
-def get(url, token=None, uncompressed=False):
+def get(url, token=None, bearer=None):
     """
     Execute HTTP GET
     """
-    headers = gen_headers(token)
+    headers = gen_headers(token, bearer)
     res = requests.get(url, headers=headers, timeout=15)
     return res.json()
 
 
-def post(url, token=None, payload=None, uncompressed=False):
+def post(url, token=None, bearer=None, payload=None):
     """
     Execute HTTP POST
     """
-    headers = gen_headers(token)
+    headers = gen_headers(token, bearer)
     res = requests.post(url, headers=headers, data=payload, timeout=15)
     return res.json()

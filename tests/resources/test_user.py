@@ -8,5 +8,5 @@ class TestUser(object):
     def test_fetch(self):
         token = '123'
         with gen_vcr().use_cassette('user_fetch.yaml'):
-            resj = User.fetch(token)
-            assert(resj['username'] == 'my_username')
+            data = User.fetch(token)
+            assert(data['username'] == 'my_username')

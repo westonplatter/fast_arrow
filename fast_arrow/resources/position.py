@@ -11,9 +11,9 @@ class Position(object):
         url = 'https://api.robinhood.com/positions/'
         positions = []
 
-        resj = get(url, token)
-        positions.extend(resj["results"])
-        while resj["next"]:
-            resj = get(resj["next"], token)
-            positions.extend(resj["results"])
+        data = get(url, token)
+        positions.extend(data["results"])
+        while data["next"]:
+            data = get(data["next"], token)
+            positions.extend(data["results"])
         return positions
