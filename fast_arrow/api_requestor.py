@@ -18,12 +18,12 @@ def gen_headers(token, bearer):
     return headers
 
 
-def get(url, token=None, bearer=None):
+def get(url, token=None, bearer=None, params={}):
     """
     Execute HTTP GET
     """
     headers = gen_headers(token, bearer)
-    res = requests.get(url, headers=headers, timeout=15)
+    res = requests.get(url, headers=headers, params=params, timeout=15)
     return res.json()
 
 

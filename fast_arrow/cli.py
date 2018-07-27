@@ -63,10 +63,21 @@ def get_option_positions(debug):
 @cli.command()
 @common_options
 @click.option('--id', default=None)
-def get_instrument(debug, id):
+def get_option_instrument(debug, id):
     token = get_token('config.debug.ini')
     bearer = Auth.get_oauth_token(token)
     data = Option.fetch(bearer, id)
+    if debug:
+        pdb.set_trace()
+
+
+@cli.command()
+@common_options
+@click.option('--id', default=None)
+def get_option_marketdata(debug, id):
+    token = get_token('config.debug.ini')
+    bearer = Auth.get_oauth_token(token)
+    data = Option.marketdata(bearer, id)
     if debug:
         pdb.set_trace()
 
