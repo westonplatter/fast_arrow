@@ -21,6 +21,6 @@ class TestPosition(object):
                 'instrument','intraday_quantity', 'shares_held_for_sells',
                 'shares_pending_from_options_events', 'quantity']
 
-            actual_fields = [*position.keys()]
+            actual_fields = list(position.keys())
 
             assert(set(expected_fields) == set(actual_fields))

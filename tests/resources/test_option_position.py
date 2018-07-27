@@ -11,7 +11,7 @@ class TestOptionPosition(object):
         with gen_vcr().use_cassette('option_position_all.yaml'):
             option_positions = OptionPosition.all(token)
             option_position = option_positions[0]
-            
+
             expected_fields = [
                 'intraday_average_open_price', 'account', 'intraday_quantity',
                 'option', 'created_at', 'updated_at', 'average_price',
@@ -19,6 +19,6 @@ class TestOptionPosition(object):
                 'url', 'pending_sell_quantity', 'chain_symbol', 'type', 'id',
                 'quantity']
 
-            actual_fields = [*option_position.keys()]
+            actual_fields = list(option_position.keys())
 
             assert(set(expected_fields) == set(actual_fields))
