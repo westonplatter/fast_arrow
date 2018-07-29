@@ -2,7 +2,8 @@
 A simple, humble, and direct API client for Robinhood
 
 [![Build Status](https://travis-ci.com/westonplatter/fast_arrow.svg?branch=master)](https://travis-ci.com/westonplatter/fast_arrow)
-[![Coverage Status](https://coveralls.io/repos/github/westonplatter/fast_arrow/badge.svg?branch=master)](https://coveralls.io/github/westonplatter/fast_arrow?branch=master)
+[![Coverage
+Status](https://coveralls.io/repos/github/westonplatter/fast_arrow/badge.svg?branch=master)](https://coveralls.io/github/westonplatter/fast_arrow?branch=master)
 
 <hr/>
 WARNING. this project is under active development (pre alpha).
