@@ -7,6 +7,7 @@ from fast_arrow.resources.user import User
 from fast_arrow.resources.position import Position
 from fast_arrow.resources.option_position import OptionPosition
 from fast_arrow.resources.option import Option
+from fast_arrow.resources.stock import Stock
 
 
 def get_username_password(config_file):

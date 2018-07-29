@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Accept-Language: ['en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5']
+      Authorization: [Token 123]
+      Connection: [keep-alive]
+      Content-Type: [application/x-www-form-urlencoded; charset=utf-8]
+      User-Agent: [Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)]
+      X-Robinhood-API-Version: [1.0.0]
+    method: GET
+    uri: https://api.robinhood.com/instruments/?symbol=TLT
+  response:
+    body: {string: '{"previous": null, "results": [{"margin_initial_ratio": "0.5000", "rhs_tradability": "tradable", "id": "3bd6f6b5-40a1-418b-97ed-2a40f509c738", "market": "https://api.robinhood.com/markets/XNAS/", "simple_name": null, "min_tick_size": null, "maintenance_ratio": "0.2500", "tradability": "tradable", "state": "active", "type": "etp", "tradeable": true, "fundamentals": "https://api.robinhood.com/fundamentals/TLT/", "quote": "https://api.robinhood.com/quotes/TLT/", "symbol": "TLT", "day_trade_ratio": "0.2500", "name": "iShares 20 Year Treasury Bond ETF", "tradable_chain_id": "644f21f0-a166-4c94-bd67-02568d3a5940", "splits": "https://api.robinhood.com/instruments/3bd6f6b5-40a1-418b-97ed-2a40f509c738/splits/", "url": "https://api.robinhood.com/instruments/3bd6f6b5-40a1-418b-97ed-2a40f509c738/", "country": "US", "bloomberg_unique": "EQ0000000000256152", "list_date": "2002-07-26"}], "next": null}'}
+    headers:
+      Allow: ['GET, PUT, PATCH, HEAD, OPTIONS']
+      Connection: [keep-alive]
+      Content-Language: [en-us]
+      Content-Length: ['899']
+      Content-Type: [application/json]
+      Date: ['Mon, 23 Jul 2018 22:31:47 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: ['Accept-Language, Cookie']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Robinhood-API-Version: [1.231.2]
+    status: {code: 200, message: OK}
+version: 1
