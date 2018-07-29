@@ -1,7 +1,5 @@
 import configparser
-import time
 
-import fast_arrow as fa
 from fast_arrow.resources.auth import Auth
 from fast_arrow.resources.stock import Stock
 from fast_arrow.resources.option_chain import OptionChain
