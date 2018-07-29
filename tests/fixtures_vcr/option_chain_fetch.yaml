@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Accept-Language: ['en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5']
+      Authorization: [Bearer 123]
+      Connection: [keep-alive]
+      Content-Type: [application/x-www-form-urlencoded; charset=utf-8]
+      User-Agent: [Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)]
+      X-Robinhood-API-Version: [1.0.0]
+    method: GET
+    uri: https://api.robinhood.com/options/chains/?equity_instrument_ids=644f21f0-a166-4c94-bd67-02568d3a5940&state=active&tradability=tradable
+  response:
+    body: {string: '{"previous": null, "results": [{"can_open_position": true, "symbol": "TLT", "trade_value_multiplier": "100.0000", "underlying_instruments": [{"instrument": "https://api.robinhood.com/instruments/3bd6f6b5-40a1-418b-97ed-2a40f509c738/", "id": "12830f51-5d1c-4c61-ba68-f10d38fe4ca4", "quantity": 100}], "expiration_dates": ["2018-08-03", "2018-08-10", "2018-08-17", "2018-08-24", "2018-08-31", "2018-09-07", "2018-09-21", "2018-10-19", "2018-12-21", "2019-01-18", "2019-03-15", "2020-01-17"], "cash_component": null, "min_ticks": {"cutoff_price": "3.00", "below_tick": "0.01", "above_tick": "0.05"}, "id": "644f21f0-a166-4c94-bd67-02568d3a5940"}], "next": null}'}
+    headers:
+      Allow: ['GET, PUT, PATCH, HEAD, OPTIONS']
+      Connection: [keep-alive]
+      Content-Language: [en-us]
+      Content-Length: ['611']
+      Content-Type: [application/json]
+      Date: ['Mon, 23 Jul 2018 22:31:47 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: ['Accept-Language, Cookie']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Robinhood-API-Version: [1.231.2]
+    status: {code: 200, message: OK}
+version: 1
