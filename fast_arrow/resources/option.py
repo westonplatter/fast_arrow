@@ -24,6 +24,23 @@ class Option(object):
         return data["results"][0]
 
 
+    # @classmethod
+    # def all_marketdata(cls, bearer, ids):
+    #     """
+    #     """
+    #     url = "https://api.robinhood.com/marketdata/options/"
+    #
+    #     id_urls = []
+    #     for id in ids:
+    #         id_urls.append("https://api.robinhood.com/options/instruments/{0}/".format(id))
+    #     params = {"instruments": ",".join(id_urls)}
+    #     data = get(url, bearer=bearer, params=params)
+    #     results = data["results"]
+    #     while data["next"]:
+    #         data = get(data["next"], bearer=bearer)
+    #         results.extend(data["results"])
+
+
     @classmethod
     def all(cls, bearer, chain_id, expiration_dates):
         """
