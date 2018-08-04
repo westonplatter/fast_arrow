@@ -24,7 +24,8 @@ with open("README.md", "r") as fh:
 deps = [
     'click',
     'requests',
-    'yarl']
+    'yarl',
+    'pathlib2']
 
 
 test_deps = [
