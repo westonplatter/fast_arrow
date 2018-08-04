@@ -24,8 +24,7 @@ with open("README.md", "r") as fh:
 deps = [
     'click',
     'requests',
-    'yarl==1.1.1',
-    'pathlib2']
+    'yarl']
 
 
 test_deps = [
@@ -33,6 +32,7 @@ test_deps = [
     'pytest',
     'pytest-cov',
     'detox',
+    'flake8',
     'vcrpy']
 
 setup(name='fast_arrow',
@@ -44,7 +44,7 @@ setup(name='fast_arrow',
     author_email='westonplatter@gmail.com',
     url='https://github.com/westonplatter/fast_arrow/',
     license='MIT License',
-    python_requires=">=3.4",
+    python_requires=">=3.5",
     packages=['fast_arrow', 'fast_arrow.resources'],
     install_requires=deps,
     tests_require=test_deps,
