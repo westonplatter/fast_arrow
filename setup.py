@@ -18,10 +18,22 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+deps = [
+    'click',
+    'requests',
+    'yarl==1.1.1']
+
+
+test_deps = [
+    'pipenv',
+    'pytest',
+    'pytest-cov',
+    'detox',
+    'flake8',
+    'vcrpy']
 
 setup(name='fast_arrow',
     version='0.0.2',
@@ -34,14 +46,8 @@ setup(name='fast_arrow',
     license='MIT License',
     python_requires=">=3.4",
     packages=['fast_arrow'],
-    install_requires=[
-        'click',
-        'requests',
-    ],
-    tests_require=[
-        'pytest',
-        'vcrpy'
-    ],
+    install_requires=deps,
+    tests_require=test_deps,
     cmdclass={'test': PyTest},
     entry_points='''
         [console_scripts]
