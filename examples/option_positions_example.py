@@ -32,4 +32,4 @@ open_option_positions = list(filter(lambda p: float(p["quantity"]) > 0.0, all_op
 # append marketdata to each position
 #
 bearer = Auth.get_oauth_token(token)
-x = OptionPosition.append_marketdata(bearer, open_option_positions)
+option_position_with_marketdata = OptionPosition.append_marketdata_list(bearer, open_option_positions)

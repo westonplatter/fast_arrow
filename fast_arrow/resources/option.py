@@ -13,32 +13,42 @@ class Option(object):
 
 
     @classmethod
-    def marketdata(cls, bearer, id):
+    def marketdata(cls, bearer, _id):
         """
-        fetch option market data (like Strike Price, Delta, Theta, etc)
+        fetch option market data (like Delta, Theta, Rho, Vega, Open Interest)
         """
+        instrument_url = "https://api.robinhood.com/options/instruments/{}/".fomrat(_id)
+        params = {"instruments": instrument_url}
         url = "https://api.robinhood.com/marketdata/options/"
-        id_url = "https://api.robinhood.com/options/instruments/{0}/".format(id)
-        params = {"instruments": id_url}
         data = get(url, bearer=bearer, params=params)
         return data["results"][0]
 
 
-    # @classmethod
-    # def all_marketdata(cls, bearer, ids):
-    #     """
-    #     """
-    #     url = "https://api.robinhood.com/marketdata/options/"
-    #
-    #     id_urls = []
-    #     for id in ids:
-    #         id_urls.append("https://api.robinhood.com/options/instruments/{0}/".format(id))
-    #     params = {"instruments": ",".join(id_urls)}
-    #     data = get(url, bearer=bearer, params=params)
-    #     results = data["results"]
-    #     while data["next"]:
-    #         data = get(data["next"], bearer=bearer)
-    #         results.extend(data["results"])
+    @classmethod
+    def marketdata_list(cls, bearer, ids):
+        """
+        fetch option market data (like Delta, Theta, Rho, Vega, Open Interest)
+        """
+
+        base_marketdata_url = "https://api.robinhood.com/options/instruments/"
+        id_urls = []
+        for _id in ids:
+            id_url = "{}{}/".format(base_marketdata_url, _id)
+            id_urls.append(id_url)
+
+        instruments = ",".join(id_urls)
+        params = {"instruments": instruments}
+
+        # fetch
+        url = "https://api.robinhood.com/marketdata/options/"
+        data = get(url, bearer=bearer, params=params)
+        results = data["results"]
+
+        if "next" in data:
+            while(data["next"]):
+                data = get(data["next"], bearer=bearer)
+                results.extend(data["results"])
+        return results
 
 
     @classmethod
