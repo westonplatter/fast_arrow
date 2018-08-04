@@ -8,6 +8,7 @@ fast-arrow = {editable = true, path = "."}
 click = "*"
 requests = "*"
 yarl = "*"
+"pathlib2" = "*"
 
 [dev-packages]
 vcrpy = "*"

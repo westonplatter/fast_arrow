@@ -23,6 +23,7 @@ with open("README.md", "r") as fh:
 
 deps = [
     'click',
+    'pathlib2',
     'requests',
     'yarl']
 
