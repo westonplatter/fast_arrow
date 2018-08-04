@@ -18,13 +18,26 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+deps = [
+    'click',
+    'pathlib2',
+    'requests',
+    'yarl']
+
+
+test_deps = [
+    'pipenv',
+    'pytest',
+    'pytest-cov',
+    'detox',
+    'flake8',
+    'vcrpy']
 
 setup(name='fast_arrow',
-    version='0.0.2',
+    version='0.0.3',
     description='API client for Robinhood',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -32,16 +45,10 @@ setup(name='fast_arrow',
     author_email='westonplatter@gmail.com',
     url='https://github.com/westonplatter/fast_arrow/',
     license='MIT License',
-    python_requires=">=3.4",
-    packages=['fast_arrow'],
-    install_requires=[
-        'click',
-        'requests',
-    ],
-    tests_require=[
-        'pytest',
-        'vcrpy'
-    ],
+    python_requires=">=3.5",
+    packages=['fast_arrow', 'fast_arrow.resources'],
+    install_requires=deps,
+    tests_require=test_deps,
     cmdclass={'test': PyTest},
     entry_points='''
         [console_scripts]
