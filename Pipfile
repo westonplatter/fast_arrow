@@ -7,7 +7,6 @@ name = "pypi"
 fast-arrow = {editable = true, path = "."}
 click = "*"
 requests = "*"
-yarl = "==1.1.1"
 
 [dev-packages]
 vcrpy = "*"

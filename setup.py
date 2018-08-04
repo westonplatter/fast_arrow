@@ -24,7 +24,7 @@ with open("README.md", "r") as fh:
 deps = [
     'click',
     'requests',
-    'yarl==1.1.1']
+    'yarl']
 
 
 test_deps = [
