@@ -24,7 +24,7 @@ with open("README.md", "r") as fh:
 deps = [
     'click',
     'requests',
-    'yarl',
+    'yarl==1.1.1',
     'pathlib2']
 
 
@@ -33,7 +33,6 @@ test_deps = [
     'pytest',
     'pytest-cov',
     'detox',
-    'flake8',
     'vcrpy']
 
 setup(name='fast_arrow',

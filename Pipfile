@@ -8,14 +8,13 @@ fast-arrow = {editable = true, path = "."}
 click = "*"
 requests = "*"
 "pathlib2" = "*"
-yarl = ">=1.1.1"
+yarl = "==1.1.1"
 
 [dev-packages]
 vcrpy = "*"
 pytest = "*"
 pytest-cov = "*"
 detox = "*"
-"flake8" = "*"
 
 [requires]
 python_version = "3.6"
