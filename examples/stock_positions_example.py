@@ -1,8 +1,9 @@
 import configparser
-# from fast_arrow.resources.auth import Auth
-# from fast_arrow.resources.option_chain import OptionChain
-# from fast_arrow.resources.option import Option
-# from fast_arrow.resources.option_position import OptionPosition
+from fast_arrow import (
+    Auth,
+    StockPosition
+)
+
 
 #
 # get the authentication configs
@@ -13,15 +14,18 @@ config.read(config_file)
 username = config['account']['username']
 password = config['account']['password']
 
+
 #
 # login and get the bearer token
 #
 token = Auth.login(username, password)
 
+
 #
 # fetch stock positions
 #
 all_stock_positions = StockPosition.all(token)
+
 
 #
 # filter to get open positions

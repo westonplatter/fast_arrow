@@ -1,9 +1,11 @@
 import configparser
+from fast_arrow import (
+    Auth,
+    Stock,
+    OptionChain,
+    Option
+)
 
-from fast_arrow.resources.auth import Auth
-from fast_arrow.resources.stock import Stock
-from fast_arrow.resources.option_chain import OptionChain
-from fast_arrow.resources.option import Option
 
 #
 # get the authentication configs
@@ -14,17 +16,20 @@ config.read(config_file)
 username = config['account']['username']
 password = config['account']['password']
 
+
 #
 # login and get the bearer token
 #
 token = Auth.login(username, password)
 bearer = Auth.get_oauth_token(token)
 
+
 #
 # fetch the stock info for TLT
 #
 symbol = "TLT"
 stock = Stock.fetch(bearer, symbol)
+
 
 #
 # get the TLT option chain info
