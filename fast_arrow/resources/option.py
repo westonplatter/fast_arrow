@@ -4,12 +4,29 @@ from fast_arrow.api_requestor import get
 class Option(object):
 
     @classmethod
-    def fetch(cls, bearer, id):
+    def fetch(cls, bearer, _id):
         """
         fetch instrument
         """
-        url = "https://api.robinhood.com/options/instruments/{0}/".format(id)
-        return get(url, bearer=bearer)
+        return cls.fetch_list(bearer, [_id])[0]
+
+
+    @classmethod
+    def fetch_list(cls, bearer, ids):
+        """
+        fetch instruments
+        """
+        param_ids = ",".join(ids)
+        params = {"ids": param_ids}
+
+        url = "https://api.robinhood.com/options/instruments/"
+        data = get(url, bearer=bearer, params=params)
+        results = data["results"]
+
+        while data["next"]:
+            data = get(data["next"], bearer=bearer)
+            results.extend(data["results"])
+        return results
 
 
     @classmethod
@@ -30,6 +47,7 @@ class Option(object):
         fetch option market data (like Delta, Theta, Rho, Vega, Open Interest)
         """
 
+        # build params
         base_marketdata_url = "https://api.robinhood.com/options/instruments/"
         id_urls = []
         for _id in ids:
