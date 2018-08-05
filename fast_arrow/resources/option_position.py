@@ -73,6 +73,32 @@ class OptionPosition(object):
 
 
     @classmethod
+    def humanize_numbers(cls, option_positions):
+        results = []
+        for op in option_positions:
+            keys_to_humanize = [
+                "delta",
+                "theta",
+                "gamma",
+                "vega",
+                "rho",
+                "implied_volatility"]
+
+            coef = (1.0 if op["type"] == "long" else -1.0)
+
+            for k in keys_to_humanize:
+                if op[k] == None:
+                    continue
+                op[k] = float(op[k]) * coef
+
+            op["chance_of_profit"] = (op["chance_of_profit_long"] if op["type"] == "long" else op["chance_of_profit_short"])
+
+            results.append(op)
+
+        return results
+
+
+    @classmethod
     def _extract_ids(cls, option_position):
         ids = []
         for op in option_position:
