@@ -34,11 +34,7 @@ class Option(object):
         """
         fetch option market data (like Delta, Theta, Rho, Vega, Open Interest)
         """
-        instrument_url = "https://api.robinhood.com/options/instruments/{}/".fomrat(_id)
-        params = {"instruments": instrument_url}
-        url = "https://api.robinhood.com/marketdata/options/"
-        data = get(url, bearer=bearer, params=params)
-        return data["results"][0]
+        return cls.marketdata_list(bearer, [_id])[0]
 
 
     @classmethod
@@ -46,7 +42,6 @@ class Option(object):
         """
         fetch option market data (like Delta, Theta, Rho, Vega, Open Interest)
         """
-
         # build params
         base_marketdata_url = "https://api.robinhood.com/options/instruments/"
         id_urls = []
