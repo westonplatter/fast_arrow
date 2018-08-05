@@ -31,17 +31,32 @@ all_option_positions = OptionPosition.all(token)
 #
 # filter to get open option_positions
 #
-open_option_positions = list(filter(lambda p: float(p["quantity"]) > 0.0, all_option_positions))
+ops = list(filter(lambda p: float(p["quantity"]) > 0.0, all_option_positions))
 
 
 #
 # append marketdata to each position
 #
 bearer = Auth.get_oauth_token(token)
-option_position_with_marketdata = OptionPosition.append_marketdata_list(bearer, open_option_positions)
+ops = OptionPosition.append_marketdata_list(bearer, ops)
 
 
 #
 # append instrument data to each position
 #
-option_position_with_marketdata_and_instrument_data = OptionPosition.append_instrumentdata_list(bearer, option_position_with_marketdata)
+ops = OptionPosition.append_instrumentdata_list(bearer, ops)
+
+
+#
+# humanize_numbers, so that
+#   - delta
+#   - theta
+#   - gamma
+#   - vega
+#   - rho
+#   - implied_volatility
+# are positive or negative based on Long/Short position type
+#
+# And also add column "chance_of_profit" specific to Long/Short position type
+#
+ops = OptionPosition.humanize_numbers(ops)
