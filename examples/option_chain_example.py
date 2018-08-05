@@ -47,4 +47,17 @@ next_3_expiration_dates = expiration_dates[0:3]
 #
 # get all options on the TLT option chain
 #
-tlt_options = Option.all(bearer, option_chain_id, next_3_expiration_dates)
+ops = Option.in_chain(bearer, option_chain_id, expiration_dates=next_3_expiration_dates)
+
+ops = Option.merge_marketdata(bearer, ops)
+
+# quick hack to get at data
+import csv
+headers = list(ops[0].keys())
+filename = "TLT_options.csv"
+rows = ops
+# copy and pasted from simple_metrics
+with open(filename, 'w') as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=headers)
+    writer.writeheader()
+    [writer.writerow(row) for row in rows]
