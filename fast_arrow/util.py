@@ -1,26 +1,6 @@
-# import hmac
-# import io
-# import logging
-# import sys
-# import os
-# import re
-
 import configparser
 from urllib.parse import urlparse
 
-# FAST_ARROW_LOG = os.environ.get('FAST_ARROW_LOG')
-#
-# logger = logging.getLogger('fast_arrow')
-#
-# __all__ = [
-#     'io',
-#     'parse_qsl',
-#     'utf8',
-#     'log_info',
-#     'log_debug',
-#     'dashboard_link',
-#     'logfmt',
-# ]
 
 def get_username_password(config_file):
     config = configparser.ConfigParser()
@@ -32,3 +12,9 @@ def get_last_path(url_string):
     o = urlparse(url_string)
     paths = o.path.rsplit("/")
     return list(filter(None, paths))[-1]
+
+
+def chunked_list(_list, _chunk_size):
+    """Yield successive n-sized chunks from l."""
+    for i in range(0, len(_list), _chunk_size):
+        yield _list[i:i + _chunk_size]
