@@ -39,7 +39,7 @@ class OptionPosition(object):
         mds = Option.marketdata_list(bearer, ids)
         results = []
         for op in option_positions:
-            # @TODO optimize this so it's not O(n^2)
+            # @TODO optimize this so it's better than O(n^2)
             md = [x for x in mds if x['instrument'] == op['option']][0]
             # there is no overlap in keys so this is fine
             merged_dict = dict( list(op.items()) + list(md.items()) )
