@@ -11,9 +11,7 @@ class OptionPosition(object):
         fetch all option positions
         """
         url = 'https://api.robinhood.com/options/positions/'
-        params = {
-            "nonzero": nonzero
-        }
+        params = {}
         data = get(url, token=token, params=params)
         results = data["results"]
         while data["next"]:
@@ -77,12 +75,12 @@ class OptionPosition(object):
         results = []
         for op in option_positions:
             keys_to_humanize = [
+                "quantity",
                 "delta",
                 "theta",
                 "gamma",
                 "vega",
-                "rho",
-                "implied_volatility"]
+                "rho"]
 
             coef = (1.0 if op["type"] == "long" else -1.0)
 
@@ -99,9 +97,9 @@ class OptionPosition(object):
 
 
     @classmethod
-    def _extract_ids(cls, option_position):
+    def _extract_ids(cls, option_positions):
         ids = []
-        for op in option_position:
+        for op in option_positions:
             _id = util.get_last_path(op["option"])
             ids.append(_id)
         return ids

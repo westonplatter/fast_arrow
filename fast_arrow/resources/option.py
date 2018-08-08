@@ -7,7 +7,7 @@ class Option(object):
     @classmethod
     def fetch(cls, bearer, _id):
         """
-        fetch instrument
+        fetch instrument by _id
         """
         return cls.fetch_list(bearer, [_id])[0]
 
@@ -15,7 +15,7 @@ class Option(object):
     @classmethod
     def fetch_list(cls, bearer, ids):
         """
-        fetch instruments
+        fetch instruments by ids
         """
         param_ids = ",".join(ids)
         params = {"ids": param_ids}
@@ -33,7 +33,8 @@ class Option(object):
     @classmethod
     def marketdata(cls, bearer, _id):
         """
-        fetch option market data (like Delta, Theta, Rho, Vega, Open Interest)
+        fetch marketdata for option instrument
+        (eg, Delta, Theta, Rho, Vega, Open Interest)
         """
         return cls.marketdata_list(bearer, [_id])[0]
 
@@ -41,7 +42,8 @@ class Option(object):
     @classmethod
     def marketdata_list(cls, bearer, ids):
         """
-        fetch option market data (like Delta, Theta, Rho, Vega, Open Interest)
+        fetch marketdata for option instrument
+        (eg, Delta, Theta, Rho, Vega, Open Interest)
         """
         # build params
         base_marketdata_url = "https://api.robinhood.com/options/instruments/"
@@ -68,7 +70,8 @@ class Option(object):
     @classmethod
     def in_chain(cls, bearer, chain_id, expiration_dates=[]):
         """
-        fetch all options in a options chain for given expiration dates
+        fetch all option instruments in an options chain
+        - expiration_dates = optionally scope
         """
         assert(type(expiration_dates) is list)
 

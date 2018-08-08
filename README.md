@@ -1,5 +1,5 @@
-# fast_arrow - API client for Robinhood
-A simple, humble, and direct API client for Robinhood
+# fast_arrow
+API client for Robinhood
 
 [![Build Status](https://travis-ci.com/westonplatter/fast_arrow.svg?branch=master)](https://travis-ci.com/westonplatter/fast_arrow)
 [![Coverage
@@ -18,7 +18,13 @@ USE AT YOUR OWN RISK.
 @todo
 
 ## philosophy
-@todo
+This will provide Stock and Option trading functionality.
+
+RH has few different objects,
+- instrument
+- marketdata for an instrument
+- positions for an instrument
+- orders for an instrument
 
 
 ## development
@@ -40,4 +46,3 @@ pipenv run tox -e py36
 
 ## license
 See LICENSE file.
-
