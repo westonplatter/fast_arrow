@@ -1,18 +1,20 @@
 from fast_arrow.api_requestor import get
 from fast_arrow import util
 from fast_arrow.resources.option import Option
+from fast_arrow.resources.option_marketdata import OptionMarketdata
+from fast_arrow.util import chunked_list
 
 
 class OptionPosition(object):
 
     @classmethod
-    def all(cls, token, nonzero=False):
+    def all(cls, bearer):
         """
         fetch all option positions
         """
         url = 'https://api.robinhood.com/options/positions/'
-        params = {}
-        data = get(url, token=token, params=params)
+        params = { }
+        data = get(url, bearer=bearer, params=params)
         results = data["results"]
         while data["next"]:
             data = get(data["next"], token)
@@ -23,18 +25,19 @@ class OptionPosition(object):
     @classmethod
     def append_marketdata(cls, bearer, option_position):
         """
-        Fetch and merge in Market Data for each option position
+        Fetch and merge in Marketdata for option position
         """
         return cls.append_marketdata_list(bearer, [option_position])[0]
 
 
     @classmethod
-    def append_marketdata_list(cls, bearer, option_positions):
+    def mergein_marketdata_list(cls, bearer, option_positions):
         """
-        Fetch and merge in Market Data for each option position
+        Fetch and merge in Marketdata for each option position
         """
         ids = cls._extract_ids(option_positions)
-        mds = Option.marketdata_list(bearer, ids)
+        mds = OptionMarketdata.quotes_by_instrument_ids(bearer, ids)
+
         results = []
         for op in option_positions:
             # @TODO optimize this so it's better than O(n^2)
@@ -46,7 +49,7 @@ class OptionPosition(object):
 
 
     @classmethod
-    def append_instrumentdata_list(cls, bearer, option_positions):
+    def mergein_instrumentdata_list(cls, bearer, option_positions):
         ids = cls._extract_ids(option_positions)
         idatas = Option.fetch_list(bearer, ids)
 

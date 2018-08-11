@@ -12,23 +12,27 @@ USE AT YOUR OWN RISK.
 
 
 ## install
-@todo
+pip install fast_arrow
 
 ## example
 @todo
 
 ## philosophy
-This will provide Stock and Option trading functionality.
+`fast_arrow` is Robinhood api client, not an automated trading system. thus, "keep it simple stupid"
 
-RH has few different objects,
-- instrument
-- marketdata for an instrument
-- positions for an instrument
-- orders for an instrument
+Robinhood as an API has a few different core objects,
+- instruments (Option, Stock)
+- marketdata (OptionMarketdata, StockMarketdata)
+- positions (OptionPosition, StockPosition)
+- orders (OptionOrder, StockOrder)
+- account stuff (that I'll build for later)
 
+`fast_arrow` expects that users want to merge these core objects. For example,
+fetch Apple, Inc (Stock) quote data (StockMarketdata) to display the current
+price per share of $APPL stock.
 
 ## development
-Install (pipenv)[https://github.com/pypa/pipenv], and then run,
+Install [pipenv](https://github.com/pypa/pipenv), and then run,
 ```
 pipenv install --dev
 ```
@@ -42,7 +46,3 @@ Run the test suite against a specific python version,
 ```
 pipenv run tox -e py36
 ```
-
-
-## license
-See LICENSE file.
