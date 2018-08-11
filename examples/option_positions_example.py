@@ -20,12 +20,13 @@ password = config['account']['password']
 # login and get the bearer token
 #
 token = Auth.login(username, password)
+bearer = Auth.get_oauth_token(token)
 
 
 #
 # fetch option_positions
 #
-all_option_positions = OptionPosition.all(token)
+all_option_positions = OptionPosition.all(bearer)
 
 
 #
@@ -37,11 +38,10 @@ open_option_positions = list(filter(lambda p: float(p["quantity"]) > 0.0, all_op
 #
 # append marketdata to each position
 #
-bearer = Auth.get_oauth_token(token)
-option_position_with_marketdata = OptionPosition.append_marketdata_list(bearer, open_option_positions)
+option_position_with_marketdata = OptionPosition.mergein_marketdata_list(bearer, open_option_positions)
 
 
 #
 # append instrument data to each position
 #
-option_position_with_marketdata_and_instrument_data = OptionPosition.append_instrumentdata_list(bearer, option_position_with_marketdata)
+option_position_with_marketdata_and_instrument_data = OptionPosition.mergein_instrumentdata_list(bearer, option_position_with_marketdata)

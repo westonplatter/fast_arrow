@@ -15,16 +15,20 @@ class Stock(object):
         return data["results"][0]
 
     @classmethod
+    def quote_by_instrument_id(cls, _id):
+        return []
+
+    @classmethod
     def all(cls, bearer, symbols):
         """"
         fetch data for multiple stocks
         """
-        assert(type(symbols) is list)
+        params = {"symbol": ",".join(symbols)}
+        request_url = "https://api.robinhood.com/instruments/"
 
-        symbole_str = ",".join(symbols)
-        url = "https://api.robinhood.com/instruments/?symbol={0}".format(symbole_str)
-        data = get(url, bearer=bearer)
+        data = get(request_url, bearer=bearer, params=params)
         results = data["results"]
+
         while data["next"]:
             data = get(data["next"], bearer=bearer)
             results.extend(data["results"])

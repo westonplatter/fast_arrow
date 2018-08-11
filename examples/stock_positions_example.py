@@ -19,12 +19,12 @@ password = config['account']['password']
 # login and get the bearer token
 #
 token = Auth.login(username, password)
-
+bearer = Auth.get_oauth_token(token)
 
 #
 # fetch stock positions
 #
-all_stock_positions = StockPosition.all(token)
+all_stock_positions = StockPosition.all(bearer)
 
 
 #

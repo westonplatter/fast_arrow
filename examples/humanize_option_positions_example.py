@@ -1,9 +1,12 @@
+import pandas as pd
+import json
 import configparser
 from fast_arrow import (
     Auth,
     OptionChain,
     Option,
-    OptionPosition
+    OptionPosition,
+    OptionMarketdata,
 )
 
 #
@@ -20,12 +23,13 @@ password = config['account']['password']
 # login and get the bearer token
 #
 token = Auth.login(username, password)
+bearer = Auth.get_oauth_token(token)
 
 
 #
 # fetch option_positions
 #
-all_option_positions = OptionPosition.all(token)
+all_option_positions = OptionPosition.all(bearer)
 
 
 #
@@ -37,14 +41,14 @@ ops = list(filter(lambda p: float(p["quantity"]) > 0.0, all_option_positions))
 #
 # append marketdata to each position
 #
-bearer = Auth.get_oauth_token(token)
-ops = OptionPosition.append_marketdata_list(bearer, ops)
+ops = OptionPosition.mergein_marketdata_list(bearer, ops)
+
 
 
 #
 # append instrument data to each position
 #
-ops = OptionPosition.append_instrumentdata_list(bearer, ops)
+ops = OptionPosition.mergein_instrumentdata_list(bearer, ops)
 
 
 #
@@ -60,3 +64,9 @@ ops = OptionPosition.append_instrumentdata_list(bearer, ops)
 # And also add column "chance_of_profit" specific to Long/Short position type
 #
 ops = OptionPosition.humanize_numbers(ops)
+
+
+#
+# create Pandas DF of option positions
+#
+df = pd.DataFrame.from_dict(ops)

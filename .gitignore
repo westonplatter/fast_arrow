@@ -2,6 +2,7 @@ config.debug.ini
 config.test.ini
 config.dev.ini
 dev_data/*
+*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

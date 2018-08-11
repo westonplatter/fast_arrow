@@ -39,12 +39,19 @@ option_chain = OptionChain.fetch(bearer, stock_id)
 option_chain_id = option_chain["id"]
 expiration_dates = option_chain['expiration_dates']
 
+
 #
 # reduce the number of expiration dates we're interested in
 #
 next_3_expiration_dates = expiration_dates[0:3]
 
+
 #
 # get all options on the TLT option chain
 #
-tlt_options = Option.all(bearer, option_chain_id, next_3_expiration_dates)
+ops = Option.in_chain(bearer, option_chain_id, expiration_dates=next_3_expiration_dates)
+
+#
+# merge in market data fro TLT option instruments
+#
+ops = Option.mergein_marketdata_list(bearer, ops)
