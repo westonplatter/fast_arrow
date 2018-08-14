@@ -6,6 +6,20 @@ from fast_arrow.resources.option_marketdata import OptionMarketdata
 class Option(object):
 
     @classmethod
+    def fetch_by_ids(cls, bearer, ids):
+        results = []
+        params = {"ids": ",".join(ids)}
+        request_url = "https://api.robinhood.com/options/instruments/"
+        data = get(request_url, bearer=bearer, params=params)
+        results = data["results"]
+        while data["next"]:
+            data = get(data["next"], bearer=bearer)
+            results.extend(data["results"])
+        return results
+
+
+    # deprecate me
+    @classmethod
     def fetch(cls, bearer, _id):
         """
         fetch by instrument id
@@ -13,6 +27,7 @@ class Option(object):
         return cls.fetch_list(bearer, [_id])[0]
 
 
+    # deprecate me
     @classmethod
     def fetch_list(cls, bearer, ids):
         """
