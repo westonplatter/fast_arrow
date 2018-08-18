@@ -76,13 +76,18 @@ class Option(object):
     def mergein_marketdata_list(cls, bearer, options):
         ids = [x["id"] for x in options]
         mds = OptionMarketdata.quotes_by_instrument_ids(bearer, ids)
+        mds = [x for x in mds if x]
 
         results = []
         for o in options:
             # @TODO optimize this so it's better than O(n^2)
-            md = [md for md in mds if md['instrument'] == o['url']][0]
-            # there is overlap in keys, so it's fine to do a merge
-            merged_dict = dict( list(o.items()) + list(md.items()) )
+            md = [md for md in mds if md['instrument'] == o['url']]
+            if len(md)>0:
+                md = md[0]
+                # there is no overlap in keys, so it's fine to do a merge
+                merged_dict = dict( list(o.items()) + list(md.items()) )
+            else:
+                merged_dict = dict( list(o.items()) )
             results.append(merged_dict)
 
         return results
