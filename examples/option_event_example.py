@@ -18,8 +18,7 @@ password = config['account']['password']
 #
 # login and get the bearer token
 #
-token = Auth.login(username, password)
-bearer = Auth.get_oauth_token(token)
+bearer = Auth.login_oauth2(username, password)
 
 
 #
