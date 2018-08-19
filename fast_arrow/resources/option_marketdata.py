@@ -46,3 +46,21 @@ class OptionMarketdata(object):
 
                 results.extend(partial_results)
         return results
+
+    @classmethod
+    def historicals_for_id(cls, bearer, _id, span="year", interval="day"):
+        results = []
+
+        #
+        # @TODO could we rather add Ids or InstrumentUrls to query params
+        #
+        url = "https://api.robinhood.com/marketdata/options/historicals/"
+        url = "{}{}/".format(url, _id)
+
+        params = {
+            "span": span,
+            "interval": interval,
+        }
+
+        data = get(url, bearer=bearer, params=params)
+        return data
