@@ -3,6 +3,9 @@ from fast_arrow.api_requestor import post
 
 
 class Auth(object):
+    #
+    # @TODO remove this
+    #
     @classmethod
     def login(cls, username, password, mfa_code=None):
         """
@@ -22,6 +25,9 @@ class Auth(object):
         if 'token' in resj.keys():
             return resj['token']
 
+    #
+    # @TODO should we add a read only token?
+    # 
     @classmethod
     def login_oauth2(cls, username, password):
         data = {
@@ -34,11 +40,12 @@ class Auth(object):
         }
         url = "https://api.robinhood.com/oauth2/token/"
         res = post(url, payload=data)
-        return res["access_token"]
+        return res
 
     #
+    # @TODO remove this
     # endpoint removed from RH
-    # 
+    #
     # @classmethod
     # def get_oauth_token(cls, token):
     #     """
@@ -52,6 +59,9 @@ class Auth(object):
     #     return oauth_token
 
 
+    #
+    # @TODO adjust this for bearer only API operations
+    #
     @classmethod
     def logout(cls, token):
         """
