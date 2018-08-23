@@ -3,6 +3,7 @@ from fast_arrow import (
     Auth,
     StockPosition
 )
+from fast_arrow.client import Client
 
 
 #
@@ -16,14 +17,16 @@ password = config['account']['password']
 
 
 #
-# login and get the bearer token
+# initialize and authenticate Client
 #
-bearer = Auth.login_oauth2(username, password)
+client = Client(username, password)
+client.client.authenticate()
+
 
 #
 # fetch stock positions
 #
-all_stock_positions = StockPosition.all(bearer)
+all_stock_positions = StockPosition.all(client)
 
 
 #

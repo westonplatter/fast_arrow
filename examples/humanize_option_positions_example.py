@@ -2,12 +2,12 @@ import pandas as pd
 import json
 import configparser
 from fast_arrow import (
-    Auth,
     OptionChain,
     Option,
     OptionPosition,
     OptionMarketdata,
 )
+from fast_arrow.client import Client
 
 #
 # get the authentication configs
@@ -20,15 +20,16 @@ password = config['account']['password']
 
 
 #
-# login and get the bearer token
+# initialize and authenticate Client
 #
-bearer = Auth.login_oauth2(username, password)
+client = Client(username, password)
+client.client.authenticate()
 
 
 #
 # fetch option_positions
 #
-all_option_positions = OptionPosition.all(bearer)
+all_option_positions = OptionPosition.all(client)
 
 
 #
@@ -40,14 +41,14 @@ ops = list(filter(lambda p: float(p["quantity"]) > 0.0, all_option_positions))
 #
 # append marketdata to each position
 #
-ops = OptionPosition.mergein_marketdata_list(bearer, ops)
+ops = OptionPosition.mergein_marketdata_list(client, ops)
 
 
 
 #
 # append instrument data to each position
 #
-ops = OptionPosition.mergein_instrumentdata_list(bearer, ops)
+ops = OptionPosition.mergein_instrumentdata_list(client, ops)
 
 
 #

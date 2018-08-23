@@ -5,6 +5,7 @@ from fast_arrow import (
     OptionChain,
     Option
 )
+from fast_arrow.client import Client
 
 
 #
@@ -18,23 +19,24 @@ password = config['account']['password']
 
 
 #
-# get the bearer token
+# initialize and authenticate Client
 #
-bearer = Auth.login_oauth2(username, password)
+client = Client(username, password)
+client.client.authenticate()
 
 
 #
 # fetch the stock info for TLT
 #
 symbol = "TLT"
-stock = Stock.fetch(bearer, symbol)
+stock = Stock.fetch(client, symbol)
 
 
 #
 # get the TLT option chain info
 #
 stock_id = stock["id"]
-option_chain = OptionChain.fetch(bearer, stock_id)
+option_chain = OptionChain.fetch(client, stock_id)
 option_chain_id = option_chain["id"]
 expiration_dates = option_chain['expiration_dates']
 
@@ -48,9 +50,9 @@ next_3_expiration_dates = expiration_dates[0:3]
 #
 # get all options on the TLT option chain
 #
-ops = Option.in_chain(bearer, option_chain_id, expiration_dates=next_3_expiration_dates)
+ops = Option.in_chain(client, option_chain_id, expiration_dates=next_3_expiration_dates)
 
 #
 # merge in market data fro TLT option instruments
 #
-ops = Option.mergein_marketdata_list(bearer, ops)
+ops = Option.mergein_marketdata_list(client, ops)

@@ -3,6 +3,7 @@ from fast_arrow import (
     Auth,
     OptionEvent
 )
+from fast_arrow.client import Client
 
 
 #
@@ -16,12 +17,13 @@ password = config['account']['password']
 
 
 #
-# login and get the bearer token
+# initialize and authenticate Client
 #
-bearer = Auth.login_oauth2(username, password)
+client = Client(username, password)
+client.client.authenticate()
 
 
 #
 # fetch all option events
 #
-events = OptionEvent.all(bearer)
+events = OptionEvent.all(client)

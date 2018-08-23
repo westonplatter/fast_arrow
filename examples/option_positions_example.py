@@ -5,6 +5,8 @@ from fast_arrow import (
     Option,
     OptionPosition
 )
+from fast_arrow.client import Client
+
 
 #
 # get the authentication configs
@@ -17,15 +19,16 @@ password = config['account']['password']
 
 
 #
-# login and get the bearer token
+# initialize and authenticate Client
 #
-bearer = Auth.login_oauth2(username, password)
+client = Client(username, password)
+client.client.authenticate()
 
 
 #
 # fetch option_positions
 #
-all_option_positions = OptionPosition.all(bearer)
+all_option_positions = OptionPosition.all(client)
 
 
 #
@@ -37,10 +40,10 @@ open_option_positions = list(filter(lambda p: float(p["quantity"]) > 0.0, all_op
 #
 # append marketdata to each position
 #
-option_position_with_marketdata = OptionPosition.mergein_marketdata_list(bearer, open_option_positions)
+option_position_with_marketdata = OptionPosition.mergein_marketdata_list(client, open_option_positions)
 
 
 #
 # append instrument data to each position
 #
-option_position_with_marketdata_and_instrument_data = OptionPosition.mergein_instrumentdata_list(bearer, option_position_with_marketdata)
+option_position_with_marketdata_and_instrument_data = OptionPosition.mergein_instrumentdata_list(client, option_position_with_marketdata)

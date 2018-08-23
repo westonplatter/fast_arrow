@@ -1,5 +1,4 @@
-from fast_arrow.api_requestor import get
-
+# from fast_arrow.api_requestor import get
 
 class User(object):
 

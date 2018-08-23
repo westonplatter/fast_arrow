@@ -1,4 +1,4 @@
-from fast_arrow.api_requestor import get
+# from fast_arrow.api_requestor import get
 
 
 class Position(object):
@@ -11,7 +11,7 @@ class Position(object):
         url = 'https://api.robinhood.com/positions/'
         positions = []
 
-        data = get(url, token)
+        data = clientget(url)
         positions.extend(data["results"])
         while data["next"]:
             data = get(data["next"], token)

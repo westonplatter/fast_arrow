@@ -1,10 +1,9 @@
-from fast_arrow.api_requestor import get
-
+# from fast_arrow.api_requestor import get
 
 class OptionChain(object):
 
     @classmethod
-    def fetch(cls, bearer, id):
+    def fetch(cls, client, id):
         """
         fetch option chain for instrument
         """
@@ -14,5 +13,5 @@ class OptionChain(object):
             "state": "active",
             "tradability": "tradable"
         }
-        data = get(url, bearer=bearer, params=params)
+        data = client.get(url, params=params)
         return data['results'][0]
