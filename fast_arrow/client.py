@@ -7,7 +7,8 @@
 # - [x] authenticate, save bearer token and refresh token
 # - [x] pass this to http_requestor for gets and posts
 # - [x] if we get a token expired issue, refresh and retry
-# - [ ] adjust all resources to use client instead of token/bearer
+# - [x] adjust all resources to use client instead of token/bearer
+# - [x] allow init without auth means
 #
 #
 
@@ -28,6 +29,7 @@ class Client(object):
         self.refresh_token = None
         self.mfa_code = None
         self.scope = None
+        self.authenticated = False
 
     def authenticate(self):
         if "username" in self.options and "password" in self.options:
@@ -41,7 +43,7 @@ class Client(object):
             return True
 
         else:
-            raise AuthenticationError("FastArrow: did not provide auth credentials")
+            self.authenticated = False
 
 
     def get(self, url=None, params=None):
@@ -83,6 +85,7 @@ class Client(object):
                 attempts = False
         raise NotImplementedError()
 
+
     def _gen_headers(self, bearer):
         headers = {
             "Accept": "*/*",
@@ -110,6 +113,7 @@ class Client(object):
         self.refresh_token  = res["refresh_token"]
         self.mfa_code       = res["mfa_code"]
         self.scope          = res["scope"]
+        self.authenticated  = True
         return True
 
 
@@ -127,6 +131,7 @@ class Client(object):
         self.refresh_token  = res["refresh_token"]
         self.mfa_code       = res["mfa_code"]
         self.scope          = res["scope"]
+        self.authenticated  = True
         return True
 
 
@@ -142,4 +147,5 @@ class Client(object):
         headers = self._gen_headers(self.access_token)
         res = self.post(url, payload=data)
         result = (True if res == None else False)
+        self.authenticated = False
         return result
