@@ -6,28 +6,32 @@
 # - [x] pass in username/password
 # - [x] authenticate, save bearer token and refresh token
 # - [x] pass this to http_requestor for gets and posts
-# - [ ] if we get a token expired issue, refresh and retry
+# - [x] if we get a token expired issue, refresh and retry
 # - [ ] adjust all resources to use client instead of token/bearer
 #
 #
 
-from fast_arrow.resources.auth import Auth
-from fast_arrow.exceptions import AuthenticationError
+import requests
 from fast_arrow.resources.user import User
+from fast_arrow.exceptions import AuthenticationError
+from fast_arrow.exceptions import NotImplementedError
+
+
+CLIENT_ID = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS"
+
 
 class Client(object):
 
     def __init__(self, **kwargs):
         self.options = kwargs
+        self.access_token = None
+        self.refresh_token = None
+        self.mfa_code = None
+        self.scope = None
 
     def authenticate(self):
         if "username" in self.options and "password" in self.options:
-            res = Auth.login_oauth2(self.options["username"], self.options["password"])
-            self.access_token = res["access_token"]
-            self.refresh_token = res["refresh_token"]
-            self.mfa_code = res["mfa_code"]
-            self.scope = res["scope"]
-            return True
+            return self.login_oauth2(self.options["username"], self.options["password"])
 
         elif "access_token" in self.options and "refresh_token" in self.options:
             self.access_token = self.options["access_token"]
@@ -38,3 +42,104 @@ class Client(object):
 
         else:
             raise AuthenticationError("FastArrow: did not provide auth credentials")
+
+
+    def get(self, url=None, params=None):
+        """
+        Execute HTTP GET
+        """
+        headers = self._gen_headers(self.access_token)
+
+        attempts = 2
+        while attempts:
+            try:
+                res = requests.get(url, headers=headers, params=params, timeout=15)
+                return res.json()
+            except:
+                self.relogin_oauth2()
+                attempts -= 1
+            else:
+                attempts = False
+        raise NotImplementedError()
+
+
+    def post(self, url=None, payload=None):
+        """
+        Execute HTTP POST
+        """
+        headers = self._gen_headers(self.access_token)
+        attempts = 2
+        while attempts:
+            try:
+                res = requests.post(url, headers=headers, data=payload, timeout=15)
+                if res.headers['Content-Length'] == '0':
+                    return None
+                else:
+                    return res.json()
+            except:
+                self.relogin_oauth2()
+                attempts -= 1
+            else:
+                attempts = False
+        raise NotImplementedError()
+
+    def _gen_headers(self, bearer):
+        headers = {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate",
+            "Accept-Language": "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
+        }
+        if bearer:
+            headers["Authorization"] = "Bearer {0}".format(bearer)
+        return headers
+
+
+    def login_oauth2(self, username, password):
+        data = {
+            "grant_type": "password",
+            "scope": "internal",
+            "client_id": CLIENT_ID,
+            "expires_in": 86400,
+            "password": password,
+            "username": username
+        }
+        url = "https://api.robinhood.com/oauth2/token/"
+        res = self.post(url, payload=data)
+        self.access_token   = res["access_token"]
+        self.refresh_token  = res["refresh_token"]
+        self.mfa_code       = res["mfa_code"]
+        self.scope          = res["scope"]
+        return True
+
+
+    def relogin_oauth2(self):
+        data = {
+            "grant_type": "refresh_token",
+            "refresh_token": self.refresh_token,
+            "scope": "internal",
+            "client_id": CLIENT_ID,
+            "expires_in": 86400,
+        }
+        url = "https://api.robinhood.com/oauth2/token/"
+        res = self.post(url, payload=data)
+        self.access_token   = res["access_token"]
+        self.refresh_token  = res["refresh_token"]
+        self.mfa_code       = res["mfa_code"]
+        self.scope          = res["scope"]
+        return True
+
+
+    def logout_oauth2(self):
+        """
+        Logout for given token
+        """
+        url = 'https://api.robinhood.com/oauth2/revoke_token/'
+        data = {
+            "client_id": CLIENT_ID,
+            "token": self.refresh_token,
+        }
+        headers = self._gen_headers(self.access_token)
+        res = self.post(url, payload=data)
+        result = (True if res == None else False)
+        return result

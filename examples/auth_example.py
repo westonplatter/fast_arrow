@@ -1,5 +1,6 @@
 import configparser
 from fast_arrow.client import Client
+from fast_arrow.resources.user import User
 
 #
 # get the authentication configs
@@ -14,3 +15,12 @@ client = Client(username=username, password=password)
 result = client.authenticate()
 
 print("Authenticated successfully = {}".format(result))
+
+user = User.fetch(client)
+print("Username = {}".format(user["username"]))
+
+result = client.relogin_oauth2()
+print("Re-Authenticated with refresh_token successfully = {}".format(result))
+
+result = client.logout_oauth2()
+print("Logged out successfully = {}".format(result))
