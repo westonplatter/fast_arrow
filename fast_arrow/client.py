@@ -1,17 +1,3 @@
-#
-# @TODO this list
-#
-# here's the idea.
-# - [x] create an instance of client
-# - [x] pass in username/password
-# - [x] authenticate, save bearer token and refresh token
-# - [x] pass this to http_requestor for gets and posts
-# - [x] if we get a token expired issue, refresh and retry
-# - [x] adjust all resources to use client instead of token/bearer
-# - [x] allow init without auth means
-#
-#
-
 import requests
 from fast_arrow.resources.user import User
 from fast_arrow.exceptions import AuthenticationError
@@ -25,13 +11,16 @@ class Client(object):
 
     def __init__(self, **kwargs):
         self.options = kwargs
-        self.access_token = None
-        self.refresh_token = None
-        self.mfa_code = None
-        self.scope = None
-        self.authenticated = False
+        self.access_token   = None
+        self.refresh_token  = None
+        self.mfa_code       = None
+        self.scope          = None
+        self.authenticated  = False
 
     def authenticate(self):
+        """
+        Authenticate using data in `options`
+        """
         if "username" in self.options and "password" in self.options:
             return self.login_oauth2(self.options["username"], self.options["password"])
 
@@ -62,7 +51,6 @@ class Client(object):
                 attempts -= 1
             else:
                 attempts = False
-        raise NotImplementedError()
 
 
     def post(self, url=None, payload=None):
@@ -70,7 +58,7 @@ class Client(object):
         Execute HTTP POST
         """
         headers = self._gen_headers(self.access_token)
-        attempts = 2
+        attempts = 1
         while attempts:
             try:
                 res = requests.post(url, headers=headers, data=payload, timeout=15)
@@ -83,10 +71,12 @@ class Client(object):
                 attempts -= 1
             else:
                 attempts = False
-        raise NotImplementedError()
 
 
     def _gen_headers(self, bearer):
+        """
+        Generate headders, adding in Oauth2 bearer token if present
+        """
         headers = {
             "Accept": "*/*",
             "Accept-Encoding": "gzip, deflate",
@@ -99,6 +89,9 @@ class Client(object):
 
 
     def login_oauth2(self, username, password):
+        """
+        Login using username and password
+        """
         data = {
             "grant_type": "password",
             "scope": "internal",
@@ -118,6 +111,10 @@ class Client(object):
 
 
     def relogin_oauth2(self):
+        """
+        (Re)login using the Oauth2 refresh token
+        """
+        url = "https://api.robinhood.com/oauth2/token/"
         data = {
             "grant_type": "refresh_token",
             "refresh_token": self.refresh_token,
@@ -125,7 +122,6 @@ class Client(object):
             "client_id": CLIENT_ID,
             "expires_in": 86400,
         }
-        url = "https://api.robinhood.com/oauth2/token/"
         res = self.post(url, payload=data)
         self.access_token   = res["access_token"]
         self.refresh_token  = res["refresh_token"]
@@ -137,14 +133,13 @@ class Client(object):
 
     def logout_oauth2(self):
         """
-        Logout for given token
+        Logout for given Oauth2 bearer token
         """
-        url = 'https://api.robinhood.com/oauth2/revoke_token/'
+        url = "https://api.robinhood.com/oauth2/revoke_token/"
         data = {
             "client_id": CLIENT_ID,
             "token": self.refresh_token,
         }
-        headers = self._gen_headers(self.access_token)
         res = self.post(url, payload=data)
         result = (True if res == None else False)
         self.authenticated = False
