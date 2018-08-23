@@ -52,7 +52,7 @@ class Client(object):
         """
         headers = self._gen_headers(self.access_token)
 
-        attempts = 2
+        attempts = 1
         while attempts:
             try:
                 res = requests.get(url, headers=headers, params=params, timeout=15)
