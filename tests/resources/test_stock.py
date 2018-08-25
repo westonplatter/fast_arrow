@@ -1,15 +1,16 @@
 from fast_arrow import util
-from fast_arrow.resources.stock import Stock
-from tests.test_util import gen_vcr
+from fast_arrow import Stock
+from tests.test_util import gen_vcr, gen_client
 
+import unittest
 
 class TestStock(object):
 
     def test_fetch_fields(self):
-        bearer = "123"
+        client = gen_client()
         symbol = "TLT"
         with gen_vcr().use_cassette('stock_fetch.yaml'):
-            stock = Stock.fetch(bearer, symbol)
+            stock = Stock.fetch(client, symbol)
 
             expected_fields = ['margin_initial_ratio', 'rhs_tradability', 'id',
                 'market', 'simple_name', 'min_tick_size', 'maintenance_ratio',

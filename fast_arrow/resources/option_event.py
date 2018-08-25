@@ -1,4 +1,3 @@
-from fast_arrow.api_requestor import get
 from fast_arrow import util
 from fast_arrow.resources.option import Option
 
@@ -6,13 +5,13 @@ from fast_arrow.resources.option import Option
 class OptionEvent(object):
 
     @classmethod
-    def all(cls, bearer):
+    def all(cls, client):
         """
         fetch all option positions
         """
         url = 'https://api.robinhood.com/options/events/'
         params = { }
-        data = get(url, bearer=bearer, params=params)
+        data = client.get(url, params=params)
         results = data["results"]
         while data["next"]:
             data = get(data["next"], token)
@@ -21,10 +20,10 @@ class OptionEvent(object):
 
 
     @classmethod
-    def mergein_instrumentdata_list(cls, bearer, option_events):
+    def mergein_instrumentdata_list(cls, client, option_events):
         results = []
         ids = [util.get_last_path(oe['option']) for oe in option_events]
-        idatas = Option.fetch_by_ids(bearer, ids)
+        idatas = Option.fetch_by_ids(client, ids)
         for oe in option_events:
             idata = [x for x in idatas if x['url'] == oe['option']][0]
             merge_me = {

@@ -1,12 +1,12 @@
 from fast_arrow import util
-from fast_arrow.resources.auth import Auth
-from fast_arrow.resources.user import User
-from tests.test_util import gen_vcr
+from fast_arrow import User
+from tests.test_util import gen_vcr, gen_client
 
+import unittest
 
 class TestUser(object):
     def test_fetch(self):
-        token = '123'
+        client = gen_client()
         with gen_vcr().use_cassette('user_fetch.yaml'):
-            data = User.fetch(token)
+            data = User.fetch(client)
             assert(data['username'] == 'my_username')

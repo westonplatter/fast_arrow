@@ -9,7 +9,6 @@ interactions:
       Connection: [keep-alive]
       Content-Type: [application/x-www-form-urlencoded; charset=utf-8]
       User-Agent: [Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)]
-      X-Robinhood-API-Version: [1.0.0]
     method: GET
     uri: https://api.robinhood.com/options/chains/?equity_instrument_ids=644f21f0-a166-4c94-bd67-02568d3a5940&state=active&tradability=tradable
   response:

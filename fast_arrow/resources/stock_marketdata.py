@@ -1,4 +1,3 @@
-from fast_arrow.api_requestor import get
 from fast_arrow.util import chunked_list
 
 
@@ -20,23 +19,23 @@ class StockMarketdata(object):
 
 
     @classmethod
-    def quotes_by_instrument_ids(cls, bearer, ids):
+    def quotes_by_instrument_ids(cls, client, ids):
         """
         create instrument urls, fetch, return results
         """
         base_url = "https://api.robinhood.com/options/instruments/"
         id_urls = ["{}{}/".format(base_url, _id) for _id in ids]
-        return cls.quotes_by_instrument_urls(bearer, id_urls)
+        return cls.quotes_by_instrument_urls(client, id_urls)
 
 
     @classmethod
-    def quotes_by_instrument_urls(cls, bearer, urls):
+    def quotes_by_instrument_urls(cls, client, urls):
         """
         fetch and return results
         """
         instruments = ",".join(urls)
         params = {"instruments": instruments}
-        data = get(url, bearer=bearer)
+        data = client.get(url, bearer=bearer)
         results = data["results"]
         while data["next"]:
             data = get(data["next"], bearer=bearer)

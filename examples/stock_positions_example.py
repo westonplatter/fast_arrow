@@ -1,9 +1,8 @@
 import configparser
 from fast_arrow import (
-    Auth,
+    Client,
     StockPosition
 )
-
 
 #
 # get the authentication configs
@@ -16,14 +15,16 @@ password = config['account']['password']
 
 
 #
-# login and get the bearer token
+# initialize and authenticate Client
 #
-bearer = Auth.login_oauth2(username, password)
+client = Client(username=username, password=password)
+client.authenticate()
+
 
 #
 # fetch stock positions
 #
-all_stock_positions = StockPosition.all(bearer)
+all_stock_positions = StockPosition.all(client)
 
 
 #

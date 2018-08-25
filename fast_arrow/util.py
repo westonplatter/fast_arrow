@@ -14,7 +14,9 @@ def get_last_path(url_string):
     return list(filter(None, paths))[-1]
 
 
-def chunked_list(_list, _chunk_size):
-    """Yield successive n-sized chunks from l."""
+def chunked_list(_list, _chunk_size=50):
+    """
+    Break lists into small lists for processing:w
+    """
     for i in range(0, len(_list), _chunk_size):
         yield _list[i:i + _chunk_size]
