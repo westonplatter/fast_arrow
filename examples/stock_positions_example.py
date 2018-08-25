@@ -1,10 +1,8 @@
 import configparser
 from fast_arrow import (
-    Auth,
+    Client,
     StockPosition
 )
-from fast_arrow.client import Client
-
 
 #
 # get the authentication configs
@@ -19,8 +17,8 @@ password = config['account']['password']
 #
 # initialize and authenticate Client
 #
-client = Client(username, password)
-client.client.authenticate()
+client = Client(username=username, password=password)
+client.authenticate()
 
 
 #

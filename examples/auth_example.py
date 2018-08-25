@@ -1,5 +1,5 @@
 import configparser
-from fast_arrow.client import Client
+from fast_arrow import Client
 from fast_arrow.resources.user import User
 
 #

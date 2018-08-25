@@ -1,12 +1,10 @@
 import configparser
 from fast_arrow import (
-    Auth,
+    Client,
     OptionChain,
     Option,
     OptionPosition
 )
-from fast_arrow.client import Client
-
 
 #
 # get the authentication configs
@@ -21,8 +19,8 @@ password = config['account']['password']
 #
 # initialize and authenticate Client
 #
-client = Client(username, password)
-client.client.authenticate()
+client = Client(username=username, password=password)
+client.authenticate()
 
 
 #
@@ -46,4 +44,4 @@ option_position_with_marketdata = OptionPosition.mergein_marketdata_list(client,
 #
 # append instrument data to each position
 #
-option_position_with_marketdata_and_instrument_data = OptionPosition.mergein_instrumentdata_list(client, option_position_with_marketdata)
+ption_position_with_marketdata_and_instrument_data = OptionPosition.mergein_instrumentdata_list(client, option_position_with_marketdata)

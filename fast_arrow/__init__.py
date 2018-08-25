@@ -11,3 +11,5 @@ from fast_arrow.resources.stock_position import StockPosition
 from fast_arrow.resources.stock import Stock
 
 from fast_arrow.resources.user import User
+
+from fast_arrow.client import Client

@@ -1,4 +1,3 @@
-# from fast_arrow.api_requestor import get
 from fast_arrow.util import chunked_list
 from fast_arrow.resources.option_marketdata import OptionMarketdata
 
@@ -13,7 +12,7 @@ class Option(object):
         data = client.get(request_url, params=params)
         results = data["results"]
         while data["next"]:
-            data = get(data["next"], bearer=bearer)
+            data = client.get(data["next"])
             results.extend(data["results"])
         return results
 
@@ -43,7 +42,7 @@ class Option(object):
             partial_results = data["results"]
 
             while data["next"]:
-                data = get(data["next"], bearer=bearer)
+                data = client.get(data["next"])
                 partial_results.extend(data["results"])
             results.extend(partial_results)
 
@@ -67,7 +66,7 @@ class Option(object):
         results = data['results']
 
         while data['next']:
-            data = get(data['next'], bearer=bearer)
+            data = client.get(data['next'])
             results.extend(data['results'])
         return results
 

@@ -2,12 +2,12 @@ import pandas as pd
 import json
 import configparser
 from fast_arrow import (
+    Client,
     OptionChain,
     Option,
     OptionPosition,
     OptionMarketdata,
 )
-from fast_arrow.client import Client
 
 #
 # get the authentication configs
@@ -22,8 +22,8 @@ password = config['account']['password']
 #
 # initialize and authenticate Client
 #
-client = Client(username, password)
-client.client.authenticate()
+client = Client(username=username, password=password)
+client.authenticate()
 
 
 #
@@ -36,6 +36,9 @@ all_option_positions = OptionPosition.all(client)
 # filter to get open option_positions
 #
 ops = list(filter(lambda p: float(p["quantity"]) > 0.0, all_option_positions))
+#
+msg = "There are {} open option positions".format(len(ops))
+print(msg)
 
 
 #
@@ -70,3 +73,5 @@ ops = OptionPosition.humanize_numbers(ops)
 # create Pandas DF of option positions
 #
 df = pd.DataFrame.from_dict(ops)
+# 
+print(df)
