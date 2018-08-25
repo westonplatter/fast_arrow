@@ -2,16 +2,16 @@ import unittest
 
 from fast_arrow import util
 from fast_arrow import OptionPosition
-from tests.test_util import gen_vcr
+from tests.test_util import gen_vcr, gen_client
 
 
 class TestOptionPosition(unittest.TestCase):
 
     @unittest.skip("fix me")
     def test_fetch_fields(self):
-        token = '123'
+        client = gen_client()
         with gen_vcr().use_cassette('option_position_all.yaml'):
-            option_positions = OptionPosition.all(token)
+            option_positions = OptionPosition.all(client)
             option_position = option_positions[0]
 
             expected_fields = [

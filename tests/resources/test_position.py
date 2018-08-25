@@ -1,16 +1,15 @@
 from fast_arrow import util
 from fast_arrow import StockPosition
-from tests.test_util import gen_vcr
+from tests.test_util import gen_vcr, gen_client
 
 import unittest
 
 class TestPosition(object):
 
-    @unittest.skip("fix me")
     def test_fetch_fields(self):
-        token = '123'
+        client = gen_client()
         with gen_vcr().use_cassette('position_all.yaml'):
-            stock_positions = StockPosition.all(token)
+            stock_positions = StockPosition.all(client)
             stock_position = stock_positions[0]
 
             expected_fields = [

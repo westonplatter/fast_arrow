@@ -1,13 +1,12 @@
 from fast_arrow import util
 from fast_arrow import User
-from tests.test_util import gen_vcr
+from tests.test_util import gen_vcr, gen_client
 
 import unittest
 
 class TestUser(object):
-    @unittest.skip("fix me")
     def test_fetch(self):
-        token = '123'
+        client = gen_client()
         with gen_vcr().use_cassette('user_fetch.yaml'):
-            data = User.fetch(token)
+            data = User.fetch(client)
             assert(data['username'] == 'my_username')

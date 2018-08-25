@@ -1,17 +1,16 @@
 from fast_arrow import util
 from fast_arrow.resources.option_chain import OptionChain
-from tests.test_util import gen_vcr
+from tests.test_util import gen_vcr, gen_client
 import unittest
 
 
 class TestPosition(object):
 
-    @unittest.skip("fix me")
     def test_fetch_fields(self):
-        bearer = "123"
-        id = "644f21f0-a166-4c94-bd67-02568d3a5940"
+        client = gen_client()
+        oc_id = "644f21f0-a166-4c94-bd67-02568d3a5940"
         with gen_vcr().use_cassette('option_chain_fetch.yaml'):
-            chain = OptionChain.fetch(bearer, id)
+            chain = OptionChain.fetch(client, oc_id)
 
             expected_fields = [
                 'can_open_position', 'symbol', 'trade_value_multiplier',
