@@ -1,6 +1,3 @@
-# from fast_arrow.api_requestor import get
-
-
 class Stock(object):
 
     @classmethod

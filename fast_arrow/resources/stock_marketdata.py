@@ -1,4 +1,3 @@
-# from fast_arrow.api_requestor import get
 from fast_arrow.util import chunked_list
 
 
