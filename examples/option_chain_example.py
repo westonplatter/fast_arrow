@@ -35,7 +35,7 @@ stock = Stock.fetch(client, symbol)
 # get the TLT option chain info
 #
 stock_id = stock["id"]
-option_chain = OptionChain.fetch(client, stock_id)
+option_chain = OptionChain.fetch(client, stock_id, symbol)
 option_chain_id = option_chain["id"]
 expiration_dates = option_chain['expiration_dates']
 
