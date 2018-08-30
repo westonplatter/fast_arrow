@@ -1,7 +1,7 @@
 import configparser
 from fast_arrow import (
-    Auth,
-    Tag
+    Client,
+    Collection
 )
 
 #
@@ -16,13 +16,14 @@ password = config['account']['password']
 #
 # login and get the bearer token
 #
-bearer = Auth.login_oauth2(username, password)
+client = Client(username=username, password=password)
+client.authenticate()
 
 #
 # fetch stocks (instruments) related to tag
 #
 tag = "China"
-stocks = Tag.fetch_instruments_by_tag(bearer, tag)
+stocks = Collection.fetch_instruments_by_tag(client, tag)
 
 #
 # results

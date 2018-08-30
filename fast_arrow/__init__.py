@@ -22,4 +22,4 @@ from fast_arrow.resources.stock import Stock
 # user
 from fast_arrow.resources.user import User
 
-from fast_arrow.resources.tag import Tag
+from fast_arrow.resources.collection import Collection

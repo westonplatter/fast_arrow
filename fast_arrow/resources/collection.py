@@ -1,4 +1,4 @@
-class Tag(object):
+class Collection(object):
 
     @classmethod
     def fetch_instruments_by_tag(cls, client, tag):
