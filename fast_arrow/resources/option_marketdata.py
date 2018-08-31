@@ -55,7 +55,13 @@ class OptionMarketdata(object):
 
     @classmethod
     def historical_quotes_by_urls(cls, client, urls, span="year"):
-        interval = {"day": "5minute", "week": "10minute", "year": "day", "5year": "week"}[span]
+        possible_intervals = {
+            "day": "5minute",
+            "week": "10minute",
+            "year": "day",
+            "5year": "week" }
+        assert span in possible_intervals.keys()
+        interval = possible_intervals[span]
         results = []
         request_url = "https://api.robinhood.com/marketdata/options/historicals/"
         for _urls in chunked_list(urls, 5):
