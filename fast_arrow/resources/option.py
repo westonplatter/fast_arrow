@@ -1,8 +1,19 @@
 from fast_arrow.util import chunked_list
 from fast_arrow.resources.option_marketdata import OptionMarketdata
+from fast_arrow.exceptions import NotImplementedError
 
 
 class Option(object):
+
+    @classmethod
+    def fetch_by_url(cls, client, url):
+        return cls.instrument_by_urls(client, [url])
+
+
+    @classmethod
+    def fetch_by_urls(cls, client, urls):
+        raise NotImplementedError("Option.instrument_by_url")
+
 
     @classmethod
     def fetch_by_ids(cls, client, ids):
@@ -25,8 +36,9 @@ class Option(object):
         """
         return cls.fetch_list(client, [_id])[0]
 
-
-    # deprecate me
+    #
+    # @TODO depricate me
+    #
     @classmethod
     def fetch_list(cls, client, ids):
         """

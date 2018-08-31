@@ -31,17 +31,18 @@ class OptionMarketdata(object):
         """
         results = []
 
-        for _urls in chunked_list(urls, 50):
+        for _urls in chunked_list(urls, 25):
             url = "https://api.robinhood.com/marketdata/options/"
             params = {"instruments": ",".join(_urls)}
             data = client.get(url, params=params)
 
-            partial_results = data["results"]
+            if data and "results" in data:
 
-            while ("next" in data and data["next"]):
-                data = get(data["next"], bearer=bearer)
-                partial_results.extend(data["results"])
+                partial_results = data["results"]
 
-            results.extend(partial_results)
+                while ("next" in data and data["next"]):
+                    data = get(data["next"], bearer=bearer)
+                    partial_results.extend(data["results"])
 
+                results.extend(partial_results)
         return results
