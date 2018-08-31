@@ -27,6 +27,9 @@ class Option(object):
             results.extend(data["results"])
         return results
 
+    @classmethod
+    def fetch_by_id(cls, bearer, _id):
+        return cls.fetch_by_ids(bearer, [_id])
 
     # deprecate me
     @classmethod
