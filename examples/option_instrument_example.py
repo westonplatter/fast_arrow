@@ -1,6 +1,9 @@
 import configparser
 from fast_arrow import (
-    Auth,
+    Client,
+    Stock,
+    Option,
+    OptionChain,
     OptionMarketdata
 )
 
@@ -13,18 +16,36 @@ config.read(config_file)
 username = config['account']['username']
 password = config['account']['password']
 
+#
+# instantiate and authetnicate client
+#
+client = Client(username=username, password=password)
+client.authenticate()
 
 #
-# get the bearer token
+# get TLT options
 #
-bearer = Auth.login_oauth2(username, password)
+symbol = "TLT"
+stock = Stock.fetch(client, symbol)
 
+stock_id = stock["id"]
+oc = OptionChain.fetch(client, stock_id, symbol)
+oc_id = oc["id"]
+next_2_eds = oc['expiration_dates'][0:1]
+ops = Option.in_chain(client, oc_id, expiration_dates=next_2_eds)
 
 #
-# get historical data for option id
+# get TLT in the middle of the current TLT trading range
 #
-_id = "5c56f5f1-d406-444c-bdfe-dbbdc19ced81"
-span = "year"
-interval = "day"
+urls = [op["url"] for op in ops]
+import math
+middle = math.floor(len(urls)/2)
+diff = math.floor(len(urls) * 0.7)
+lower_end = middle - diff
+higher_end = middle + diff
+urls_subset = urls[lower_end:higher_end]
 
-historical_data = OptionMarketdata.historicals_for_id(bearer, _id, span=span, interval=interval)
+#
+# get historical data for TLT options
+#
+hd = OptionMarketdata.historical_quotes_by_urls(client, urls_subset, span="year")

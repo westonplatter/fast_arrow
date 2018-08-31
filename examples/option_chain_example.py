@@ -51,6 +51,7 @@ next_3_expiration_dates = expiration_dates[0:3]
 #
 ops = Option.in_chain(client, option_chain_id, expiration_dates=next_3_expiration_dates)
 
+
 #
 # merge in market data fro TLT option instruments
 #
