@@ -37,7 +37,7 @@ test_deps = [
     'vcrpy']
 
 setup(name='fast_arrow',
-    version='0.2.1',
+    version='0.2.2',
     description='API client for Robinhood',
     long_description=long_description,
     long_description_content_type="text/markdown",
