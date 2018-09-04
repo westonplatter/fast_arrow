@@ -21,6 +21,7 @@ class Client(object):
         self.scope          = None
         self.authenticated  = False
 
+
     def authenticate(self):
         """
         Authenticate using data in `options`
