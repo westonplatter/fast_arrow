@@ -1,5 +1,7 @@
 import requests
+from fast_arrow.util import get_last_path
 from fast_arrow.resources.user import User
+from fast_arrow.resources.account import Account
 from fast_arrow.exceptions import AuthenticationError
 from fast_arrow.exceptions import NotImplementedError
 
@@ -11,6 +13,8 @@ class Client(object):
 
     def __init__(self, **kwargs):
         self.options = kwargs
+        self.account_id     = None
+        self.account_url    = None
         self.access_token   = None
         self.refresh_token  = None
         self.mfa_code       = None
@@ -22,17 +26,14 @@ class Client(object):
         Authenticate using data in `options`
         """
         if "username" in self.options and "password" in self.options:
-            return self.login_oauth2(self.options["username"], self.options["password"])
-
+            self.login_oauth2(self.options["username"], self.options["password"])
         elif "access_token" in self.options and "refresh_token" in self.options:
             self.access_token = self.options["access_token"]
             self.refresh_token = self.options["refresh_token"]
-            # if we get HTTP 403, catch and raise error
-            user = User.fetch(self)
-            return True
-
+            self.__set_account_info()
         else:
             self.authenticated = False
+        self.authenticated
 
 
     def get(self, url=None, params=None):
@@ -106,8 +107,20 @@ class Client(object):
         self.refresh_token  = res["refresh_token"]
         self.mfa_code       = res["mfa_code"]
         self.scope          = res["scope"]
-        self.authenticated  = True
-        return True
+        self.__set_account_info()
+        return self.authenticated
+
+
+    def __set_account_info(self):
+        account_urls = Account.all_urls(self)
+        if len(account_urls) > 1:
+            raise NotImplementedError("fast_arrow 'currently' does not handle multiple account authentication.")
+        elif len(account_urls) == 0:
+            raise AuthenticationError("fast_arrow expected at least 1 account.")
+        else:
+            self.account_url = account_urls[0]
+            self.account_id = get_last_path(self.account_url)
+            self.authenticated = True
 
 
     def relogin_oauth2(self):
@@ -127,8 +140,6 @@ class Client(object):
         self.refresh_token  = res["refresh_token"]
         self.mfa_code       = res["mfa_code"]
         self.scope          = res["scope"]
-        self.authenticated  = True
-        return True
 
 
     def logout_oauth2(self):
@@ -141,6 +152,14 @@ class Client(object):
             "token": self.refresh_token,
         }
         res = self.post(url, payload=data)
-        result = (True if res == None else False)
-        self.authenticated = False
-        return result
+        if res == None:
+            self.account_id     = None
+            self.account_url    = None
+            self.access_token   = None
+            self.refresh_token  = None
+            self.mfa_code       = None
+            self.scope          = None
+            self.authenticated  = False
+            return True
+        else:
+            raise AuthenticationError("fast_arrow could not log out.")
