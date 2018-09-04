@@ -16,6 +16,9 @@ result = client.authenticate()
 
 print("Authenticated successfully = {}".format(result))
 
+print("Account Url = {}".format(client.account_url))
+print("Account Id = {}".format(client.account_id))
+
 user = User.fetch(client)
 print("Username = {}".format(user["username"]))
 
