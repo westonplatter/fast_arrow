@@ -50,28 +50,55 @@ ops = Option.mergein_marketdata_list(client, ops)
 ```
 
 ## install
-Install the package from pypi
 
-
+Install the package from pypi,
 ```
 pip install fast_arrow
 ```
 
+## another Robinhood client?
 
-## philosophy
-`fast_arrow` is a Robinhood api client, not an automated trading system. Thus,
-the goal is "keep it simple stupid".
+`fast_arrow` at its core,
+1) is a Robinhood api client focused on simple and robust features
+2) provides first class support for *stock* and *option* trading
+3) organizes code in small and discrete python classes
 
-Robinhood as an API has a few different core objects,
-- instruments (Option, Stock)
-- marketdata (OptionMarketdata, StockMarketdata)
-- positions (OptionPosition, StockPosition)
-- orders (OptionOrder, StockOrder)
-- account stuff (that I'll build for later)
 
-`fast_arrow` expects that users want to merge these core objects. For example,
-fetch Apple, Inc (Stock) quote data (StockMarketdata) to display the current
-price per share of $APPL stock.
+## features
+
+Here's what you can do with `fast_arrow` (some features still in development)
+
+**Stocks**
+- [x] get quotes
+- [x] fetch all stock trades
+- [ ] fetch historical data
+- [ ] submit orders
+
+**Options**
+- [x] [fetch option quotes](examples/option_chain_example)
+- [x] [fetch open option positions](examples/option_positions_example.py)
+- [x] fetch all option orders (filled, canceled, rejected)
+- [x] [fetch historical options data](examples/historical_option_data_example.py)
+- [x] [fetch option events](examples/option_event_example.py)
+- [ ] generate various option orders
+  - [ ] verticals
+  - [ ] iron condors
+  - [ ] calendars
+  - [ ] diagonals
+- [ ] submit orders
+- [ ] cancel orders
+
+
+**Portfolio**
+- [x] [fetch historical value of portfolio](examples/portfolio_historicals.py)
+
+**Authentication/Security**
+- [ ] pin Robinhood's SSL certificate
+- [x] implments oauth2 automatic refresh
+- [ ] handle MFA token during login
+
+__Want to propose a feature? Pull request changes to the readme.__
+
 
 ## development
 Install [pipenv](https://github.com/pypa/pipenv), and then run,
