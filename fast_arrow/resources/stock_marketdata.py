@@ -23,7 +23,7 @@ class StockMarketdata(object):
         """
         create instrument urls, fetch, return results
         """
-        base_url = "https://api.robinhood.com/options/instruments/"
+        base_url = "https://api.robinhood.com/instruments/"
         id_urls = ["{}{}/".format(base_url, _id) for _id in ids]
         return cls.quotes_by_instrument_urls(client, id_urls)
 
@@ -35,9 +35,10 @@ class StockMarketdata(object):
         """
         instruments = ",".join(urls)
         params = {"instruments": instruments}
-        data = client.get(url, bearer=bearer)
+        url = "https://api.robinhood.com/marketdata/quotes/"
+        data = client.get(url, params=params)
         results = data["results"]
-        while data["next"]:
+        while "next" in data and data["next"]:
             data = get(data["next"], bearer=bearer)
             results.extend(data["results"])
         return results
