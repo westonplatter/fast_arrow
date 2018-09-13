@@ -1,3 +1,5 @@
+from fast_arrow.resources.stock_marketdata import StockMarketdata
+
 class Stock(object):
 
     @classmethod
@@ -12,8 +14,27 @@ class Stock(object):
         return data["results"][0]
 
     @classmethod
-    def quote_by_instrument_id(cls, _id):
-        return []
+    def mergein_marketdata_list(cls, client, stocks):
+        ids = [x["id"] for x in stocks]
+        mds = StockMarketdata.quotes_by_instrument_ids(client, ids)
+        mds = [x for x in mds if x]
+
+        results = []
+        for s in stocks:
+            # @TODO optimize this so it's better than O(n^2)
+            md = [md for md in mds if md['instrument'] == s['url']]
+            if len(md)>0:
+                md = md[0]
+                md_kv = {
+                    "ask_price": md["ask_price"],
+                    "bid_price": md["bid_price"],
+                }
+                merged_dict = dict( list(s.items()) + list(md_kv.items()) )
+            else:
+                merged_dict = dict( list(s.items()) )
+            results.append(merged_dict)
+        return results
+
 
     @classmethod
     def all(cls, client, symbols):

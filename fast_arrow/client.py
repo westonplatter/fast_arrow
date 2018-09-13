@@ -60,6 +60,9 @@ class Client(object):
         Execute HTTP POST
         """
         headers = self._gen_headers(self.access_token)
+        if payload:
+            if url == "https://api.robinhood.com/options/orders/":
+                headers["Content-Type"] = 'application/json; charset=utf-8'
         attempts = 1
         while attempts:
             try:

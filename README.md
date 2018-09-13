@@ -1,5 +1,5 @@
 # fast_arrow
-A robust yet simple API client for Robinhood.
+A simple yet robust API client for Robinhood
 
 [![Build Status](https://travis-ci.com/westonplatter/fast_arrow.svg?branch=master)](https://travis-ci.com/westonplatter/fast_arrow)
 &nbsp;
@@ -81,6 +81,7 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [x] [fetch historical options data](examples/historical_option_data_example.py)
 - [x] [fetch option events](examples/option_event_example.py)
 - [ ] generate various option orders
+  - [x] [single](examples/option_order_place_single.py)
   - [ ] verticals
   - [ ] iron condors
   - [ ] calendars
