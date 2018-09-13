@@ -86,8 +86,8 @@ Here's what you can do with `fast_arrow` (some features still in development)
   - [ ] iron condors
   - [ ] calendars
   - [ ] diagonals
-- [ ] submit orders
-- [ ] cancel orders
+- [x] submit order
+- [x] cancel order
 
 
 **Portfolio**
