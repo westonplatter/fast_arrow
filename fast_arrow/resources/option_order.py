@@ -99,7 +99,7 @@ class OptionOrder(object):
     @classmethod
     def cancel(cls, client, cancel_url):
         result = client.post(cancel_url)
-        if result is {}:
+        if result == {}:
             return True
         else:
             return False
