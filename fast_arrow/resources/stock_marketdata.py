@@ -16,6 +16,22 @@ class StockMarketdata(object):
         fetch and return results
         """
         return []
+    # @classmethod
+    # def quote_by_symbol(cls, client=None, symbol):
+    #     '''
+    #     fetch and return results
+    #     '''
+    #     return cls.quote_by_symbols(client, [symbol])[0]
+    #
+    #
+    # @classmethod
+    # def quote_by_symbols(cls, client=None, symbols):
+    #     '''
+    #     fetch and return results
+    #     '''
+    #     url = "https://api.robinhood.com/quotes/"
+    #     params = {"symbols": ",".join(symbols)}
+    #     return client.get(url, params=params)
 
 
     @classmethod
