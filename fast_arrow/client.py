@@ -50,11 +50,10 @@ class Client(object):
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                import pdb; pdb.set_trace()
                 res = requests.get(url, headers=headers, params=params,
                     timeout=15, verify=self.certs)
                 return res.json()
-            except Exception as e:
+            except:
                 self.relogin_oauth2()
                 attempts += 1
             else:
@@ -72,15 +71,13 @@ class Client(object):
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                import pdb; pdb.set_trace()
                 res = requests.post(url, headers=headers, data=payload,
                     timeout=15, verify=self.certs)
                 if res.headers['Content-Length'] == '0':
                     return None
                 else:
                     return res.json()
-            except Exception as e:
-                import pdb; pdb.set_trace()
+            except:
                 self.relogin_oauth2()
                 attempts += 1
             else:
