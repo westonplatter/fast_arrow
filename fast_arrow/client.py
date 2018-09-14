@@ -1,3 +1,4 @@
+import os
 import requests
 from fast_arrow.util import get_last_path
 from fast_arrow.resources.user import User
@@ -7,6 +8,8 @@ from fast_arrow.exceptions import NotImplementedError
 
 
 CLIENT_ID = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS"
+
+HTTP_ATTEMPTS_MAX = 2
 
 
 class Client(object):
@@ -20,6 +23,7 @@ class Client(object):
         self.mfa_code       = None
         self.scope          = None
         self.authenticated  = False
+        self.certs = os.path.join(os.path.dirname(__file__), 'ssl_certs/certs.pem')
 
 
     def authenticate(self):
@@ -44,13 +48,15 @@ class Client(object):
         headers = self._gen_headers(self.access_token)
 
         attempts = 1
-        while attempts:
+        while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                res = requests.get(url, headers=headers, params=params, timeout=15)
+                import pdb; pdb.set_trace()
+                res = requests.get(url, headers=headers, params=params,
+                    timeout=15, verify=self.certs)
                 return res.json()
-            except:
+            except Exception as e:
                 self.relogin_oauth2()
-                attempts -= 1
+                attempts += 1
             else:
                 attempts = False
 
@@ -64,16 +70,19 @@ class Client(object):
             if url == "https://api.robinhood.com/options/orders/":
                 headers["Content-Type"] = 'application/json; charset=utf-8'
         attempts = 1
-        while attempts:
+        while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                res = requests.post(url, headers=headers, data=payload, timeout=15)
+                import pdb; pdb.set_trace()
+                res = requests.post(url, headers=headers, data=payload,
+                    timeout=15, verify=self.certs)
                 if res.headers['Content-Length'] == '0':
                     return None
                 else:
                     return res.json()
-            except:
+            except Exception as e:
+                import pdb; pdb.set_trace()
                 self.relogin_oauth2()
-                attempts -= 1
+                attempts += 1
             else:
                 attempts = False
 

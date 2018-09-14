@@ -94,7 +94,7 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [x] [fetch historical value of portfolio](examples/portfolio_historicals.py)
 
 **Authentication/Security**
-- [ ] pin Robinhood's SSL certificate
+- [x] pin SSL certificate (see [this PR](https://github.com/westonplatter/fast_arrow/pull/35))
 - [x] implments oauth2 automatic refresh
 - [ ] handle MFA token during login
 
