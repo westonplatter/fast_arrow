@@ -17,7 +17,7 @@ class OptionOrder(object):
         data = client.get(url)
         results = data["results"]
         while data["next"]:
-            data = client.get(data["next"], token)
+            data = client.get(data["next"])
             results.extend(data["results"])
         return results
 
