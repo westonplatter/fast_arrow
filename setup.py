@@ -37,7 +37,7 @@ test_deps = [
     'vcrpy']
 
 setup(name='fast_arrow',
-    version='0.2.4',
+    version='0.2.5-alpha2',
     description='A simple yet robust API client for Robinhood',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -47,6 +47,7 @@ setup(name='fast_arrow',
     license='MIT License',
     python_requires=">=3.5",
     packages=['fast_arrow', 'fast_arrow.resources'],
+    package_data={'fast_arrow': ['ssl_certs/certs.pem']},
     install_requires=deps,
     tests_require=test_deps,
     cmdclass={'test': PyTest},
