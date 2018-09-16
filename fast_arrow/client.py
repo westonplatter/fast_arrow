@@ -27,9 +27,9 @@ class Client(object):
 
 
     def authenticate(self):
-        """
+        '''
         Authenticate using data in `options`
-        """
+        '''
         if "username" in self.options and "password" in self.options:
             self.login_oauth2(self.options["username"], self.options["password"])
         elif "access_token" in self.options and "refresh_token" in self.options:
@@ -41,68 +41,67 @@ class Client(object):
         self.authenticated
 
 
-    def get(self, url=None, params=None):
-        """
+    def get(self, url=None, params=None, retry=True):
+        '''
         Execute HTTP GET
-        """
-        headers = self._gen_headers(self.access_token)
+        '''
+        headers = self._gen_headers(self.access_token, url)
 
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                res = requests.get(url, headers=headers, params=params,
-                    timeout=15, verify=self.certs)
+                res = requests.get(url, headers=headers, params=params, timeout=15, verify=self.certs)
+                res.raise_for_status()
                 return res.json()
-            except:
-                self.relogin_oauth2()
+            except requests.exceptions.RequestException as e:
                 attempts += 1
-            else:
-                attempts = False
+                if retry:
+                    self.relogin_oauth2()
 
 
-    def post(self, url=None, payload=None):
-        """
+    def post(self, url=None, payload=None, retry=True):
+        '''
         Execute HTTP POST
-        """
-        headers = self._gen_headers(self.access_token)
-        if payload:
-            if url == "https://api.robinhood.com/options/orders/":
-                headers["Content-Type"] = 'application/json; charset=utf-8'
+        '''
+        headers = self._gen_headers(self.access_token, url)
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                res = requests.post(url, headers=headers, data=payload,
-                    timeout=15, verify=self.certs)
+                res = requests.post(url, headers=headers, data=payload, timeout=15, verify=self.certs)
+                res.raise_for_status()
                 if res.headers['Content-Length'] == '0':
                     return None
                 else:
                     return res.json()
-            except:
-                self.relogin_oauth2()
+            except requests.exceptions.RequestException as e:
                 attempts += 1
-            else:
-                attempts = False
+                if retry:
+                    self.relogin_oauth2()
 
 
-    def _gen_headers(self, bearer):
-        """
+
+    def _gen_headers(self, bearer, url):
+        '''
         Generate headders, adding in Oauth2 bearer token if present
-        """
+        '''
         headers = {
             "Accept": "*/*",
             "Accept-Encoding": "gzip, deflate",
             "Accept-Language": "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+
         }
         if bearer:
             headers["Authorization"] = "Bearer {0}".format(bearer)
+        if url == "https://api.robinhood.com/options/orders/":
+            headers["Content-Type"] = "application/json; charset=utf-8"
         return headers
 
 
     def login_oauth2(self, username, password):
-        """
+        '''
         Login using username and password
-        """
+        '''
         data = {
             "grant_type": "password",
             "scope": "internal",
@@ -112,7 +111,11 @@ class Client(object):
             "username": username
         }
         url = "https://api.robinhood.com/oauth2/token/"
-        res = self.post(url, payload=data)
+        res = self.post(url, payload=data, retry=False)
+
+        if res is None:
+            raise AuthenticationError("Client.login_oauth2(). Could not authenticate. Check username and password.")
+
         self.access_token   = res["access_token"]
         self.refresh_token  = res["refresh_token"]
         self.mfa_code       = res["mfa_code"]
@@ -134,9 +137,9 @@ class Client(object):
 
 
     def relogin_oauth2(self):
-        """
+        '''
         (Re)login using the Oauth2 refresh token
-        """
+        '''
         url = "https://api.robinhood.com/oauth2/token/"
         data = {
             "grant_type": "refresh_token",
@@ -145,7 +148,7 @@ class Client(object):
             "client_id": CLIENT_ID,
             "expires_in": 86400,
         }
-        res = self.post(url, payload=data)
+        res = self.post(url, payload=data, retry=False)
         self.access_token   = res["access_token"]
         self.refresh_token  = res["refresh_token"]
         self.mfa_code       = res["mfa_code"]
@@ -153,9 +156,9 @@ class Client(object):
 
 
     def logout_oauth2(self):
-        """
+        '''
         Logout for given Oauth2 bearer token
-        """
+        '''
         url = "https://api.robinhood.com/oauth2/revoke_token/"
         data = {
             "client_id": CLIENT_ID,
