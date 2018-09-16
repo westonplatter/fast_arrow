@@ -18,8 +18,14 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+version_contents = {}
+with open("fast_arrow/version.py", "r", encoding='utf-8') as f:
+    exec(f.read(), version_contents)
+
+
+with open("README.md", "r") as f:
+    long_description = f.read()
+
 
 deps = [
     'click',
@@ -36,8 +42,9 @@ test_deps = [
     'flake8',
     'vcrpy']
 
+
 setup(name='fast_arrow',
-    version='0.2.5-alpha2',
+    version=version_contents['VERSION'],
     description='A simple yet robust API client for Robinhood',
     long_description=long_description,
     long_description_content_type="text/markdown",
