@@ -48,6 +48,6 @@ class Stock(object):
         results = data["results"]
 
         while data["next"]:
-            data = get(data["next"], bearer=bearer)
+            data = client.get(data["next"], bearer=bearer)
             results.extend(data["results"])
         return results
