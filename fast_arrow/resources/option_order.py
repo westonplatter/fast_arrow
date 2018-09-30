@@ -53,11 +53,7 @@ class OptionOrder(object):
 
         if run_validations:
             assert(direction in ["debit", "credit"])
-
-            # @TODO - research this.
-            # might be formatted as decimal w/ 1/100th percision. eg, 1.23
-            # assert(type(price) is str)
-
+            assert(type(price) is str)
             assert(type(quantity) is int)
             assert(time_in_force in ["gfd", "gtc"])
             assert(trigger in ["immediate"])
@@ -79,6 +75,7 @@ class OptionOrder(object):
         })
 
         request_url = "https://api.robinhood.com/options/orders/"
+        import pdb; pdb.set_trace()
         data = client.post(request_url, payload=payload)
         return data
 

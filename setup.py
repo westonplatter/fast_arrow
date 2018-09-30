@@ -31,6 +31,8 @@ deps = [
     'click',
     'pathlib2',
     'requests',
+    'pandas>=0.23.2',
+    'numpy',
     'yarl']
 
 
@@ -53,7 +55,7 @@ setup(name='fast_arrow',
     url='https://github.com/westonplatter/fast_arrow/',
     license='MIT License',
     python_requires=">=3.5",
-    packages=['fast_arrow', 'fast_arrow.resources'],
+    packages=['fast_arrow', 'fast_arrow.resources', 'fast_arrow.spreads'],
     package_data={'fast_arrow': ['ssl_certs/certs.pem']},
     install_requires=deps,
     tests_require=test_deps,

@@ -34,90 +34,43 @@ class Vertical(object):
 
 
     @classmethod
-    def gen_table(cls, options, width):
-        return []
+    def gen_df(cls, options, width, spread_type="call", spread_kind="buy"):
+        """
+        Generate Pandas Dataframe of Vertical
 
-        # self.kind = (dd["kind"] if "kind" in dd else self.kind)
-        # assert self.kind is not None
+        :param options: python dict of options.
+        :param width: offset for spread. Must be integer.
+        :param spread_type: call or put. defaults to "call".
+        :param spread_kind: buy or sell. defaults to "buy".
+        """
+        assert type(width) is int
+        assert spread_type in ["call", "put"]
+        assert spread_kind in ["buy", "sell"]
 
-        # self.type = (dd["type"] if "type" in dd else self.type)
-        # assert self.type is not None
+        # get CALLs or PUTs
+        options = list(filter(lambda x: x["type"] == spread_type, options))
 
-        # self.width = (abs(dd["width"]) if "width" in dd else self.width)
+        coef = (-1 if spread_kind == "buy" else 1)
+        shift = (coef * width)
 
-        # self.dte = (dd["dte"] if "dte" in dd else self.dte)
-        # assert self.dte is not None
+        df = pd.DataFrame.from_dict(options)
+        df['expiration_date'] = pd.to_datetime(df['expiration_date'], format="%Y-%m-%d")
+        df['adjusted_mark_price'] = pd.to_numeric(df['adjusted_mark_price'])
+        df['strike_price'] = pd.to_numeric(df['strike_price'])
 
-        #     # create the resulting/specific df (sdf is in a row on the keyboard)
-        #     self.sdf = self.df.sort_values(["expiration_date", "strike_price"])
-        #
-        #     #
-        #     # filter by dte param
-        #     #
-        #     self.dte_min = (datetime.datetime.now() + datetime.timedelta(days=self.dte[0]))
-        #     self.dte_max = (datetime.datetime.now() + datetime.timedelta(days=self.dte[1]))
-        #     self.sdf = self.sdf[ self.df["expiration_date"] >= self.dte_min ]
-        #     self.sdf = self.sdf[ self.df["expiration_date"] <= self.dte_max ]
-        #
-        #     self.sdf = self.sdf[self.sdf["type"] == self.type]
-        #
-        #     coef = (1 if self.kind == "sell" else -1)
-        #
-        #     for k,v in self.sdf.groupby("expiration_date"):
-        #
-        #         sps = np.sort(v.strike_price.values)
-        #         shift = self._calc_shift(sps, self.width)
-        #
-        #         if shift is None:
-        #             continue
-        #
-        #         shift = int(shift) * coef
-        #         shiftdf = v.shift(shift)
-        #
-        #         v["strike_price_shifted"] = (shiftdf["strike_price"])
-        #
-        #         if self.kind == "sell":
-        #             v["margin"] = (v["strike_price"] - shiftdf["strike_price"])
-        #         else:
-        #             v["margin"] = 0.0
-        #
-        #         v["premium"]        = (v["adjusted_mark_price"] - shiftdf["adjusted_mark_price"])
-        #         v["delta_spread"]   = (v["delta"] - shiftdf["delta"])
-        #         v["theta_spread"]   = (v["theta"] - shiftdf["theta"])
-        #
-        #         merge_cols = ["strike_price_shifted", "margin", "premium", "delta_spread", "theta_spread"]
-        #
-        #         for col in merge_cols:
-        #             self.sdf.loc[v.index, col] = v[col]
-        #
-        #     return self.sdf
-        #
-        #
-        # def _calc_shift(self, sps, width):
-        #     '''
-        #     calc spread step to achieve desird margin
-        #     @todo clean this up
-        #     '''
-        #     total = len(sps)
-        #     median = int(np.floor(total/2))
-        #
-        #     if np.allclose((abs(sps[median] - 0.50) % 1.0), 0.0):
-        #         median += 1
-        #
-        #     min_tick = (sps[median] - sps[median-1]) * 100.0
-        #     if (min_tick - self.width) > 0.0:
-        #         return None
-        #
-        #     shift = 0
-        #     diff = 1
-        #     searching = True
-        #     marign = 0
-        #
-        #     while searching:
-        #         margin = (sps[median] - sps[median-diff]) * 100
-        #         if np.allclose(margin, self.width):
-        #             shift = diff
-        #             searching = False
-        #         diff += 1
-        #
-        #     return shift
+        df.sort_values(["expiration_date", "strike_price"], inplace=True)
+
+        for k,v in df.groupby("expiration_date"):
+            sdf = v.shift(shift)
+
+            df.loc[v.index, "strike_price_shifted"] = sdf["strike_price"]
+            df.loc[v.index, "instrument_shifted"] = sdf["instrument"]
+
+            if spread_kind == "sell":
+                df.loc[v.index, "margin"] = v["strike_price"] - sdf["strike_price"]
+            else:
+                df.loc[v.index, "margin"] = 0.0
+
+            df.loc[v.index, "premium"] = (v["adjusted_mark_price"] - sdf["adjusted_mark_price"])
+
+        return df

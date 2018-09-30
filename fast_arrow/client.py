@@ -55,7 +55,7 @@ class Client(object):
                 return res.json()
             except requests.exceptions.RequestException as e:
                 attempts += 1
-                if retry:
+                if retry and res.status_code in [403]:
                     self.relogin_oauth2()
 
 
@@ -67,6 +67,8 @@ class Client(object):
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
+                # if url == "https://api.robinhood.com/options/orders/":
+                #     import pdb; pdb.set_trace()
                 res = requests.post(url, headers=headers, data=payload, timeout=15, verify=self.certs)
                 res.raise_for_status()
                 if res.headers['Content-Length'] == '0':
@@ -75,7 +77,7 @@ class Client(object):
                     return res.json()
             except requests.exceptions.RequestException as e:
                 attempts += 1
-                if retry:
+                if retry and res.status_code in [403]:
                     self.relogin_oauth2()
 
 

@@ -14,7 +14,7 @@ from fast_arrow.resources.option_position import OptionPosition
 from fast_arrow.resources.option import Option
 
 # spreads
-from fast_arrow.spreads.vertical import Spread
+from fast_arrow.spreads.vertical import Vertical as SpreadsVertical
 
 # stocks
 from fast_arrow.resources.stock_order import StockOrder
