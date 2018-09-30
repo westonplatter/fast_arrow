@@ -89,14 +89,14 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [x] submit order
 - [x] cancel order
 
-
 **Portfolio**
 - [x] [fetch historical value of portfolio](examples/portfolio_historicals.py)
 
 **Authentication/Security**
+- [x] handle standard Login/Logout flow [example](examples/auth.py)
+- [x] handle MFA token during login [example](examples/auth_mfa.py)
 - [x] pin SSL certificate (see [this PR](https://github.com/westonplatter/fast_arrow/pull/35))
 - [x] implments oauth2 automatic refresh
-- [ ] handle MFA token during login
 
 __Want to propose a feature? Pull request changes to the readme.__
 
