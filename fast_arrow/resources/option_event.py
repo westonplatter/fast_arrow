@@ -14,7 +14,7 @@ class OptionEvent(object):
         data = client.get(url, params=params)
         results = data["results"]
         while data["next"]:
-            data = get(data["next"], token)
+            data = client.get(data["next"])
             results.extend(data["results"])
         return results
 

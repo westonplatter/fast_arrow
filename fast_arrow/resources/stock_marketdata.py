@@ -55,6 +55,6 @@ class StockMarketdata(object):
         data = client.get(url, params=params)
         results = data["results"]
         while "next" in data and data["next"]:
-            data = get(data["next"], bearer=bearer)
+            data = client.get(data["next"], bearer=bearer)
             results.extend(data["results"])
         return results

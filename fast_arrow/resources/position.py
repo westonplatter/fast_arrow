@@ -11,6 +11,6 @@ class Position(object):
         data = clientget(url)
         positions.extend(data["results"])
         while data["next"]:
-            data = get(data["next"], token)
+            data = client.get(data["next"], token)
             positions.extend(data["results"])
         return positions

@@ -30,7 +30,7 @@ class OptionMarketdata(object):
             if data and "results" in data:
                 partial_results = data["results"]
                 while ("next" in data and data["next"]):
-                    data = get(data["next"], bearer=bearer)
+                    data = client.get(data["next"], bearer=bearer)
                     partial_results.extend(data["results"])
                 results.extend(partial_results)
         return results
