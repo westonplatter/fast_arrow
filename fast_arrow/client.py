@@ -31,7 +31,7 @@ class Client(object):
         Authenticate using data in `options`
         '''
         if "username" in self.options and "password" in self.options:
-            self.login_oauth2(self.options["username"], self.options["password"])
+            self.login_oauth2(self.options["username"], self.options["password"], self.options.get('mfa_code'))
         elif "access_token" in self.options and "refresh_token" in self.options:
             self.access_token = self.options["access_token"]
             self.refresh_token = self.options["refresh_token"]
@@ -98,7 +98,7 @@ class Client(object):
         return headers
 
 
-    def login_oauth2(self, username, password):
+    def login_oauth2(self, username, password, mfa_code=None):
         '''
         Login using username and password
         '''
@@ -110,11 +110,18 @@ class Client(object):
             "password": password,
             "username": username
         }
+        if mfa_code is not None:
+            data['mfa_code'] = mfa_code
         url = "https://api.robinhood.com/oauth2/token/"
         res = self.post(url, payload=data, retry=False)
 
         if res is None:
-            raise AuthenticationError("Client.login_oauth2(). Could not authenticate. Check username and password.")
+            if mfa_code is None:
+                raise AuthenticationError("Client.login_oauth2(). Could not authenticate. Check username and password.")
+            else:
+                raise AuthenticationError("Client.login_oauth2(). Could not authenticate. Check username and password, and enter a valid MFA code.")
+        elif res.get('mfa_required') is True:
+            raise AuthenticationError("Client.login_oauth2(). Could not authenticate. MFA is required.")
 
         self.access_token   = res["access_token"]
         self.refresh_token  = res["refresh_token"]
