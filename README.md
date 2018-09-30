@@ -70,24 +70,28 @@ Here's what you can do with `fast_arrow` (some features still in development)
 
 **Stocks**
 - [x] get quotes
-- [x] fetch all stock trades
 - [ ] fetch historical data
+- [x] fetch all stock trades
 - [ ] submit orders
+- [ ] fetch earning events (past and future)
+- [ ] fetch company news articles
+- [ ] fetch company fundamentals
+- [ ] fetch popularity data
 
 **Options**
-- [x] [fetch option quotes](examples/option_chain_example)
-- [x] [fetch open option positions](examples/option_positions_example.py)
+- [x] fetch option quotes ([example](examples/option_chain.py))
+- [x] fetch open option positions ([example](examples/option_positions.py))
 - [x] fetch all option orders (filled, canceled, rejected)
-- [x] [fetch historical options data](examples/historical_option_data_example.py)
-- [x] [fetch option events](examples/option_event_example.py)
+- [x] fetch historical options data ([example](examples/historical_option_data.py))
+- [x] fetch option events ([example](examples/option_events.py))
 - [ ] generate various option orders
-  - [x] [single](examples/option_order_place_single.py)
+  - [x] single ([example](examples/option_order_place_single.py))
   - [ ] verticals
   - [ ] iron condors
   - [ ] calendars
   - [ ] diagonals
-- [x] submit order
-- [x] cancel order
+- [x] submit order ([example](examples/option_order_place_single.py))
+- [x] cancel order ([example](examples/option_order_place_single.py))
 
 **Portfolio**
 - [x] [fetch historical value of portfolio](examples/portfolio_historicals.py)
