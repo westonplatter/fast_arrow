@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Accept-Language: ['en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5']
+      Authorization: [Bearer 123]
+      Connection: [keep-alive]
+      Content-Type: [application/x-www-form-urlencoded; charset=utf-8]
+      User-Agent: [Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)]
+    method: GET
+    uri: https://api.robinhood.com/orders/
+  response:
+    body: {string: '{"previous": null, "results": [{"updated_at":"2018-09-28T19:07:10.927698Z","ref_id":"cce333e3-c286-41dc-bad9-c28c825230d1","time_in_force":"gtc","fees":"0.00","cancel":"https:\/\/api.robinhood.com\/orders\/cce333e3-c286-41dc-bad9-c28c825230d1\/cancel\/","response_category":"unknown","id":"cce333e3-c286-41dc-bad9-c28c825230d1","cumulative_quantity":"0.00000","stop_price":null,"reject_reason":null,"instrument":"https:\/\/api.robinhood.com\/instruments\/3bd6f6b5-40a1-418b-97ed-2a40f509c738\/","state":"confirmed","trigger":"immediate","override_dtbp_checks":false,"type":"limit","last_transaction_at":"2018-09-28T19:07:10.706000Z","price":"117.04000000","executions":[],"extended_hours":true,"account":"https:\/\/api.robinhood.com\/accounts\/890\/","url":"https:\/\/api.robinhood.com\/orders\/cce333e3-c286-41dc-bad9-c28c825230d1\/","created_at":"2018-09-28T19:07:10.189389Z","side":"sell","override_day_trade_checks":false,"position":"https:\/\/api.robinhood.com\/positions\/890\/3bd6f6b5-40a1-418b-97ed-2a40f509c738\/","average_price":null,"quantity":"3000.00000"}], "next": "https:\/\/api.robinhood.com\/orders\/?cursor=cD0yMDE4LTA4LTIxKzE5JTNBMzIlM0E1NS4wNzg2NzklMkIwMCUzQTAv&instrument=https%3A%2F%2Fapi.robinhood.com%2Finstruments%2F3bd6f6b5-40a1-418b-97ed-2a40f509c738%2F"}'}
+    headers:
+      Allow: ['GET, PUT, PATCH, HEAD, OPTIONS']
+      Connection: [keep-alive]
+      Content-Language: [en-us]
+      Content-Length: ['2300']
+      Content-Type: [application/json]
+      Date: ['Mon, 23 Jul 2018 22:31:47 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: ['Accept-Language, Cookie']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Robinhood-API-Version: [1.231.2]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Accept-Language: ['en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5']
+      Authorization: [Bearer 123]
+      Connection: [keep-alive]
+      Content-Type: [application/x-www-form-urlencoded; charset=utf-8]
+      User-Agent: [Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)]
+    method: GET
+    uri: https://api.robinhood.com/orders/?cursor=cD0yMDE4LTA4LTIxKzE5JTNBMzIlM0E1NS4wNzg2NzklMkIwMCUzQTAv&instrument=https%3A%2F%2Fapi.robinhood.com%2Finstruments%2F3bd6f6b5-40a1-418b-97ed-2a40f509c738%2F
+  response:
+    body: {string: '{"previous": null, "results": [{"updated_at":"2018-09-28T19:07:10.927698Z","ref_id":"32e333e3-c286-41dc-bed9-c2a0e25230d4","time_in_force":"gtc","fees":"0.00","cancel":"https:\/\/api.robinhood.com\/orders\/32e333e3-c286-41dc-bed9-c2a0e25230d4\/cancel\/","response_category":"unknown","id":"32e333e3-c286-41dc-bed9-c2a0e25230d4","cumulative_quantity":"0.00000","stop_price":null,"reject_reason":null,"instrument":"https:\/\/api.robinhood.com\/instruments\/3bd6f6b5-40a1-418b-97ed-2a40f509c738\/","state":"confirmed","trigger":"immediate","override_dtbp_checks":false,"type":"limit","last_transaction_at":"2018-09-28T19:07:10.706000Z","price":"51.04000000","executions":[],"extended_hours":true,"account":"https:\/\/api.robinhood.com\/accounts\/890\/","url":"https:\/\/api.robinhood.com\/orders\/32e333e3-c286-41dc-bed9-c2a0e25230d4\/","created_at":"2018-09-28T19:07:10.189389Z","side":"sell","override_day_trade_checks":false,"position":"https:\/\/api.robinhood.com\/positions\/890\/3bd6f6b5-40a1-418b-97ed-2a40f509c738\/","average_price":null,"quantity":"3000.00000"}], "next": null}'}
+    headers:
+      Allow: ['GET, PUT, PATCH, HEAD, OPTIONS']
+      Connection: [keep-alive]
+      Content-Language: [en-us]
+      Content-Length: ['2300']
+      Content-Type: [application/json]
+      Date: ['Mon, 23 Jul 2018 22:31:47 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: ['Accept-Language, Cookie']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Robinhood-API-Version: [1.231.2]
+    status: {code: 200, message: OK}
+version: 1
