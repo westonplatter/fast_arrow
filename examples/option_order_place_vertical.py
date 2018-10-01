@@ -4,7 +4,7 @@ from fast_arrow import (
     Option,
     OptionChain,
     OptionOrder,
-    SpreadsVertical,
+    Vertical,
     Stock
 )
 import math
@@ -46,7 +46,7 @@ ops = Option.mergein_marketdata_list(client, ops)
 # genrate vertical spread table
 #
 width = 1
-df = SpreadsVertical.gen_df(ops, width, "put", "sell")
+df = Vertical.gen_df(ops, width, "put", "sell")
 
 #
 # select the 4th row (should be a deep OTM put, credit spread)
@@ -85,14 +85,13 @@ time_in_force = "gfd"
 trigger = "immediate"
 order_type = "limit"
 
-# @TODO create intuitive print statement
-# print("Buying the {} {} {} for {} (dollar cost = ${})".format(
-#     symbol,
-#     strike_price,
-#     desired_type,
-#     my_bid_price_rounded,
-#     my_bid_price_rounded*100.0)
-# )
+print("Selling a {} {}/{} Put Spread for {} (notional value = ${})".format(
+    symbol,
+    vertical["strike_price"].values[0],
+    vertical["strike_price_shifted"].values[0],
+    price,
+    my_bid_price_rounded)
+)
 
 oo = OptionOrder.submit(client, direction, legs, price, quantity, time_in_force, trigger, order_type)
 
