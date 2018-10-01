@@ -27,3 +27,6 @@ from fast_arrow.resources.portfolio import Portfolio
 
 # search
 from fast_arrow.resources.collection import Collection
+
+# dividend
+from fast_arrow.resources.dividend import Dividend
