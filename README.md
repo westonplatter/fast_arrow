@@ -84,12 +84,13 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [x] fetch all option orders (filled, canceled, rejected)
 - [x] fetch historical options data ([example](examples/historical_option_data.py))
 - [x] fetch option events ([example](examples/option_events.py))
-- [ ] generate various option orders
+- [ ] generate option strategy orders
   - [x] single ([example](examples/option_order_place_single.py))
-  - [ ] verticals
+  - [x] verticals ([example](examples/option_order_place_vertical.py))
   - [ ] iron condors
   - [ ] calendars
   - [ ] diagonals
+- [ ] generate humanized names for option strategies
 - [x] submit order ([example](examples/option_order_place_single.py))
 - [x] cancel order ([example](examples/option_order_place_single.py))
 
