@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Accept-Language: ['en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5']
+      Authorization: [Bearer 123]
+      Connection: [keep-alive]
+      Content-Type: [application/x-www-form-urlencoded; charset=utf-8]
+      User-Agent: [Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)]
+    method: GET
+    uri: https://api.robinhood.com/dividends/
+  response:
+    body: {string: '{"previous": null, "results": [{"account":"https:\/\/api.robinhood.com\/accounts\/890\/","url":"https:\/\/api.robinhood.com\/dividends\/4aa9e3ff-ef0e-4daa-a4a1-70f50346c7a1\/","amount":"213.21","payable_date":"2018-08-10","instrument":"https:\/\/api.robinhood.com\/instruments\/3bd6f6b5-40a1-418b-97ed-2a40f509c738\/","rate":"0.2132140000","record_date":"2018-08-05","position":"1000.0000","withholding":"0.00","id":"4aa9e3ff-ef0e-4daa-a4a1-70f50346c7a1","paid_at":"2018-08-10T23:07:08.766749Z"}], "next": null}'}
+    headers:
+      Allow: ['GET, PUT, PATCH, HEAD, OPTIONS']
+      Connection: [keep-alive]
+      Content-Language: [en-us]
+      Content-Length: ['2300']
+      Content-Type: [application/json]
+      Date: ['Mon, 23 Jul 2018 22:31:47 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: ['Accept-Language, Cookie']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Robinhood-API-Version: [1.231.2]
+    status: {code: 200, message: OK}
+version: 1
