@@ -75,7 +75,6 @@ class OptionOrder(object):
         })
 
         request_url = "https://api.robinhood.com/options/orders/"
-        import pdb; pdb.set_trace()
         data = client.post(request_url, payload=payload)
         return data
 
