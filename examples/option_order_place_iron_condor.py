@@ -1,8 +1,11 @@
 import configparser
 from fast_arrow import (
     Client,
+    IronCondor,
+    Option,{}
+    OptionChain,
     OptionOrder,
-    IronCondor
+    Stock,
 )
 
 
@@ -46,4 +49,7 @@ ops = Option.mergein_marketdata_list(client, ops)
 width = 1
 put_inner_lte_delta = 0.2
 call_inner_lte_delta = 0.1
-ic = IronCondor.custom_generator_idea_one(ops, width, put_inner_lte_delta, call_inner_lte_delta)
+ic = IronCondor.custom_generator_idea_one(ops,
+    width, put_inner_lte_delta, call_inner_lte_delta)
+
+import pdb; pdb.set_trace()
