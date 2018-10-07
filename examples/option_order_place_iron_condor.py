@@ -1,7 +1,11 @@
 import configparser
 from fast_arrow import (
     Client,
-    OptionOrder
+    IronCondor,
+    Option,
+    OptionChain,
+    OptionOrder,
+    Stock,
 )
 
 
@@ -23,13 +27,57 @@ client.authenticate()
 
 
 #
-# configure order details
+# fetch spy options
 #
-# @TODO
-# - fetch spy options
-# - find IC with $100 wide legs with 0.05 delta next 45-60 days
-# - set price at 0.01
-# - send order
-# - cancel order
+symbol = "SPY"
+stock = Stock.fetch(client, symbol)
+stock = Stock.mergein_marketdata_list(client, [stock])[0]
+
+oc = OptionChain.fetch(client, stock["id"], symbol)
+ed = oc['expiration_dates'][10]
+ops = Option.in_chain(client, oc["id"], expiration_dates=[ed])
+
 #
+# enrich options with market data
 #
+ops = Option.mergein_marketdata_list(client, ops)
+
+
+#
+# programmtically generate legs for IronCondor
+#
+width = 1
+put_inner_lte_delta = -0.2
+call_inner_lte_delta = 0.1
+ic = IronCondor.generate_by_deltas(ops,
+    width, put_inner_lte_delta, call_inner_lte_delta)
+
+direction = "credit"
+legs = ic["legs"]
+# @TODO create helper methods to handle floating arith and rounding issues
+# for now, it works good enough
+price = str(float(ic["price"]) - 0.01)
+quantity = 1
+time_in_force = "gfd"
+trigger = "immediate"
+order_type = "limit"
+
+# @TODO create human description of IC
+# print("Selling a {} {}/{} Put Spread for {} (notional value = ${})".format(
+#     symbol,
+#     vertical["strike_price"].values[0],
+#     vertical["strike_price_shifted"].values[0],
+#     price,
+#     my_bid_price_rounded)
+# )
+
+oo = OptionOrder.submit(client, direction, legs, price, quantity, time_in_force, trigger, order_type)
+
+print("Order submitted ... ref_id = {}".format(oo["ref_id"]))
+
+#
+# cancel the order
+#
+print("Canceling order = {}".format(oo["ref_id"]))
+result = OptionOrder.cancel(client, oo['cancel_url'])
+print("Order canceled result = {}".format(result))

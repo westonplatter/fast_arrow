@@ -15,6 +15,7 @@ from fast_arrow.resources.option import Option
 
 # option_strategies
 from fast_arrow.option_strategies.vertical import Vertical as Vertical
+from fast_arrow.option_strategies.iron_condor import IronCondor as IronCondor
 
 # stocks
 from fast_arrow.resources.stock_order import StockOrder
