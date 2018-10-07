@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import datetime
+from decimal import Decimal
 
 
 class IronCondor(object):
@@ -9,14 +10,36 @@ class IronCondor(object):
     def sort_by_strike_price(cls, options):
         return sorted(options, key = (lambda x: x['strike_price']))
 
+
     @classmethod
-    def gen_leg(cls, option_url, side="sell", position_effect=1, ratio_quantity=1):
+    def gen_leg(cls, option_url, side, position_effect="open", ratio_quantity=1):
+        assert side in ["buy", "sell"]
+        assert position_effect in ["open", "close"]
         return {
             "side": side,
             "option": option_url,
             "position_effect": position_effect,
             "ratio_quantity": ratio_quantity
         }
+
+
+    @classmethod
+    def max_bid_ask_spread(cls, ic_options):
+        max_spread = Decimal(0.0)
+        for x in ic_options:
+            ask = Decimal(x["ask_price"])
+            bid = Decimal(x["bid_price"])
+            spread = ask - bid
+            if spread > max_spread:
+                max_spread = spread
+        return float(max_spread)
+
+
+    @classmethod
+    def strings_to_np_array(cls, strings):
+        x = np.array(strings)
+        deltas = x.astype(np.float)
+        return np.nan_to_num(deltas)
 
 
     @classmethod
@@ -31,7 +54,7 @@ class IronCondor(object):
 
         the approach
         - set width for the wing spread (eg, 1, ie, 1 unit width spread)
-        - set delta for inner leg of the put credit spread (eg, 0.2)
+        - set delta for inner leg of the put credit spread (eg, -0.2)
         - set delta for inner leg of the call credit spread (eg, 0.1)
         """
 
@@ -41,15 +64,14 @@ class IronCondor(object):
         put_options_unsorted = list(filter(lambda x: x['type'] == 'put', options))
         put_options = cls.sort_by_strike_price(put_options_unsorted)
 
-        # @TODO this could be optimized, but it works
         deltas_as_strings = [x['delta'] for x in put_options]
-        x = np.array(deltas_as_strings)
-        deltas = x.astype(np.float)
-        put_inner_index = np.argmin(deltas >= -put_inner_lte_delta) - 1
+        deltas = cls.strings_to_np_array(deltas_as_strings)
+
+        put_inner_index = np.argmin(deltas >= put_inner_lte_delta) - 1
         put_outer_index = put_inner_index - width
 
-        put_inner_leg = cls.gen_leg(put_options[put_inner_index]["instrument"])
-        put_outer_leg = cls.gen_leg(put_options[put_outer_index]["instrument"])
+        put_inner_leg = cls.gen_leg(put_options[put_inner_index]["instrument"], "sell")
+        put_outer_leg = cls.gen_leg(put_options[put_outer_index]["instrument"], "buy")
 
 
         #
@@ -58,24 +80,45 @@ class IronCondor(object):
         call_options_unsorted = list(filter(lambda x: x['type'] == 'call', options))
         call_options = cls.sort_by_strike_price(call_options_unsorted)
 
-        # @TODO this could be optimized, but it works
         deltas_as_strings = [x['delta'] for x in call_options]
         x = np.array(deltas_as_strings)
         deltas = x.astype(np.float)
-        call_inner_index = np.argmax(deltas < call_inner_lte_delta)
+        # because deep ITM call options have a delta that comes up as NaN,
+        # but are approximately 0.99 or 1.0, I'm replacing Nan with 1.0
+        # so np.argmax is able to walk up the index until it finds "call_inner_lte_delta"
+        # @TODO change this so (put credit / call credit) spreads work the same
+        where_are_NaNs = np.isnan(deltas)
+        deltas[where_are_NaNs] = 1.0
+
+        call_inner_index = np.argmax(deltas <= call_inner_lte_delta)
         call_outer_index = call_inner_index + width
 
-        call_inner_leg = cls.gen_leg(call_options[call_inner_index]["instrument"])
-        call_outer_leg = cls.gen_leg(call_options[call_outer_index]["instrument"])
+        call_inner_leg = cls.gen_leg(call_options[call_inner_index]["instrument"], "sell")
+        call_outer_leg = cls.gen_leg(call_options[call_outer_index]["instrument"], "buy")
 
-        legs = [put_outer_leg, put_inner_leg,
-            call_inner_leg, call_outer_leg]
+        legs = [put_outer_leg, put_inner_leg, call_inner_leg, call_outer_leg]
 
         #
-        # @TODO
-        # calculate price
-        # provide helper method to determine cumulative bid/ask spread
+        # price calcs
         #
-        price = 100.0
+        price = (
+            -Decimal(put_options[put_outer_index]['adjusted_mark_price'])
+            +Decimal(put_options[put_inner_index]['adjusted_mark_price'])
+            +Decimal(call_options[call_inner_index]['adjusted_mark_price'])
+            -Decimal(call_options[call_outer_index]['adjusted_mark_price'])
+        )
 
-        return legs,price
+        #
+        # provide max bid ask spread diff
+        #
+        ic_options = [
+            put_options[put_outer_index],
+            put_options[put_inner_index],
+            call_options[call_inner_index],
+            call_options[call_outer_index]
+        ]
+
+        max_bid_ask_spread = cls.max_bid_ask_spread(ic_options)
+
+        return {"legs": legs, "price": price,
+            "max_bid_ask_spread": max_bid_ask_spread}

@@ -2,7 +2,7 @@ import configparser
 from fast_arrow import (
     Client,
     IronCondor,
-    Option,{}
+    Option,
     OptionChain,
     OptionOrder,
     Stock,
@@ -47,9 +47,37 @@ ops = Option.mergein_marketdata_list(client, ops)
 # programmtically generate legs for IronCondor
 #
 width = 1
-put_inner_lte_delta = 0.2
+put_inner_lte_delta = -0.2
 call_inner_lte_delta = 0.1
 ic = IronCondor.custom_generator_idea_one(ops,
     width, put_inner_lte_delta, call_inner_lte_delta)
 
-import pdb; pdb.set_trace()
+direction = "credit"
+legs = ic["legs"]
+# @TODO create helper methods to handle floating arith and rounding issues
+# for now, it works good enough
+price = str(float(ic["price"]) - 0.01)
+quantity = 1
+time_in_force = "gfd"
+trigger = "immediate"
+order_type = "limit"
+
+# @TODO create human description of IC
+# print("Selling a {} {}/{} Put Spread for {} (notional value = ${})".format(
+#     symbol,
+#     vertical["strike_price"].values[0],
+#     vertical["strike_price_shifted"].values[0],
+#     price,
+#     my_bid_price_rounded)
+# )
+
+oo = OptionOrder.submit(client, direction, legs, price, quantity, time_in_force, trigger, order_type)
+
+print("Order submitted ... ref_id = {}".format(oo["ref_id"]))
+
+#
+# cancel the order
+#
+print("Canceling order = {}".format(oo["ref_id"]))
+result = OptionOrder.cancel(client, oo['cancel_url'])
+print("Order canceled result = {}".format(result))
