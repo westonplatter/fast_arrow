@@ -1,7 +1,8 @@
 import configparser
 from fast_arrow import (
     Client,
-    OptionOrder
+    OptionOrder,
+    IronCondor
 )
 
 
@@ -23,13 +24,26 @@ client.authenticate()
 
 
 #
-# configure order details
+# fetch spy options
 #
-# @TODO
-# - fetch spy options
-# - find IC with $100 wide legs with 0.05 delta next 45-60 days
-# - set price at 0.01
-# - send order
-# - cancel order
+symbol = "SPY"
+stock = Stock.fetch(client, symbol)
+stock = Stock.mergein_marketdata_list(client, [stock])[0]
+
+oc = OptionChain.fetch(client, stock["id"], symbol)
+ed = oc['expiration_dates'][10]
+ops = Option.in_chain(client, oc["id"], expiration_dates=[ed])
+
 #
+# enrich options with market data
 #
+ops = Option.mergein_marketdata_list(client, ops)
+
+
+#
+# programmtically generate legs for IronCondor
+#
+width = 1
+put_inner_lte_delta = 0.2
+call_inner_lte_delta = 0.1
+ic = IronCondor.custom_generator_idea_one(ops, width, put_inner_lte_delta, call_inner_lte_delta)
