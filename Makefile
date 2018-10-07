@@ -5,7 +5,7 @@ test:
 
 .PHONY: ci
 ci:
-	pipenv run pytest --cov=fast_arrow tests/
+	pipenv run pytest --cov=./
 
 
 .PHONY: coveralls
