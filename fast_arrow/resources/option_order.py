@@ -37,6 +37,49 @@ class OptionOrder(object):
 
 
     @classmethod
+    def unroll_option_legs(cls, client, option_orders):
+        '''
+        unroll option orders like this,
+        https://github.com/joshfraser/robinhood-to-csv/blob/master/csv-options-export.py
+        '''
+
+        #
+        # @TODO write this with python threats to make concurrent HTTP requests
+        #
+
+        results = []
+
+        for oo in option_orders:
+            for index, leg in enumerate(oo['legs']):
+                for execution in leg['executions']:
+                    order = dict()
+
+                    for k,v in oo.items():
+                        if k not in ['legs', 'price', 'type', 'premium', 'processed_premium', 'response_category', 'cancel_url']:
+                            order[k] = oo[k]
+
+                    order['order_type'] = oo['type']
+
+                    contract = client.get(leg['option'])
+                    order['leg'] = index+1
+                    order['symbol'] = contract['chain_symbol']
+                    order['strike_price'] = contract['strike_price']
+                    order['expiration_date'] = contract['expiration_date']
+                    order['contract_type'] = contract['type']
+
+                    for k,v in leg.items():
+                        if k not in ['id', 'executions']:
+                            order[k] = leg[k]
+
+                    coef = (-1.0 if leg['side'] == 'buy' else 1.0)
+                    order['price'] = float(execution['price']) * 100.0 * coef
+                    order['execution_id'] = execution['id']
+
+                    results.append(order)
+        return results
+
+
+    @classmethod
     def submit(cls, client, direction, legs, price, quantity, time_in_force, trigger, order_type, run_validations=True):
         '''
         params:

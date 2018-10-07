@@ -67,8 +67,6 @@ class Client(object):
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                # if url == "https://api.robinhood.com/options/orders/":
-                #     import pdb; pdb.set_trace()
                 res = requests.post(url, headers=headers, data=payload, timeout=15, verify=self.certs)
                 res.raise_for_status()
                 if res.headers['Content-Length'] == '0':

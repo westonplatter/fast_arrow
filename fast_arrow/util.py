@@ -1,5 +1,6 @@
 import configparser
 from urllib.parse import urlparse
+import datetime
 
 
 def get_username_password(config_file):
@@ -20,3 +21,17 @@ def chunked_list(_list, _chunk_size=50):
     """
     for i in range(0, len(_list), _chunk_size):
         yield _list[i:i + _chunk_size]
+
+
+def days_ago(days):
+    """
+    Returns datetime object
+    """
+    return datetime.date.today() - datetime.timedelta(days=days)
+
+
+def format_datetime(dt):
+    """
+    Returns ISO 8601 string representation
+    """
+    return dt.isoformat()
