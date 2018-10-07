@@ -87,7 +87,7 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [ ] generate option strategy orders
   - [x] single ([example](examples/option_order_place_single.py))
   - [x] verticals ([example](examples/option_order_place_vertical.py))
-  - [ ] iron condors
+  - [x] iron condors ([example](examples/option_order_place_iron_condor.py))
   - [ ] calendars
   - [ ] diagonals
 - [ ] generate humanized names for option strategies
@@ -101,9 +101,9 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [x] handle standard Login/Logout flow [example](examples/auth.py)
 - [x] handle MFA token during login [example](examples/auth_mfa.py)
 - [x] pin SSL certificate (see [this PR](https://github.com/westonplatter/fast_arrow/pull/35))
-- [x] implments oauth2 automatic refresh
+- [x] automatically refreshes oauth2
 
-__Want to propose a feature? Pull request changes to the readme.__
+__Want to propose a feature?__ [Open a feature request](https://github.com/westonplatter/fast_arrow/issues/new/choose) or open a Pull Request.
 
 
 ## development

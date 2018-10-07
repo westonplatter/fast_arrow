@@ -43,7 +43,7 @@ class IronCondor(object):
 
 
     @classmethod
-    def custom_generator_idea_one(cls, options,
+    def generate_by_deltas(cls, options,
         width, put_inner_lte_delta, call_inner_lte_delta):
         """
         totally just playing around ideas for the API.

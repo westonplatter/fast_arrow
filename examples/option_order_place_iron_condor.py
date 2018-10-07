@@ -49,7 +49,7 @@ ops = Option.mergein_marketdata_list(client, ops)
 width = 1
 put_inner_lte_delta = -0.2
 call_inner_lte_delta = 0.1
-ic = IronCondor.custom_generator_idea_one(ops,
+ic = IronCondor.generate_by_deltas(ops,
     width, put_inner_lte_delta, call_inner_lte_delta)
 
 direction = "credit"
