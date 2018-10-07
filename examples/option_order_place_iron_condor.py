@@ -56,7 +56,11 @@ direction = "credit"
 legs = ic["legs"]
 # @TODO create helper methods to handle floating arith and rounding issues
 # for now, it works good enough
-price = str(float(ic["price"]) - 0.01)
+price_notional = ic["price"] * 100
+price_notional_fourth = price_notional / 4
+price_order = price_notional_fourth / 100
+price = str(price_order)
+
 quantity = 1
 time_in_force = "gfd"
 trigger = "immediate"
