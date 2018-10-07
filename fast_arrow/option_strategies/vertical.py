@@ -1,37 +1,8 @@
-# @todo update dependencies
 import numpy as np
 import pandas as pd
 import datetime
 
 class Vertical(object):
-
-    # def __init__(self, **kwargs):
-    #     # self.fn     = kwargs.pop("fn", None)
-    #     self.symbol = kwargs.pop("symbol", None)
-    #     self.kind   = kwargs.pop("kind", None)
-    #     self.width  = kwargs.pop("width", None)
-    #     self.dte    = kwargs.pop("dte", None)
-    #     self.__load_data()
-
-
-    # def __repr__(self):
-    #     return "<Spread symbol={} kind={} width={} dte={}>".format(self.symbol,
-    #         self.kind, self.width, self.dte)
-
-
-    # def __load_data(self):
-    #     fn = "data/{}.json".format(self.symbol.upper())
-    #     if self.fn == "help":
-    #         fn = "../data/{}.json".format(self.symbol.upper())
-    #
-    #     self.df = pd.read_json(fn, orient="records")
-    #     self.df['expiration_date'] = pd.to_datetime(self.df['expiration_date'], format="%Y-%m-%d")
-
-
-    @classmethod
-    def fetch_options_for_symbol(cls, symbol):
-        return []
-
 
     @classmethod
     def gen_df(cls, options, width, spread_type="call", spread_kind="buy"):
