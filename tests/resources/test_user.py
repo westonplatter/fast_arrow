@@ -1,4 +1,3 @@
-from fast_arrow import util
 from fast_arrow import User
 from tests.test_util import gen_vcr, gen_client
 
