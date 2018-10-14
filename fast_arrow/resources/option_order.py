@@ -1,4 +1,3 @@
-from fast_arrow import util
 from fast_arrow.resources.option import Option
 from fast_arrow.exceptions import NotImplementedError
 

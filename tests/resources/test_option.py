@@ -1,6 +1,5 @@
 import unittest
 
-from fast_arrow import util
 from fast_arrow import Option
 from tests.test_util import gen_vcr, gen_client
 
