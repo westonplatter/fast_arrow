@@ -13,6 +13,7 @@ class Stock(object):
         data = client.get(url)
         return data["results"][0]
 
+
     @classmethod
     def mergein_marketdata_list(cls, client, stocks):
         ids = [x["id"] for x in stocks]
@@ -51,3 +52,16 @@ class Stock(object):
             data = client.get(data["next"], bearer=bearer)
             results.extend(data["results"])
         return results
+
+
+    @classmethod
+    def fetch_popularity(cls, client, symbol):
+        # @TODO
+        # get instrument ID
+        # fetch against http://{instrument_url}/popularity
+        #
+        instrument = cls.fetch(client, symbol)
+        instrument_url = instrument["url"]
+        request_url = "{}popularity".format(instrument_url)
+        data = client.get(request_url)
+        return data["num_open_positions"]
