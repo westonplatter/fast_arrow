@@ -38,7 +38,7 @@ class Client(object):
             self.__set_account_info()
         else:
             self.authenticated = False
-        self.authenticated
+        return self.authenticated
 
 
     def get(self, url=None, params=None, retry=True):
