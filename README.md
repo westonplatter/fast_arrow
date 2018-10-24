@@ -126,3 +126,9 @@ Run the test suite against a specific python version,
 ```
 pipenv run tox -e py36
 ```
+
+## projects using `fast_arrow`
+
+- **simple_portfolio**. Export trades from Robinhood and run basic reporting on portfolio performance. https://github.com/westonplatter/simple_portfolio
+
+- **chesterton**. A delightful little UI & trading bot for strategies on Robinhood. https://github.com/westonplatter/chesterton
