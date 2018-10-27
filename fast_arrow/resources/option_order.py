@@ -1,5 +1,5 @@
 from fast_arrow.resources.option import Option
-from fast_arrow.exceptions import NotImplementedError
+from fast_arrow.exceptions import NotImplementedError, TradeExecutionError
 
 import uuid
 import json
@@ -120,7 +120,6 @@ class OptionOrder(object):
         data = client.post(request_url, payload=payload)
         return data
 
-
     @classmethod
     def _validate_legs(cls, legs):
         for leg in legs:
@@ -141,3 +140,29 @@ class OptionOrder(object):
             return True
         else:
             return False
+
+
+    @classmethod
+    def replace(cls, client, option_order, new_price):
+        result = cls.cancel(client, option_order["cancel_url"])
+        if not result:
+            msg = "OptionOrder.replace() did not cancel previous OptionOrder"
+            raise TradeExecutionError(msg)
+
+        payload = json.dumps({
+            "account": client.account_url,
+            "direction": option_order["direction"],
+            "legs": option_order["legs"],
+            "price": new_price,
+            "quantity": option_order["quantity"],
+            "time_in_force": option_order["time_in_force"],
+            "trigger": option_order["trigger"],
+            "type": option_order["type"],
+            "override_day_trade_checks": False,
+            "override_dtbp_checks": False,
+            "ref_id": str(uuid.uuid4())
+        })
+
+        request_url = "https://api.robinhood.com/options/orders/"
+        data = client.post(request_url, payload=payload)
+        return data
