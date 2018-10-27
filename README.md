@@ -93,6 +93,7 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [ ] generate humanized names for option strategies
 - [x] submit order ([example](examples/option_order_place_single.py))
 - [x] cancel order ([example](examples/option_order_place_single.py))
+- [x] replace order ([example](examples/option_order_replace.py))
 
 **Portfolio**
 - [x] [fetch historical value of portfolio](examples/portfolio_historicals.py)
