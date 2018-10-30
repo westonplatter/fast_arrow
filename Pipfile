@@ -5,8 +5,7 @@ name = "pypi"
 
 [packages]
 fast-arrow = {editable = true, path = "."}
-click = "*"
-requests = "*"
+requests = ">=2.20.0"
 yarl = "*"
 "pathlib2" = "*"
 pandas = ">=0.23.2"
