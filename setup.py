@@ -28,9 +28,8 @@ with open("README.md", "r") as f:
 
 
 deps = [
-    'click',
     'pathlib2',
-    'requests',
+    'requests>=2.20.0',
     'pandas>=0.23.2',
     'numpy',
     'yarl']
