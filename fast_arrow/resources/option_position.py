@@ -54,7 +54,7 @@ class OptionPosition(object):
 
         results = []
         for op in option_positions:
-            idata = [x for x in idatas if x['url'] == op['option']][0]
+            idata = [x for x in idatas if x['url'] == op['instrument']][0]
             # there is an overlap in keys, {'chain_symbol', 'url', 'type', 'created_at', 'id', 'updated_at', 'chain_id'}
             # @TODO this is ugly. let's fix it later
             # alternative method,
