@@ -117,11 +117,14 @@ class Client(object):
 
         if res is None:
             if mfa_code is None:
-                raise AuthenticationError("Client.login_oauth2(). Could not authenticate. Check username and password.")
+                msg = "Client.login_oauth2(). Could not authenticate. Check username and password."
+                raise AuthenticationError(msg)
             else:
-                raise AuthenticationError("Client.login_oauth2(). Could not authenticate. Check username and password, and enter a valid MFA code.")
+                msg = "Client.login_oauth2(). Could not authenticate. Check username and password, and enter a valid MFA code."
+                raise AuthenticationError(msg)
         elif res.get('mfa_required') is True:
-            raise AuthenticationError("Client.login_oauth2(). Could not authenticate. MFA is required.")
+            msg = "Client.login_oauth2(). Could not authenticate. MFA is required."
+            raise AuthenticationError(msg)
 
         self.access_token   = res["access_token"]
         self.refresh_token  = res["refresh_token"]
@@ -134,9 +137,11 @@ class Client(object):
     def __set_account_info(self):
         account_urls = Account.all_urls(self)
         if len(account_urls) > 1:
-            raise NotImplementedError("fast_arrow 'currently' does not handle multiple account authentication.")
+            msg = "fast_arrow 'currently' does not handle multiple account authentication."
+            raise NotImplementedError(msg)
         elif len(account_urls) == 0:
-            raise AuthenticationError("fast_arrow expected at least 1 account.")
+            msg = "fast_arrow expected at least 1 account."
+            raise AuthenticationError(msg)
         else:
             self.account_url = account_urls[0]
             self.account_id = get_last_path(self.account_url)
