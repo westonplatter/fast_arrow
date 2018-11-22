@@ -12,6 +12,7 @@ class OptionPosition(object):
         fetch all option positions
         """
         max_date = kwargs['max_date'] if 'max_date' in kwargs else None
+        max_fetches = kwargs['max_fetches'] if 'max_fetches' in kwargs else None
 
         url = 'https://api.robinhood.com/options/positions/'
         params = { }
@@ -20,11 +21,17 @@ class OptionPosition(object):
 
         if is_max_date_gt(max_date, results[-1]['updated_at'][0:10]):
             return results
+        if max_fetches == 1:
+            return results
 
+        fetches = 1
         while data["next"]:
+            fetches = fetches + 1
             data = client.get(data["next"])
             results.extend(data["results"])
             if is_max_date_gt(max_date, results[-1]['updated_at'][0:10]):
+                return results
+            if max_fetches and (fetches >= max_fetches):
                 return results
         return results
 
