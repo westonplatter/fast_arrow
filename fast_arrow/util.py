@@ -35,3 +35,12 @@ def format_datetime(dt):
     Returns ISO 8601 string representation
     """
     return dt.isoformat()
+
+
+def is_max_date_gt(max_date, date):
+    if max_date is None:
+        return False
+    if date < max_date:
+        return True
+    else:
+        return False

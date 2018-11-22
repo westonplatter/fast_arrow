@@ -1,5 +1,6 @@
 from fast_arrow.resources.option import Option
 from fast_arrow.exceptions import NotImplementedError, TradeExecutionError
+from fast_arrow.util import is_max_date_gt
 
 import uuid
 import json
@@ -8,16 +9,22 @@ import json
 class OptionOrder(object):
 
     @classmethod
-    def all(cls, client):
+    def all(cls, client, **kwargs):
         """
         fetch all option positions
         """
+        max_date = kwargs['max_date'] if 'max_date' in kwargs else None
+
         url = 'https://api.robinhood.com/options/orders/'
         data = client.get(url)
         results = data["results"]
+        if is_max_date_gt(max_date, results[-1]['updated_at'][0:10]):
+                return results
         while data["next"]:
             data = client.get(data["next"])
             results.extend(data["results"])
+            if is_max_date_gt(max_date, results[-1]['updated_at'][0:10]):
+                    return results
         return results
 
 

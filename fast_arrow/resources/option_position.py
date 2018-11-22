@@ -1,23 +1,31 @@
 from fast_arrow import util
 from fast_arrow.resources.option import Option
 from fast_arrow.resources.option_marketdata import OptionMarketdata
-from fast_arrow.util import chunked_list
+from fast_arrow.util import chunked_list, is_max_date_gt
 
 
 class OptionPosition(object):
 
     @classmethod
-    def all(cls, client):
+    def all(cls, client, **kwargs):
         """
         fetch all option positions
         """
+        max_date = kwargs['max_date'] if 'max_date' in kwargs else None
+
         url = 'https://api.robinhood.com/options/positions/'
         params = { }
         data = client.get(url, params=params)
         results = data["results"]
+
+        if is_max_date_gt(max_date, results[-1]['updated_at'][0:10]):
+            return results
+
         while data["next"]:
             data = client.get(data["next"])
             results.extend(data["results"])
+            if is_max_date_gt(max_date, results[-1]['updated_at'][0:10]):
+                return results
         return results
 
 
