@@ -10,6 +10,7 @@ yarl = "*"
 "pathlib2" = "*"
 pandas = ">=0.23.2"
 numpy = "*"
+datetime = "*"
 
 [dev-packages]
 vcrpy = "*"

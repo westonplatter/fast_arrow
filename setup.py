@@ -28,6 +28,7 @@ with open("README.md", "r") as f:
 
 
 deps = [
+    'datetime',
     'pathlib2',
     'requests>=2.20.0',
     'pandas>=0.23.2',
