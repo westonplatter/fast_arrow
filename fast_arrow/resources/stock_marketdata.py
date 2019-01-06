@@ -4,34 +4,21 @@ from fast_arrow.util import chunked_list
 class StockMarketdata(object):
 
     @classmethod
-    def quote_by_symbol(cls, symbol):
-        """
+    def quote_by_symbol(cls, client, symbol):
+        '''
         fetch and return results
-        """
-        return []
+        '''
+        return cls.quote_by_symbols(client, [symbol])['results'][0]
+
 
     @classmethod
-    def quote_by_symbols(cls, symbols):
-        """
+    def quote_by_symbols(cls, client, symbols):
+        '''
         fetch and return results
-        """
-        return []
-    # @classmethod
-    # def quote_by_symbol(cls, client=None, symbol):
-    #     '''
-    #     fetch and return results
-    #     '''
-    #     return cls.quote_by_symbols(client, [symbol])[0]
-    #
-    #
-    # @classmethod
-    # def quote_by_symbols(cls, client=None, symbols):
-    #     '''
-    #     fetch and return results
-    #     '''
-    #     url = "https://api.robinhood.com/quotes/"
-    #     params = {"symbols": ",".join(symbols)}
-    #     return client.get(url, params=params)
+        '''
+        url = "https://api.robinhood.com/quotes/"
+        params = {"symbols": ",".join(symbols)}
+        return client.get(url, params=params)
 
 
     @classmethod
