@@ -4,14 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fast-arrow = {editable = true, path = "."}
+fast-arrow = {editable = true,path = "."}
 requests = ">=2.20.0"
 yarl = "*"
 "pathlib2" = "*"
 pandas = ">=0.23.2"
 numpy = "*"
 datetime = "*"
-pyyaml = ">=4.2b1"
 
 [dev-packages]
 vcrpy = "*"
@@ -19,6 +18,7 @@ pytest = "*"
 pytest-cov = "*"
 detox = "*"
 "flake8" = "*"
+pyyaml = "==4.2b4"
 
 [requires]
 python_version = "3.6"
