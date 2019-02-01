@@ -128,6 +128,14 @@ Run the test suite against a specific python version,
 pipenv run tox -e py36
 ```
 
+### releases
+
+Adding so I don't forget the next time I release a version,
+```
+python setup.py sdist bdist_wheel
+twine upload dist/*
+```
+
 ## projects using `fast_arrow`
 
 - **simple_portfolio**. Export trades from Robinhood and run basic reporting on portfolio performance. https://github.com/westonplatter/simple_portfolio
