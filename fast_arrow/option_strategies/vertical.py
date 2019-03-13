@@ -21,8 +21,8 @@ class Vertical(object):
         # get CALLs or PUTs
         options = list(filter(lambda x: x["type"] == spread_type, options))
 
-        coef = (-1 if spread_kind == "buy" else 1)
-        shift = (coef * width)
+        coef = (1 if spread_kind == "sell" else -1)
+        shift = width * -1
 
         df = pd.DataFrame.from_dict(options)
         df['expiration_date'] = pd.to_datetime(df['expiration_date'], format="%Y-%m-%d")
@@ -34,14 +34,17 @@ class Vertical(object):
         for k,v in df.groupby("expiration_date"):
             sdf = v.shift(shift)
 
-            df.loc[v.index, "strike_price_shifted"] = sdf["strike_price"]
-            df.loc[v.index, "instrument_shifted"] = sdf["instrument"]
+            df.loc[v.index, "strike_price_shifted"]     = sdf["strike_price"]
+            df.loc[v.index, "delta_shifted"]            = sdf["delta"]
+            df.loc[v.index, "volume_shifted"]           = sdf["volume"]
+            df.loc[v.index, "open_interest_shifted"]    = sdf["open_interest"]
+            df.loc[v.index, "instrument_shifted"]       = sdf["instrument"]
 
             if spread_kind == "sell":
-                df.loc[v.index, "margin"] = v["strike_price"] - sdf["strike_price"]
+                df.loc[v.index, "margin"] = sdf["strike_price"] - v["strike_price"]
             else:
                 df.loc[v.index, "margin"] = 0.0
 
-            df.loc[v.index, "premium"] = (v["adjusted_mark_price"] - sdf["adjusted_mark_price"])
+            df.loc[v.index, "premium_adjusted_mark_price"] = (sdf["adjusted_mark_price"] - v["adjusted_mark_price"]) * coef
 
         return df
