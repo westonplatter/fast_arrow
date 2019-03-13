@@ -45,3 +45,24 @@ class StockMarketdata(object):
             data = client.get(data["next"], bearer=bearer)
             results.extend(data["results"])
         return results
+
+    @classmethod
+    def historical(cls, client, symbol, span="year", bounds="regular"):
+        possible_intervals = {
+            "day": "5minute",
+            "week": "10minute",
+            "year": "day",
+            "5year": "week" }
+        assert span in possible_intervals.keys()
+        interval = possible_intervals[span]
+        assert bounds in ["regular", "trading"]
+
+        request_url = "https://api.robinhood.com/marketdata/historicals/{}/".format(symbol)
+        params = {
+            "span":     span,
+            "interval": interval,
+            "bounds":   bounds,
+            "symbol":   symbol
+        }
+        data = client.get(request_url, params=params)
+        return data
