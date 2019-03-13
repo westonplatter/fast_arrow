@@ -1,3 +1,8 @@
+#
+# IC example not functional as of the 0.3.0 release
+# pull requests welcome!
+#
+
 import configparser
 from fast_arrow import (
     Client,
@@ -5,9 +10,8 @@ from fast_arrow import (
     Option,
     OptionChain,
     OptionOrder,
-    Stock,
+    Stock
 )
-
 
 #
 # get the authentication configs

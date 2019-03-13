@@ -34,7 +34,7 @@ stock = Stock.fetch(client, symbol)
 stock = Stock.mergein_marketdata_list(client, [stock])[0]
 
 oc = OptionChain.fetch(client, stock["id"], symbol)
-ed = oc['expiration_dates'][3]
+ed = oc['expiration_dates'][0]
 ops = Option.in_chain(client, oc["id"], expiration_dates=[ed])
 
 #
@@ -46,12 +46,15 @@ ops = Option.mergein_marketdata_list(client, ops)
 # genrate vertical spread table
 #
 width = 1
-df = Vertical.gen_df(ops, width, "put", "sell")
+spread_type = "put"
+spread_kind = "sell"
+df = Vertical.gen_df(ops, width, spread_type, spread_kind)
 
 #
 # select the 4th row (should be a deep OTM put, credit spread)
 #
-vertical = df.iloc[[4]]
+index = int(len(ops) / 4)
+vertical = df.iloc[[index]]
 
 #
 # create the order
@@ -59,7 +62,7 @@ vertical = df.iloc[[4]]
 direction = "credit"
 
 legs = [
-    {   "side": "sell",
+    {   "side": spread_kind,
         "option": vertical["instrument"].values[0],
         "position_effect": "open",
         "ratio_quantity": 1
@@ -85,10 +88,11 @@ time_in_force = "gfd"
 trigger = "immediate"
 order_type = "limit"
 
-print("Selling a {} {}/{} Put Spread for {} (notional value = ${})".format(
+print("Selling a {} {}/{} {} spread for {} (notation value = ${})".format(
     symbol,
     vertical["strike_price"].values[0],
     vertical["strike_price_shifted"].values[0],
+    spread_type,
     price,
     my_bid_price_rounded)
 )

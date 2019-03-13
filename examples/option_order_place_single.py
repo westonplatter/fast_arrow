@@ -37,8 +37,6 @@ oc = OptionChain.fetch(client, stock["id"], symbol)
 ed = oc['expiration_dates'][3]
 ops = Option.in_chain(client, oc["id"], expiration_dates=[ed])
 
-import ipdb; ipdb.set_trace()
-
 #
 # select the $SPY calls
 #

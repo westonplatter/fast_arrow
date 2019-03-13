@@ -58,6 +58,8 @@ class IronCondor(object):
         - set delta for inner leg of the call credit spread (eg, 0.1)
         """
 
+        raise Exception("Not Implemented starting at the 0.3.0 release")
+
         #
         # put credit spread
         #

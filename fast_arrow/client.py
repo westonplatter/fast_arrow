@@ -46,7 +46,6 @@ class Client(object):
         Execute HTTP GET
         '''
         headers = self._gen_headers(self.access_token, url)
-
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
@@ -55,7 +54,9 @@ class Client(object):
                 return res.json()
             except requests.exceptions.RequestException as e:
                 attempts += 1
-                if retry and res.status_code in [403]:
+                if res.status_code in [400]:
+                    raise e
+                elif retry and res.status_code in [403]:
                     self.relogin_oauth2()
 
 
@@ -75,7 +76,9 @@ class Client(object):
                     return res.json()
             except requests.exceptions.RequestException as e:
                 attempts += 1
-                if retry and res.status_code in [403]:
+                if res.status_code in [400]:
+                    raise e
+                elif retry and res.status_code in [403]:
                     self.relogin_oauth2()
 
 
