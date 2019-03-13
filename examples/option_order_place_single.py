@@ -37,6 +37,7 @@ oc = OptionChain.fetch(client, stock["id"], symbol)
 ed = oc['expiration_dates'][3]
 ops = Option.in_chain(client, oc["id"], expiration_dates=[ed])
 
+import ipdb; ipdb.set_trace()
 
 #
 # select the $SPY calls
@@ -51,9 +52,10 @@ ops = list(filter(lambda x: x["type"] == desired_type, ops))
 strike_price = math.floor(float(stock["ask_price"]) + 3.0)
 strike_price_str = "{:.4f}".format(strike_price)
 option_to_buy = None
-for op in ops:
-    if op["strike_price"] == strike_price_str:
-        option_to_buy = op
+# for op in ops:
+#     if op["strike_price"] == strike_price_str:
+#         option_to_buy = op
+option_to_buy = ops[25]
 
 
 #
@@ -73,7 +75,11 @@ legs = [{ "side": "buy",
     "position_effect": "open",
     "ratio_quantity": 1 }]
 
-my_bid_price = (float(option_to_buy["bid_price"]) * 0.1)
+if (float(option_to_buy["bid_price"]) * 0.1) > 0.01:
+    my_bid_price = (float(option_to_buy["bid_price"]) * 0.1)
+else:
+    my_bid_price = 0.01
+
 my_bid_price_rounded = (math.floor(my_bid_price * 100.0))/100.0
 my_bid_price_formatted = str(my_bid_price_rounded)
 price = my_bid_price_formatted
