@@ -150,6 +150,12 @@ class OptionOrder(object):
 
 
     @classmethod
+    def get(cls, client, option_order_id):
+        request_url = "https://api.robinhood.com/options/orders/{}/".format(option_order_id)
+        return client.get(request_url)
+
+
+    @classmethod
     def cancel(cls, client, cancel_url):
         result = client.post(cancel_url)
         if result == {}:
