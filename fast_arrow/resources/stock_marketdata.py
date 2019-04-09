@@ -8,8 +8,7 @@ class StockMarketdata(object):
         '''
         fetch and return results
         '''
-        return cls.quote_by_symbols(client, [symbol])['results'][0]
-
+        return cls.quote_by_symbols(client, [symbol])[0]
 
     @classmethod
     def quote_by_symbols(cls, client, symbols):
@@ -18,16 +17,20 @@ class StockMarketdata(object):
         '''
         url = "https://api.robinhood.com/quotes/"
         params = {"symbols": ",".join(symbols)}
-        return client.get(url, params=params)
-
+        res = client.get(url, params=params)
+        return res['results']
 
     @classmethod
-    def quotes_by_instrument_ids(cls, client, ids):
+    def quote_by_instrument(cls, client, _id):
+        return cls.quote_by_instruments(client, [_id])[0]
+
+    @classmethod
+    def quote_by_instruments(cls, client, ids):
         """
         create instrument urls, fetch, return results
         """
-        base_url = "https://api.robinhood.com/instruments/"
-        id_urls = ["{}{}/".format(base_url, _id) for _id in ids]
+        base_url = "https://api.robinhood.com/instruments"
+        id_urls = ["{}/{}/".format(base_url, _id) for _id in ids]
         return cls.quotes_by_instrument_urls(client, id_urls)
 
 
