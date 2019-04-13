@@ -56,7 +56,7 @@ class StockMarketdata(object):
             "5year": "week" }
         assert span in possible_intervals.keys()
         interval = possible_intervals[span]
-        assert bounds in ["regular", "trading"]
+        assert bounds in ["regular"]
 
         request_url = "https://api.robinhood.com/marketdata/historicals/"
 

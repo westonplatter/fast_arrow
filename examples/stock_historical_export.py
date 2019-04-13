@@ -30,8 +30,9 @@ client.authenticate()
 # fetch stock positions
 #
 symbol = "AAPL"
-data = StockMarketdata.historical(client, symbol)
-
+span = "week"
+bounds = "regular"
+data = StockMarketdata.historical_quote_by_symbol(client, symbol, span, bounds)
 
 if len(data["historicals"]) > 0:
     csv_columns = data["historicals"][0].keys()
