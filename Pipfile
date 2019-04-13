@@ -11,6 +11,7 @@ yarl = "*"
 pandas = ">=0.23.2"
 numpy = "*"
 datetime = "*"
+deprecation = "*"
 
 [dev-packages]
 vcrpy = "*"
@@ -23,3 +24,6 @@ ipdb = "*"
 
 [requires]
 python_version = "3.6"
+
+[scripts]
+run_all_examples = "sh ./run_all_examples.sh"

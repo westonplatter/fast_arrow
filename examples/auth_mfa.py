@@ -2,9 +2,11 @@ import configparser
 from fast_arrow import Client
 from fast_arrow.resources.user import User
 
-#
-# get the authentication configs
-#
+print("----- running {}".format(__file__))
+
+
+get the authentication configs
+
 config_file = "config.debug.ini"
 config = configparser.ConfigParser()
 config.read(config_file)

@@ -13,3 +13,8 @@ coveralls:
 .PHONY: lint
 lint:
 	pipenv run tox -e lint
+
+
+.PHONY: examples
+examples:
+	pipenv run run_all_examples

@@ -16,7 +16,7 @@ class Stock(object):
     @classmethod
     def mergein_marketdata_list(cls, client, stocks):
         ids = [x["id"] for x in stocks]
-        mds = StockMarketdata.quotes_by_instrument_ids(client, ids)
+        mds = StockMarketdata.quote_by_instruments(client, ids)
         mds = [x for x in mds if x]
 
         results = []

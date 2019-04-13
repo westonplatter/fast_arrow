@@ -8,6 +8,7 @@ from fast_arrow import (
 )
 import math
 
+print("----- running {}".format(__file__))
 
 #
 # get the authentication configs
