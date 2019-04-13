@@ -11,6 +11,7 @@ yarl = "*"
 pandas = ">=0.23.2"
 numpy = "*"
 datetime = "*"
+deprecation = "*"
 
 [dev-packages]
 vcrpy = "*"
