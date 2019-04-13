@@ -24,3 +24,6 @@ ipdb = "*"
 
 [requires]
 python_version = "3.6"
+
+[scripts]
+run_all_examples = "sh ./run_all_examples.sh"
