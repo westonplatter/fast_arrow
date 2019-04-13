@@ -2,6 +2,9 @@ import configparser
 from fast_arrow import Client, OptionOrder
 
 
+print("----- running {}".format(__file__))
+
+
 config = configparser.ConfigParser()
 config.read('config.debug.ini')
 
@@ -34,8 +37,7 @@ option_orders = option_orders_all[0:25]
 #
 option_orders_unrolled = OptionOrder.unroll_option_legs(client, option_orders)
 
-
 #
 # let's print out the results
 #
-print(option_orders_unrolled[1:10])
+print(option_orders_unrolled[0].keys())

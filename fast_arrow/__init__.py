@@ -25,8 +25,7 @@ from fast_arrow.resources.stock import Stock
 
 # user
 from fast_arrow.resources.user import User
-
-# portfolio
+from fast_arrow.resources.account import Account
 from fast_arrow.resources.portfolio import Portfolio
 
 # search

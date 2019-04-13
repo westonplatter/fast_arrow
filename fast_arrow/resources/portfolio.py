@@ -11,8 +11,8 @@ class Portfolio(object):
         interval = possible_intervals[span]
         assert bounds in ["regular", "trading"]
 
-        base_request_url = "https://api.robinhood.com/portfolios/historicals/"
-        request_url = "{}{}/".format(base_request_url, account)
+        base_request_url = "https://api.robinhood.com/portfolios/historicals"
+        request_url = "{}/{}/".format(base_request_url, account)
         params = { "span": span, "interval": interval, "bounds": bounds }
         data = client.get(request_url, params=params)
         return data

@@ -6,6 +6,9 @@ from fast_arrow import (
     OptionChain,
     OptionMarketdata
 )
+import math
+
+print("----- running {}".format(__file__))
 
 #
 # get the authentication configs
@@ -38,7 +41,6 @@ ops = Option.in_chain(client, oc_id, expiration_dates=next_2_eds)
 # get TLT in the middle of the current TLT trading range
 #
 urls = [op["url"] for op in ops]
-import math
 middle = math.floor(len(urls)/2)
 diff = math.floor(len(urls) * 0.7)
 lower_end = middle - diff

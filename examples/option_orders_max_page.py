@@ -3,6 +3,9 @@ from fast_arrow import Client, OptionOrder
 from datetime import datetime, timedelta
 
 
+print("----- running {}".format(__file__))
+
+
 config = configparser.ConfigParser()
 config.read('config.debug.ini')
 

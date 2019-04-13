@@ -4,6 +4,10 @@ from fast_arrow import (
     Collection
 )
 
+
+print("----- running {}".format(__file__))
+
+
 #
 # get the authentication configs
 #

@@ -60,7 +60,7 @@ class StockMarketdata(object):
         return cls.historical_quote_by_symbol(client, symbol, span, bounds)
 
     @classmethod
-    def historical_quote_by_symbol(cls, client, symbols, span="year", bounds="regular"):
+    def historical_quote_by_symbol(cls, client, symbol, span="year", bounds="regular"):
         datas = cls.historical_quote_by_symbols(client, [symbol],span, bounds)
         return datas[0]
 

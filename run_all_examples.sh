@@ -1,1 +1,1 @@
-for f in examples/*.py; do python "$f"; done
+for f in examples/*.py; do sleep 2s && python "$f"; done

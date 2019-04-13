@@ -5,6 +5,10 @@ from fast_arrow import (
     StockMarketdata
 )
 
+
+print("----- running {}".format(__file__))
+
+
 #
 # get the authentication configs
 #

@@ -9,6 +9,8 @@ from fast_arrow import (
     OptionMarketdata,
 )
 
+print("----- running {}".format(__file__))
+
 #
 # get the authentication configs
 #
@@ -73,5 +75,5 @@ ops = OptionPosition.humanize_numbers(ops)
 # create Pandas DF of option positions
 #
 df = pd.DataFrame.from_dict(ops)
-# 
+#
 print(df)
