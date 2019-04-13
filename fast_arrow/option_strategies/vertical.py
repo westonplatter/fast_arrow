@@ -1,6 +1,5 @@
-import numpy as np
 import pandas as pd
-import datetime
+
 
 class Vertical(object):
 
@@ -25,13 +24,14 @@ class Vertical(object):
         shift = width * coef
 
         df = pd.DataFrame.from_dict(options)
-        df['expiration_date'] = pd.to_datetime(df['expiration_date'], format="%Y-%m-%d")
+        df['expiration_date'] = pd.to_datetime(
+            df['expiration_date'], format="%Y-%m-%d")
         df['adjusted_mark_price'] = pd.to_numeric(df['adjusted_mark_price'])
         df['strike_price'] = pd.to_numeric(df['strike_price'])
 
         df.sort_values(["expiration_date", "strike_price"], inplace=True)
 
-        for k,v in df.groupby("expiration_date"):
+        for k, v in df.groupby("expiration_date"):
             sdf = v.shift(shift)
 
             df.loc[v.index, "strike_price_shifted"] = sdf["strike_price"]
@@ -39,17 +39,19 @@ class Vertical(object):
             df.loc[v.index, "volume_shifted"] = sdf["volume"]
             df.loc[v.index, "open_interest_shifted"] = sdf["open_interest"]
             df.loc[v.index, "instrument_shifted"] = sdf["instrument"]
-            df.loc[v.index, "adjusted_mark_price_shift"] = sdf["adjusted_mark_price"]
+            df.loc[v.index, "adjusted_mark_price_shift"] = \
+                sdf["adjusted_mark_price"]
 
             if spread_kind == "sell":
-                df.loc[v.index, "margin"] = abs(sdf["strike_price"] - v["strike_price"])
+                df.loc[v.index, "margin"] = \
+                    abs(sdf["strike_price"] - v["strike_price"])
             else:
                 df.loc[v.index, "margin"] = 0.0
 
             if spread_kind == "buy":
-                df.loc[v.index, "premium_adjusted_mark_price"] = (v["adjusted_mark_price"] - sdf["adjusted_mark_price"])
+                df.loc[v.index, "premium_adjusted_mark_price"] = (
+                    v["adjusted_mark_price"] - sdf["adjusted_mark_price"])
             elif spread_kind == "sell":
-                df.loc[v.index, "premium_adjusted_mark_price"] = (sdf["adjusted_mark_price"] - v["adjusted_mark_price"])
-
-
+                df.loc[v.index, "premium_adjusted_mark_price"] = (
+                    sdf["adjusted_mark_price"] - v["adjusted_mark_price"])
         return df
