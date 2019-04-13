@@ -68,7 +68,8 @@ class Client(object):
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                res = requests.post(url, headers=headers, data=payload, timeout=15, verify=self.certs)
+                res = requests.post(url, headers=headers, data=payload,
+                                    timeout=15, verify=self.certs)
                 res.raise_for_status()
                 if res.headers['Content-Length'] == '0':
                     return None
@@ -76,7 +77,7 @@ class Client(object):
                     return res.json()
             except requests.exceptions.RequestException as e:
                 attempts += 1
-                if res.status_code in [400]:
+                if res.status_code in [400, 429]:
                     raise e
                 elif retry and res.status_code in [403]:
                     self.relogin_oauth2()
