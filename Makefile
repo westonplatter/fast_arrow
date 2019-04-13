@@ -14,6 +14,10 @@ coveralls:
 lint:
 	pipenv run tox -e lint
 
+.PHONY: l
+l:
+	pipenv run flake8
+
 
 .PHONY: examples
 examples:
