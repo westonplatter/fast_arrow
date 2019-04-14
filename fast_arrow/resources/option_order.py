@@ -1,5 +1,4 @@
-from fast_arrow.resources.option import Option
-from fast_arrow.exceptions import NotImplementedError, TradeExecutionError
+from fast_arrow.exceptions import TradeExecutionError
 from fast_arrow.util import is_max_date_gt
 
 import uuid
@@ -14,7 +13,8 @@ class OptionOrder(object):
         fetch all option positions
         """
         max_date = kwargs['max_date'] if 'max_date' in kwargs else None
-        max_fetches = kwargs['max_fetches'] if 'max_fetches' in kwargs else None
+        max_fetches = \
+            kwargs['max_fetches'] if 'max_fetches' in kwargs else None
 
         url = 'https://api.robinhood.com/options/orders/'
         data = client.get(url)
@@ -36,7 +36,6 @@ class OptionOrder(object):
                 return results
         return results
 
-
     @classmethod
     def humanize_numbers(cls, option_orders):
         results = []
@@ -44,12 +43,11 @@ class OptionOrder(object):
             keys_to_humanize = ["processed_premium"]
             coef = (1.0 if oo["direction"] == "credit" else -1.0)
             for k in keys_to_humanize:
-                if oo[k] == None:
+                if oo[k] is None:
                     continue
                 oo[k] = float(oo[k]) * coef
             results.append(oo)
         return results
-
 
     @classmethod
     def unroll_option_legs(cls, client, option_orders):
@@ -69,8 +67,11 @@ class OptionOrder(object):
                 for execution in leg['executions']:
                     order = dict()
 
-                    for k,v in oo.items():
-                        if k not in ['legs', 'price', 'type', 'premium', 'processed_premium', 'response_category', 'cancel_url']:
+                    keys_in_question = ['legs', 'price', 'type', 'premium',
+                                        'processed_premium',
+                                        'response_category', 'cancel_url']
+                    for k, v in oo.items():
+                        if k not in keys_in_question:
                             order[k] = oo[k]
 
                     order['order_type'] = oo['type']
@@ -82,7 +83,7 @@ class OptionOrder(object):
                     order['expiration_date'] = contract['expiration_date']
                     order['contract_type'] = contract['type']
 
-                    for k,v in leg.items():
+                    for k, v in leg.items():
                         if k not in ['id', 'executions']:
                             order[k] = leg[k]
 
@@ -93,9 +94,9 @@ class OptionOrder(object):
                     results.append(order)
         return results
 
-
     @classmethod
-    def submit(cls, client, direction, legs, price, quantity, time_in_force, trigger, order_type, run_validations=True):
+    def submit(cls, client, direction, legs, price, quantity, time_in_force,
+               trigger, order_type, run_validations=True):
         '''
         params:
         - client
@@ -148,12 +149,12 @@ class OptionOrder(object):
             assert(leg["side"] in ["buy", "sell"])
         return True
 
-
     @classmethod
     def get(cls, client, option_order_id):
-        request_url = "https://api.robinhood.com/options/orders/{}/".format(option_order_id)
+        request_url = \
+            "https://api.robinhood.com/options/orders/{}/".format(
+                option_order_id)
         return client.get(request_url)
-
 
     @classmethod
     def cancel(cls, client, cancel_url):
@@ -162,7 +163,6 @@ class OptionOrder(object):
             return True
         else:
             return False
-
 
     @classmethod
     def replace(cls, client, option_order, new_price):
