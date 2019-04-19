@@ -1,5 +1,6 @@
 from fast_arrow.resources.stock_marketdata import StockMarketdata
 
+
 class Stock(object):
 
     @classmethod
@@ -9,7 +10,8 @@ class Stock(object):
         """
         assert(type(symbol) is str)
 
-        url = "https://api.robinhood.com/instruments/?symbol={0}".format(symbol)
+        url = ("https://api.robinhood.com/instruments/?symbol={0}".
+               format(symbol))
         data = client.get(url)
         return data["results"][0]
 
@@ -23,18 +25,17 @@ class Stock(object):
         for s in stocks:
             # @TODO optimize this so it's better than O(n^2)
             md = [md for md in mds if md['instrument'] == s['url']]
-            if len(md)>0:
+            if len(md) > 0:
                 md = md[0]
                 md_kv = {
                     "ask_price": md["ask_price"],
                     "bid_price": md["bid_price"],
                 }
-                merged_dict = dict( list(s.items()) + list(md_kv.items()) )
+                merged_dict = dict(list(s.items()) + list(md_kv.items()))
             else:
-                merged_dict = dict( list(s.items()) )
+                merged_dict = dict(list(s.items()))
             results.append(merged_dict)
         return results
-
 
     @classmethod
     def all(cls, client, symbols):
@@ -48,6 +49,6 @@ class Stock(object):
         results = data["results"]
 
         while data["next"]:
-            data = client.get(data["next"], bearer=bearer)
+            data = client.get(data["next"])
             results.extend(data["results"])
         return results

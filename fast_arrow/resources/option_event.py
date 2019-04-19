@@ -10,14 +10,13 @@ class OptionEvent(object):
         fetch all option positions
         """
         url = 'https://api.robinhood.com/options/events/'
-        params = { }
+        params = {}
         data = client.get(url, params=params)
         results = data["results"]
         while data["next"]:
             data = client.get(data["next"])
             results.extend(data["results"])
         return results
-
 
     @classmethod
     def mergein_instrumentdata_list(cls, client, option_events):
@@ -30,10 +29,9 @@ class OptionEvent(object):
                 "option_type": idata["type"],
                 "symbol": idata["chain_symbol"]
             }
-            merged_dict = dict( list(oe.items()) + list(merge_me.items()) )
+            merged_dict = dict(list(oe.items()) + list(merge_me.items()))
             results.append(merged_dict)
         return results
-
 
     @classmethod
     def humanize_numbers(cls, option_events):
@@ -48,7 +46,7 @@ class OptionEvent(object):
                 coef = -1.0
 
             for k in keys_to_humanize:
-                if oe[k] == None:
+                if oe[k] is None:
                     continue
                 oe[k] = float(oe[k]) * (coef)
             results.append(oe)
