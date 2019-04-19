@@ -5,7 +5,6 @@ from fast_arrow.resources.account import Account
 from fast_arrow.exceptions import AuthenticationError
 from fast_arrow.exceptions import NotImplementedError
 
-
 CLIENT_ID = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS"
 
 HTTP_ATTEMPTS_MAX = 2
@@ -22,18 +21,23 @@ class Client(object):
         self.mfa_code = None
         self.scope = None
         self.authenticated = False
-        self.certs = os.path.join(os.path.dirname(__file__), 'ssl_certs/certs.pem')
+        self.certs = os.path.join(
+            os.path.dirname(__file__), 'ssl_certs/certs.pem')
 
     def authenticate(self):
         '''
         Authenticate using data in `options`
         '''
         if "username" in self.options and "password" in self.options:
-            self.login_oauth2(self.options["username"], self.options["password"], self.options.get('mfa_code'))
-        elif "access_token" in self.options and "refresh_token" in self.options:
-            self.access_token = self.options["access_token"]
-            self.refresh_token = self.options["refresh_token"]
-            self.__set_account_info()
+            self.login_oauth2(
+                self.options["username"],
+                self.options["password"],
+                self.options.get('mfa_code'))
+        elif "access_token" in self.options:
+            if "refresh_token" in self.options:
+                self.access_token = self.options["access_token"]
+                self.refresh_token = self.options["refresh_token"]
+                self.__set_account_info()
         else:
             self.authenticated = False
         return self.authenticated
@@ -46,7 +50,11 @@ class Client(object):
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                res = requests.get(url, headers=headers, params=params, timeout=15, verify=self.certs)
+                res = requests.get(url,
+                                   headers=headers,
+                                   params=params,
+                                   timeout=15,
+                                   verify=self.certs)
                 res.raise_for_status()
                 return res.json()
             except requests.exceptions.RequestException as e:
@@ -85,8 +93,11 @@ class Client(object):
         headers = {
             "Accept": "*/*",
             "Accept-Encoding": "gzip, deflate",
-            "Accept-Language": "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+            "Accept-Language": ("en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, " +
+                                "nl;q=0.6, it;q=0.5"),
+            "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) " +
+                           "AppleWebKit/537.36 (KHTML, like Gecko) " +
+                           "Chrome/68.0.3440.106 Safari/537.36"),
 
         }
         if bearer:

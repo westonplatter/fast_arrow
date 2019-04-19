@@ -1,7 +1,6 @@
 from fast_arrow import Dividend
 from tests.test_util import gen_vcr, gen_client
 
-import unittest
 
 class TestDividend(object):
 
@@ -11,9 +10,11 @@ class TestDividend(object):
             dividends = Dividend.all(client)
             dividend = dividends[0]
 
-            expected_fields = ['account', 'url', 'amount',
+            expected_fields = [
+                'account', 'url', 'amount',
                 'payable_date', 'instrument', 'rate',
-                'record_date', 'position', 'withholding', 'id', 'paid_at']
+                'record_date', 'position', 'withholding', 'id', 'paid_at'
+            ]
 
             actual_fields = list(dividend.keys())
 
