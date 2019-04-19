@@ -1,7 +1,6 @@
 from fast_arrow import User
 from tests.test_util import gen_vcr, gen_client
 
-import unittest
 
 class TestUser(object):
     def test_fetch(self):
