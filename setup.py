@@ -32,8 +32,10 @@ deps = [
     'pathlib2',
     'requests>=2.20.0',
     'pandas>=0.23.2',
-    'numpy',
-    'yarl']
+    'numpy'
+    'yarl',
+    'urllib3>=1.24.2'
+]
 
 
 test_deps = [
@@ -42,7 +44,8 @@ test_deps = [
     'pytest-cov',
     'detox',
     'flake8',
-    'vcrpy']
+    'vcrpy'
+]
 
 
 setup(name='fast_arrow',

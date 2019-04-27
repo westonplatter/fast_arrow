@@ -6,6 +6,9 @@ test:
 ci:
 	pipenv run pytest --cov=fast_arrow tests/
 
+.PHONY: pc
+pc: l test
+
 .PHONY: coveralls
 coveralls:
 	pipenv run coveralls

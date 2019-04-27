@@ -12,6 +12,7 @@ pandas = ">=0.23.2"
 numpy = "*"
 datetime = "*"
 deprecation = "*"
+urllib3 = ">=1.24.2"
 
 [dev-packages]
 vcrpy = "*"
