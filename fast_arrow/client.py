@@ -8,6 +8,7 @@ from fast_arrow.exceptions import NotImplementedError
 
 
 CLIENT_ID = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS"
+DEVICE_ID = "7730e9b9-bdab-40ba-96dc-8b0607d525bb"
 
 HTTP_ATTEMPTS_MAX = 2
 
@@ -106,6 +107,7 @@ class Client(object):
             "grant_type": "password",
             "scope": "internal",
             "client_id": CLIENT_ID,
+            "device_token: DEVICE_ID,
             "expires_in": 86400,
             "password": password,
             "username": username
