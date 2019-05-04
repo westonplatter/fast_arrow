@@ -2,6 +2,8 @@ import configparser
 from fast_arrow import Client
 from fast_arrow.resources.user import User
 
+print("----- running {}".format(__file__))
+
 #
 # get the authentication configs
 #

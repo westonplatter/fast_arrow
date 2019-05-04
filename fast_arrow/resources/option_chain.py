@@ -12,6 +12,7 @@ class OptionChain(object):
             "tradability": "tradable"
         }
         data = client.get(url, params=params)
+
         def filter_func(x):
             return x["symbol"] == symbol
         results = list(filter(filter_func, data["results"]))

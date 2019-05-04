@@ -11,6 +11,8 @@ yarl = "*"
 pandas = ">=0.23.2"
 numpy = "*"
 datetime = "*"
+deprecation = "*"
+urllib3 = ">=1.24.2"
 
 [dev-packages]
 vcrpy = "*"
@@ -19,6 +21,10 @@ pytest-cov = "*"
 detox = "*"
 "flake8" = "*"
 pyyaml = "==4.2b4"
+ipdb = "*"
 
 [requires]
 python_version = "3.6"
+
+[scripts]
+run_all_examples = "sh ./run_all_examples.sh"

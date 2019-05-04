@@ -1,6 +1,5 @@
 from fast_arrow.resources.option_chain import OptionChain
 from tests.test_util import gen_vcr, gen_client
-import unittest
 
 
 class TestPosition(object):

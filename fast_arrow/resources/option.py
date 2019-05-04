@@ -9,11 +9,9 @@ class Option(object):
     def fetch_by_url(cls, client, url):
         return cls.instrument_by_urls(client, [url])
 
-
     @classmethod
     def fetch_by_urls(cls, client, urls):
         raise NotImplementedError("Option.instrument_by_url")
-
 
     @classmethod
     def fetch_by_ids(cls, client, ids):
@@ -63,7 +61,6 @@ class Option(object):
 
         return results
 
-
     @classmethod
     def in_chain(cls, client, chain_id, expiration_dates=[]):
         """
@@ -85,7 +82,6 @@ class Option(object):
             results.extend(data['results'])
         return results
 
-
     @classmethod
     def mergein_marketdata_list(cls, client, options):
         ids = [x["id"] for x in options]
@@ -96,12 +92,12 @@ class Option(object):
         for o in options:
             # @TODO optimize this so it's better than O(n^2)
             md = [md for md in mds if md['instrument'] == o['url']]
-            if len(md)>0:
+            if len(md) > 0:
                 md = md[0]
                 # there is no overlap in keys, so it's fine to do a merge
-                merged_dict = dict( list(o.items()) + list(md.items()) )
+                merged_dict = dict(list(o.items()) + list(md.items()))
             else:
-                merged_dict = dict( list(o.items()) )
+                merged_dict = dict(list(o.items()))
             results.append(merged_dict)
 
         return results

@@ -1,4 +1,3 @@
-import os
 import sys
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
@@ -29,11 +28,14 @@ with open("README.md", "r") as f:
 
 deps = [
     'datetime',
+    'deprecation',
     'pathlib2',
     'requests>=2.20.0',
     'pandas>=0.23.2',
-    'numpy',
-    'yarl']
+    'numpy'
+    'yarl',
+    'urllib3>=1.24.2'
+]
 
 
 test_deps = [
@@ -42,7 +44,8 @@ test_deps = [
     'pytest-cov',
     'detox',
     'flake8',
-    'vcrpy']
+    'vcrpy'
+]
 
 
 setup(name='fast_arrow',
@@ -55,7 +58,11 @@ setup(name='fast_arrow',
     url='https://github.com/westonplatter/fast_arrow/',
     license='MIT License',
     python_requires=">=3.5",
-    packages=['fast_arrow', 'fast_arrow.resources', 'fast_arrow.option_strategies'],
+    packages=[
+        'fast_arrow',
+        'fast_arrow.resources',
+        'fast_arrow.option_strategies'
+    ],
     package_data={'fast_arrow': ['ssl_certs/certs.pem']},
     install_requires=deps,
     tests_require=test_deps,

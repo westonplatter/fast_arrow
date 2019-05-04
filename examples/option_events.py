@@ -4,6 +4,7 @@ from fast_arrow import (
     OptionEvent
 )
 
+print("----- running {}".format(__file__))
 
 #
 # get the authentication configs
