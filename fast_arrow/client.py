@@ -115,7 +115,7 @@ class Client(object):
             "grant_type": "password",
             "scope": "internal",
             "client_id": CLIENT_ID,
-            "device_token: DEVICE_ID,
+            "device_token": DEVICE_ID,
             "expires_in": 86400,
             "password": password,
             "username": username
