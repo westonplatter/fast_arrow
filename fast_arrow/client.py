@@ -1,11 +1,9 @@
 import os
 import requests
 from fast_arrow.util import get_last_path
-from fast_arrow.resources.user import User
 from fast_arrow.resources.account import Account
 from fast_arrow.exceptions import AuthenticationError
 from fast_arrow.exceptions import NotImplementedError
-
 
 CLIENT_ID = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS"
 DEVICE_ID = "7730e9b9-bdab-40ba-96dc-8b0607d525bb"
@@ -17,48 +15,55 @@ class Client(object):
 
     def __init__(self, **kwargs):
         self.options = kwargs
-        self.account_id     = None
-        self.account_url    = None
-        self.access_token   = None
-        self.refresh_token  = None
-        self.mfa_code       = None
-        self.scope          = None
-        self.authenticated  = False
-        self.certs = os.path.join(os.path.dirname(__file__), 'ssl_certs/certs.pem')
-
+        self.account_id = None
+        self.account_url = None
+        self.access_token = None
+        self.refresh_token = None
+        self.mfa_code = None
+        self.scope = None
+        self.authenticated = False
+        self.certs = os.path.join(
+            os.path.dirname(__file__), 'ssl_certs/certs.pem')
 
     def authenticate(self):
         '''
         Authenticate using data in `options`
         '''
         if "username" in self.options and "password" in self.options:
-            self.login_oauth2(self.options["username"], self.options["password"], self.options.get('mfa_code'))
-        elif "access_token" in self.options and "refresh_token" in self.options:
-            self.access_token = self.options["access_token"]
-            self.refresh_token = self.options["refresh_token"]
-            self.__set_account_info()
+            self.login_oauth2(
+                self.options["username"],
+                self.options["password"],
+                self.options.get('mfa_code'))
+        elif "access_token" in self.options:
+            if "refresh_token" in self.options:
+                self.access_token = self.options["access_token"]
+                self.refresh_token = self.options["refresh_token"]
+                self.__set_account_info()
         else:
             self.authenticated = False
         return self.authenticated
-
 
     def get(self, url=None, params=None, retry=True):
         '''
         Execute HTTP GET
         '''
         headers = self._gen_headers(self.access_token, url)
-
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                res = requests.get(url, headers=headers, params=params, timeout=15, verify=self.certs)
+                res = requests.get(url,
+                                   headers=headers,
+                                   params=params,
+                                   timeout=15,
+                                   verify=self.certs)
                 res.raise_for_status()
                 return res.json()
             except requests.exceptions.RequestException as e:
                 attempts += 1
-                if retry and res.status_code in [403]:
+                if res.status_code in [400]:
+                    raise e
+                elif retry and res.status_code in [403]:
                     self.relogin_oauth2()
-
 
     def post(self, url=None, payload=None, retry=True):
         '''
@@ -68,7 +73,8 @@ class Client(object):
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                res = requests.post(url, headers=headers, data=payload, timeout=15, verify=self.certs)
+                res = requests.post(url, headers=headers, data=payload,
+                                    timeout=15, verify=self.certs)
                 res.raise_for_status()
                 if res.headers['Content-Length'] == '0':
                     return None
@@ -76,10 +82,10 @@ class Client(object):
                     return res.json()
             except requests.exceptions.RequestException as e:
                 attempts += 1
-                if retry and res.status_code in [403]:
+                if res.status_code in [400, 429]:
+                    raise e
+                elif retry and res.status_code in [403]:
                     self.relogin_oauth2()
-
-
 
     def _gen_headers(self, bearer, url):
         '''
@@ -88,8 +94,11 @@ class Client(object):
         headers = {
             "Accept": "*/*",
             "Accept-Encoding": "gzip, deflate",
-            "Accept-Language": "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+            "Accept-Language": ("en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, " +
+                                "nl;q=0.6, it;q=0.5"),
+            "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) " +
+                           "AppleWebKit/537.36 (KHTML, like Gecko) " +
+                           "Chrome/68.0.3440.106 Safari/537.36"),
 
         }
         if bearer:
@@ -97,7 +106,6 @@ class Client(object):
         if url == "https://api.robinhood.com/options/orders/":
             headers["Content-Type"] = "application/json; charset=utf-8"
         return headers
-
 
     def login_oauth2(self, username, password, mfa_code=None):
         '''
@@ -119,27 +127,29 @@ class Client(object):
 
         if res is None:
             if mfa_code is None:
-                msg = "Client.login_oauth2(). Could not authenticate. Check username and password."
+                msg = ("Client.login_oauth2(). Could not authenticate. Check "
+                       + "username and password.")
                 raise AuthenticationError(msg)
             else:
-                msg = "Client.login_oauth2(). Could not authenticate. Check username and password, and enter a valid MFA code."
+                msg = ("Client.login_oauth2(). Could not authenticate. Check" +
+                       "username and password, and enter a valid MFA code.")
                 raise AuthenticationError(msg)
         elif res.get('mfa_required') is True:
-            msg = "Client.login_oauth2(). Could not authenticate. MFA is required."
+            msg = "Client.login_oauth2(). Couldn't authenticate. MFA required."
             raise AuthenticationError(msg)
 
-        self.access_token   = res["access_token"]
-        self.refresh_token  = res["refresh_token"]
-        self.mfa_code       = res["mfa_code"]
-        self.scope          = res["scope"]
+        self.access_token = res["access_token"]
+        self.refresh_token = res["refresh_token"]
+        self.mfa_code = res["mfa_code"]
+        self.scope = res["scope"]
         self.__set_account_info()
         return self.authenticated
-
 
     def __set_account_info(self):
         account_urls = Account.all_urls(self)
         if len(account_urls) > 1:
-            msg = "fast_arrow 'currently' does not handle multiple account authentication."
+            msg = ("fast_arrow 'currently' does not handle " +
+                   "multiple account authentication.")
             raise NotImplementedError(msg)
         elif len(account_urls) == 0:
             msg = "fast_arrow expected at least 1 account."
@@ -148,7 +158,6 @@ class Client(object):
             self.account_url = account_urls[0]
             self.account_id = get_last_path(self.account_url)
             self.authenticated = True
-
 
     def relogin_oauth2(self):
         '''
@@ -163,11 +172,10 @@ class Client(object):
             "expires_in": 86400,
         }
         res = self.post(url, payload=data, retry=False)
-        self.access_token   = res["access_token"]
-        self.refresh_token  = res["refresh_token"]
-        self.mfa_code       = res["mfa_code"]
-        self.scope          = res["scope"]
-
+        self.access_token = res["access_token"]
+        self.refresh_token = res["refresh_token"]
+        self.mfa_code = res["mfa_code"]
+        self.scope = res["scope"]
 
     def logout_oauth2(self):
         '''
@@ -179,14 +187,14 @@ class Client(object):
             "token": self.refresh_token,
         }
         res = self.post(url, payload=data)
-        if res == None:
-            self.account_id     = None
-            self.account_url    = None
-            self.access_token   = None
-            self.refresh_token  = None
-            self.mfa_code       = None
-            self.scope          = None
-            self.authenticated  = False
+        if res is None:
+            self.account_id = None
+            self.account_url = None
+            self.access_token = None
+            self.refresh_token = None
+            self.mfa_code = None
+            self.scope = None
+            self.authenticated = False
             return True
         else:
             raise AuthenticationError("fast_arrow could not log out.")

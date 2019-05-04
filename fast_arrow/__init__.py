@@ -25,8 +25,7 @@ from fast_arrow.resources.stock import Stock
 
 # user
 from fast_arrow.resources.user import User
-
-# portfolio
+from fast_arrow.resources.account import Account
 from fast_arrow.resources.portfolio import Portfolio
 
 # search
@@ -34,3 +33,6 @@ from fast_arrow.resources.collection import Collection
 
 # dividend
 from fast_arrow.resources.dividend import Dividend
+
+import warnings
+warnings.simplefilter('always', DeprecationWarning)

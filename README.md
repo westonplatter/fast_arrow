@@ -56,13 +56,15 @@ Install the package from pypi,
 pip install fast_arrow
 ```
 
-## another Robinhood client?
+## design principles
 
-`fast_arrow` at its core,
-1) is a Robinhood api client focused on simple and robust features
-2) provides first class support for *stock* and *option* trading
-3) organizes code in small and discrete python classes
+You might be asking, "yet another Robinhood client? There's already a few out
+there. What's different about this one?"
 
+`fast_arrow` holds to these __design principles__,  
+1) focus on simple features that expose data. Don't interpret data.  
+2) make __stock__ & __option__ operations easy to talk about and do with code  
+3) organize code in small and discrete python classes  
 
 ## features
 

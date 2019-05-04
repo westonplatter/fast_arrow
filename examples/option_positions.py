@@ -6,6 +6,8 @@ from fast_arrow import (
     OptionPosition
 )
 
+print("----- running {}".format(__file__))
+
 #
 # get the authentication configs
 #
