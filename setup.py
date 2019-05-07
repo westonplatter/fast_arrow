@@ -32,7 +32,7 @@ deps = [
     'pathlib2',
     'requests>=2.20.0',
     'pandas>=0.23.2',
-    'numpy'
+    'numpy',
     'yarl',
     'urllib3>=1.24.2'
 ]
