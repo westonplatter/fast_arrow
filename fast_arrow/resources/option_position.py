@@ -14,9 +14,10 @@ class OptionPosition(object):
         max_date = kwargs['max_date'] if 'max_date' in kwargs else None
         max_fetches = \
             kwargs['max_fetches'] if 'max_fetches' in kwargs else None
+        nonzero = kwargs.get('nonzero', False)
 
         url = 'https://api.robinhood.com/options/positions/'
-        params = {}
+        params = {'nonzero': nonzero}
         data = client.get(url, params=params)
         results = data["results"]
 
