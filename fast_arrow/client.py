@@ -1,4 +1,6 @@
 import os
+import uuid
+
 import requests
 from fast_arrow.util import get_last_path
 from fast_arrow.resources.account import Account
@@ -111,6 +113,7 @@ class Client(object):
         Login using username and password
         '''
         data = {
+            "device_token": uuid.uuid4(),
             "grant_type": "password",
             "scope": "internal",
             "client_id": CLIENT_ID,
