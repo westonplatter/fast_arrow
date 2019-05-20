@@ -33,17 +33,27 @@ def print_symbol_price(marketdata):
 #
 # fetch by single stock symbol
 #
-symbol = "AAPL"
-md = StockMarketdata.quote_by_symbol(client, symbol)
-print_symbol_price(md)
+##Deprecated
+#symbol = "AAPL"
+#md = StockMarketdata.quote_by_symbol(client, symbol)
+#print_symbol_price(md)
 
 #
 # fetch by multiple stock symbols
 #
-symbols = ['AAPL', 'MU', 'FB']
-mds = StockMarketdata.quote_by_symbols(client, symbols)
-for md in mds:
-    print_symbol_price(md)
+##Deprecated
+#symbols = ['AAPL', 'MU', 'FB']
+#mds = StockMarketdata.quote_by_symbols(client, symbols)
+#for md in mds:
+#    print_symbol_price(md)
+
+#
+# fetch by single 'instrument_id' ***MODIFIED***
+#
+symbol = 'AAPL'
+md = Stock.fetch(rhclient, symbol)
+md2 = StockMarketdata.quote_by_instrument(client,md['id'])
+print_symbol_price(md2)
 
 #
 # fetch by single 'instrument_id'
