@@ -5,42 +5,19 @@ from fast_arrow.resources.account import Account
 from fast_arrow.exceptions import AuthenticationError
 from fast_arrow.exceptions import NotImplementedError
 
-CLIENT_ID = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS"
-
 HTTP_ATTEMPTS_MAX = 2
 
 
 class Client(object):
 
-    def __init__(self, **kwargs):
-        self.options = kwargs
-        self.account_id = None
-        self.account_url = None
-        self.access_token = None
-        self.refresh_token = None
-        self.mfa_code = None
-        self.scope = None
-        self.authenticated = False
+    def __init__(self, auth_data):
+        self.auth_data = auth_data
+        self.account_id = auth_data["account_id"]
+        self.access_token = auth_data["access_token"]
+        self.refresh_token = auth_data["refresh_token"]
+        self.device_token = auth_data["device_token"]
         self.certs = os.path.join(
             os.path.dirname(__file__), 'ssl_certs/certs.pem')
-
-    def authenticate(self):
-        '''
-        Authenticate using data in `options`
-        '''
-        if "username" in self.options and "password" in self.options:
-            self.login_oauth2(
-                self.options["username"],
-                self.options["password"],
-                self.options.get('mfa_code'))
-        elif "access_token" in self.options:
-            if "refresh_token" in self.options:
-                self.access_token = self.options["access_token"]
-                self.refresh_token = self.options["refresh_token"]
-                self.__set_account_info()
-        else:
-            self.authenticated = False
-        return self.authenticated
 
     def get(self, url=None, params=None, retry=True):
         '''
@@ -72,8 +49,11 @@ class Client(object):
         attempts = 1
         while attempts <= HTTP_ATTEMPTS_MAX:
             try:
-                res = requests.post(url, headers=headers, data=payload,
-                                    timeout=15, verify=self.certs)
+                res = requests.post(url,
+                                    headers=headers,
+                                    data=payload,
+                                    timeout=15,
+                                    verify=self.certs)
                 res.raise_for_status()
                 if res.headers['Content-Length'] == '0':
                     return None
@@ -105,43 +85,6 @@ class Client(object):
         if url == "https://api.robinhood.com/options/orders/":
             headers["Content-Type"] = "application/json; charset=utf-8"
         return headers
-
-    def login_oauth2(self, username, password, mfa_code=None):
-        '''
-        Login using username and password
-        '''
-        data = {
-            "grant_type": "password",
-            "scope": "internal",
-            "client_id": CLIENT_ID,
-            "expires_in": 86400,
-            "password": password,
-            "username": username
-        }
-        if mfa_code is not None:
-            data['mfa_code'] = mfa_code
-        url = "https://api.robinhood.com/oauth2/token/"
-        res = self.post(url, payload=data, retry=False)
-
-        if res is None:
-            if mfa_code is None:
-                msg = ("Client.login_oauth2(). Could not authenticate. Check "
-                       + "username and password.")
-                raise AuthenticationError(msg)
-            else:
-                msg = ("Client.login_oauth2(). Could not authenticate. Check" +
-                       "username and password, and enter a valid MFA code.")
-                raise AuthenticationError(msg)
-        elif res.get('mfa_required') is True:
-            msg = "Client.login_oauth2(). Couldn't authenticate. MFA required."
-            raise AuthenticationError(msg)
-
-        self.access_token = res["access_token"]
-        self.refresh_token = res["refresh_token"]
-        self.mfa_code = res["mfa_code"]
-        self.scope = res["scope"]
-        self.__set_account_info()
-        return self.authenticated
 
     def __set_account_info(self):
         account_urls = Account.all_urls(self)
@@ -185,7 +128,7 @@ class Client(object):
             "token": self.refresh_token,
         }
         res = self.post(url, payload=data)
-        if res is None:
+        if res is None or res == {}:
             self.account_id = None
             self.account_url = None
             self.access_token = None
