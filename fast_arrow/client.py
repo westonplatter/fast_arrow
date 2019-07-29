@@ -4,20 +4,35 @@ from fast_arrow.util import get_last_path
 from fast_arrow.resources.account import Account
 from fast_arrow.exceptions import AuthenticationError
 from fast_arrow.exceptions import NotImplementedError
+from fast_arrow.exceptions import AuthDataError
 
 HTTP_ATTEMPTS_MAX = 2
 
+CLIENT_ID = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS"
 
 class Client(object):
 
     def __init__(self, auth_data):
+        required_keys = [
+            "account_id",
+            "access_token",
+            "refresh_token",
+            "device_token"
+        ]
+
+        for k in required_keys:
+            if k not in auth_data:
+                msg = f"Expected key={k} not in auth_data"
+                raise AuthDataError(msg)
+
         self.auth_data = auth_data
         self.account_id = auth_data["account_id"]
         self.access_token = auth_data["access_token"]
         self.refresh_token = auth_data["refresh_token"]
         self.device_token = auth_data["device_token"]
-        self.certs = os.path.join(
-            os.path.dirname(__file__), 'ssl_certs/certs.pem')
+        certs_path = 'ssl_certs/certs.pem'
+        self.certs = os.path.join(os.path.dirname(__file__), certs_path)
+        
 
     def get(self, url=None, params=None, retry=True):
         '''
@@ -36,7 +51,7 @@ class Client(object):
                 return res.json()
             except requests.exceptions.RequestException as e:
                 attempts += 1
-                if res.status_code in [400]:
+                if res.status_code in [400, 401]:
                     raise e
                 elif retry and res.status_code in [403]:
                     self.relogin_oauth2()
@@ -86,6 +101,15 @@ class Client(object):
             headers["Content-Type"] = "application/json; charset=utf-8"
         return headers
 
+    def current_auth_data(self):
+        auth_data = {
+            "account_id": self.account_id,
+            "access_token": self.access_token,
+            "refresh_token": self.refresh_token,
+            "device_token": self.device_token,
+        }
+        return auth_data
+
     def __set_account_info(self):
         account_urls = Account.all_urls(self)
         if len(account_urls) > 1:
@@ -107,16 +131,17 @@ class Client(object):
         url = "https://api.robinhood.com/oauth2/token/"
         data = {
             "grant_type": "refresh_token",
+            "device_token": self.device_token,
             "refresh_token": self.refresh_token,
             "scope": "internal",
             "client_id": CLIENT_ID,
             "expires_in": 86400,
         }
-        res = self.post(url, payload=data, retry=False)
-        self.access_token = res["access_token"]
-        self.refresh_token = res["refresh_token"]
-        self.mfa_code = res["mfa_code"]
-        self.scope = res["scope"]
+        data = self.post(url, payload=data, retry=False)
+        self.access_token = data["access_token"]
+        self.refresh_token = data["refresh_token"]
+        self.scope = data["scope"]
+        return True
 
     def logout_oauth2(self):
         '''

@@ -119,8 +119,11 @@ class OptionOrder(object):
             assert(order_type in ["limit", "market"])
             assert(cls._validate_legs(legs) is True)
 
+        account_url = ("https://api.robinhood.com/accounts/{}/".
+            format(client.account_id))
+
         payload = json.dumps({
-            "account": client.account_url,
+            "account": account_url,
             "direction": direction,
             "legs": legs,
             "price": price,
@@ -171,8 +174,11 @@ class OptionOrder(object):
             msg = "OptionOrder.replace() did not cancel previous OptionOrder"
             raise TradeExecutionError(msg)
 
+        account_url = ("https://api.robinhood.com/accounts/{}/".
+            format(client.account_id))
+
         payload = json.dumps({
-            "account": client.account_url,
+            "account": account_url,
             "direction": option_order["direction"],
             "legs": option_order["legs"],
             "price": new_price,
