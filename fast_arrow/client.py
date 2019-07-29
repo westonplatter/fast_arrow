@@ -22,7 +22,7 @@ class Client(object):
 
         for k in required_keys:
             if k not in auth_data:
-                msg = f"Expected key={k} not in auth_data"
+                msg = "Expected key={} not in auth_data".format(k)
                 raise AuthDataError(msg)
 
         self.auth_data = auth_data
@@ -32,7 +32,7 @@ class Client(object):
         self.device_token = auth_data["device_token"]
         certs_path = 'ssl_certs/certs.pem'
         self.certs = os.path.join(os.path.dirname(__file__), certs_path)
-        
+
 
     def get(self, url=None, params=None, retry=True):
         '''
