@@ -8,6 +8,22 @@ Status](https://coveralls.io/repos/github/westonplatter/fast_arrow/badge.svg?bra
 &nbsp;
 [![Version](https://img.shields.io/pypi/v/fast_arrow.svg)](https://pypi.org/project/fast-arrow/)
 
+## NOTE - changes coming with version >= 1.0
+
+Sometime during Spring 2019, Robinhood changed how their API handles
+authentication. In order to adapt to those changes, I've moved
+"authentication" outside this library to `fast_arrow_auth`,
+https://github.com/westonplatter/fast_arrow_auth.
+
+Please see:
+- [issue 35](https://github.com/westonplatter/fast_arrow/issues/85) for a
+detailed account of the issue
+- [this comment](https://github.com/westonplatter/fast_arrow/issues/85#issuecomment-513834267) for the approach I've taken to remediate auth issues
+- [this PR](https://github.com/westonplatter/fast_arrow/pull/94) for a run down on exact code changes
+
+I will be releasing these changes under version 1.0.0 to follow semantic
+version guidelines (since auth changes are incompatible API changes).
+
 
 ## example
 
@@ -15,10 +31,16 @@ Status](https://coveralls.io/repos/github/westonplatter/fast_arrow/badge.svg?bra
 from fast_arrow import Client, Stock, OptionChain, Option
 
 #
-# Oauth2 authenticate with Robinhood
+# new auth process as of 1.0.0.rc1
+# get auth_data (see https://github.com/westonplatter/fast_arrow_auth)
 #
-client = Client(username=username, password=password)
-client.authenticate()
+with open("fast_arrow_auth.json") as f:
+    auth_data = json.loads(f.read())
+
+#
+# initialize client with auth_data
+#
+client = Client(auth_data)
 
 #
 # fetch the stock info for TLT
@@ -62,9 +84,10 @@ You might be asking, "yet another Robinhood client? There's already a few out
 there. What's different about this one?"
 
 `fast_arrow` holds to these __design principles__,  
-1) focus on simple features that expose data. Don't interpret data.  
-2) make __stock__ & __option__ operations easy to talk about and do with code  
-3) organize code in small and discrete python classes  
+- focus on simple features that expose data. Don't interpret data.  
+- make __stock__ & __option__ operations easy to talk about and do with code  
+- organize code in small and discrete python classes  
+- use [fast_arrow_auth](https://github.com/westonplatter/fast_arrow_auth) to handle authentication process
 
 ## features
 
@@ -98,7 +121,7 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [x] replace order ([example](examples/option_order_replace.py))
 
 **Portfolio**
-- [x] [fetch historical value of portfolio](examples/portfolio_historicals.py)
+- [x] fetch historical value of portfolio ([example](examples/portfolio_historicals.py))
 
 **Authentication/Security**
 - [x] handle standard Login/Logout flow [example](examples/auth.py)
