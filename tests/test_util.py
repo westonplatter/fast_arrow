@@ -12,4 +12,16 @@ def gen_vcr():
 
 
 def gen_client():
-    return Client()
+    auth_data = gen_auth_data()
+    client = Client(auth_data)
+    return client
+
+
+def gen_auth_data():
+    auth_data = {
+        "account_id": 123,
+        "access_token": "123",
+        "refresh_token": "xxx_refresh_token",
+        "device_token": "eeced862-f819-4c51-ad8d-969ae2bb5ddf",
+    }
+    return auth_data
