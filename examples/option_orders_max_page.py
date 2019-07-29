@@ -6,18 +6,17 @@ from datetime import datetime, timedelta
 print("----- running {}".format(__file__))
 
 
-config = configparser.ConfigParser()
-config.read('config.debug.ini')
+#
+# get auth_data (see https://github.com/westonplatter/fast_arrow_auth)
+#
+with open("fast_arrow_auth.json") as f:
+    auth_data = json.loads(f.read())
 
 
 #
-# initialize fast_arrow client and authenticate
+# initialize client with auth_data
 #
-client = Client(
-    username = config['account']['username'],
-    password = config['account']['password'])
-
-client.authenticate()
+client = Client(auth_data)
 
 
 #

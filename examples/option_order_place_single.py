@@ -11,20 +11,16 @@ import math
 print("----- running {}".format(__file__))
 
 #
-# get the authentication configs
+# get auth_data (see https://github.com/westonplatter/fast_arrow_auth)
 #
-config_file = "config.debug.ini"
-config = configparser.ConfigParser()
-config.read(config_file)
-username = config['account']['username']
-password = config['account']['password']
+with open("fast_arrow_auth.json") as f:
+    auth_data = json.loads(f.read())
 
 
 #
-# initialize and authenticate Client
+# initialize client with auth_data
 #
-client = Client(username=username, password=password)
-client.authenticate()
+client = Client(auth_data)
 
 
 #
