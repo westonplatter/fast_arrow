@@ -10,13 +10,16 @@ config.read('config.debug.ini')
 
 
 #
-# initialize fast_arrow client and authenticate
+# get auth_data (see https://github.com/westonplatter/fast_arrow_auth)
 #
-client = Client(
-    username = config['account']['username'],
-    password = config['account']['password'])
+with open("fast_arrow_auth.json") as f:
+    auth_data = json.loads(f.read())
 
-client.authenticate()
+
+#
+# initialize client with auth_data
+#
+client = Client(auth_data)
 
 
 #
