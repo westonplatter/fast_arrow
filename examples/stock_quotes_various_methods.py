@@ -1,9 +1,8 @@
 import configparser
 import csv
-from fast_arrow import (
-    Client,
-    StockMarketdata
-)
+import json
+
+from fast_arrow import Client, StockMarketdata, Stock
 
 print("----- running {}".format(__file__))
 
@@ -30,27 +29,18 @@ def print_symbol_price(marketdata):
 #
 # fetch by single stock symbol
 #
-##Deprecated
-#symbol = "AAPL"
-#md = StockMarketdata.quote_by_symbol(client, symbol)
-#print_symbol_price(md)
+symbol = "AAPL"
+md = StockMarketdata.quote_by_symbol(client, symbol)
+print_symbol_price(md)
 
 #
 # fetch by multiple stock symbols
 #
-##Deprecated
-#symbols = ['AAPL', 'MU', 'FB']
-#mds = StockMarketdata.quote_by_symbols(client, symbols)
-#for md in mds:
-#    print_symbol_price(md)
+symbols = ['AAPL', 'MU', 'FB']
+mds = StockMarketdata.quote_by_symbols(client, symbols)
+for md in mds:
+   print_symbol_price(md)
 
-#
-# fetch by single 'instrument_id' ***MODIFIED***
-#
-symbol = 'AAPL'
-md = Stock.fetch(rhclient, symbol)
-md2 = StockMarketdata.quote_by_instrument(client,md['id'])
-print_symbol_price(md2)
 
 #
 # fetch by single 'instrument_id'

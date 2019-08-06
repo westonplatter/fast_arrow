@@ -6,6 +6,19 @@ from fast_arrow.version import VERSION
 class StockMarketdata(object):
 
     @classmethod
+    def quote_by_symbol(cls, client, symbol):
+        url = "https://api.robinhood.com/quotes/{}/".format(symbol)
+        data = client.get(url)
+        return data
+
+    @classmethod
+    def quote_by_symbols(cls, client, symbols):
+        x = ",".join(symbols)
+        url = "https://api.robinhood.com/quotes/?symbols={}".format(x)
+        data = client.get(url)
+        return data['results']
+
+    @classmethod
     def quote_by_instrument(cls, client, _id):
         return cls.quote_by_instruments(client, [_id])[0]
 
