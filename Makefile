@@ -19,7 +19,7 @@ lint:
 
 .PHONY: l
 l:
-	pipenv run flake8 --exclude fast_arrow/__init__.py,examples/*,setup.py
+	pipenv run flake8 --exclude fast_arrow/__init__.py,examples/*,setup.py,build/*,.tox/*
 
 
 .PHONY: examples
