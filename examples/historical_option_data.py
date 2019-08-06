@@ -1,4 +1,7 @@
 import configparser
+import json
+import math
+
 from fast_arrow import (
     Client,
     Stock,
@@ -6,7 +9,7 @@ from fast_arrow import (
     OptionChain,
     OptionMarketdata
 )
-import math
+
 
 print("----- running {}".format(__file__))
 

@@ -124,8 +124,7 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [x] fetch historical value of portfolio ([example](examples/portfolio_historicals.py))
 
 **Authentication/Security**
-- [x] handle standard Login/Logout flow [example](examples/auth.py)
-- [x] handle MFA token during login [example](examples/auth_mfa.py)
+- [x] Authentication has moved to [fast_arrow_auth](https://github.com/westonplatter/fast_arrow_auth).
 - [x] pin SSL certificate (see [this PR](https://github.com/westonplatter/fast_arrow/pull/35))
 - [x] automatically refreshes oauth2
 
@@ -161,8 +160,12 @@ python setup.py sdist bdist_wheel
 twine upload dist/*
 ```
 
+## supporting libraries
+- fast_arrow_auth, https://github.com/westonplatter/fast_arrow_auth
+
 ## projects using `fast_arrow`
+- **simple_portfolio**. Export trades from Robinhood and run basic reporting
+on portfolio performance. https://github.com/westonplatter/simple_portfolio
 
-- **simple_portfolio**. Export trades from Robinhood and run basic reporting on portfolio performance. https://github.com/westonplatter/simple_portfolio
-
-- **chesterton**. A delightful little UI & trading bot for strategies on Robinhood. https://github.com/westonplatter/chesterton
+- **chesterton**. A delightful little UI & trading bot for strategies on
+Robinhood. https://github.com/westonplatter/chesterton
