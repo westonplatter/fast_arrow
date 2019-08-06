@@ -33,7 +33,6 @@ class Client(object):
         certs_path = 'ssl_certs/certs.pem'
         self.certs = os.path.join(os.path.dirname(__file__), certs_path)
 
-
     def get(self, url=None, params=None, retry=True):
         '''
         Execute HTTP GET
@@ -90,9 +89,9 @@ class Client(object):
             "Accept-Encoding": "gzip, deflate",
             "Accept-Language": ("en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, " +
                                 "nl;q=0.6, it;q=0.5"),
-            "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) " +
+            "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) " +
                            "AppleWebKit/537.36 (KHTML, like Gecko) " +
-                           "Chrome/68.0.3440.106 Safari/537.36"),
+                           "Chrome/75.0.3770.142 Safari/537.36"),
 
         }
         if bearer:
