@@ -10,8 +10,8 @@ HTTP_ATTEMPTS_MAX = 2
 
 CLIENT_ID = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS"
 
-class Client(object):
 
+class Client(object):
     def __init__(self, auth_data):
         required_keys = [
             "account_id",

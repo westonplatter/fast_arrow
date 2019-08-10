@@ -1,9 +1,8 @@
 import configparser
 import csv
-from fast_arrow import (
-    Client,
-    StockMarketdata
-)
+import json
+
+from fast_arrow import Client, StockMarketdata, Stock
 
 print("----- running {}".format(__file__))
 
@@ -40,7 +39,8 @@ print_symbol_price(md)
 symbols = ['AAPL', 'MU', 'FB']
 mds = StockMarketdata.quote_by_symbols(client, symbols)
 for md in mds:
-    print_symbol_price(md)
+   print_symbol_price(md)
+
 
 #
 # fetch by single 'instrument_id'
