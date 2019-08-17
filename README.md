@@ -8,7 +8,7 @@ Status](https://coveralls.io/repos/github/westonplatter/fast_arrow/badge.svg?bra
 &nbsp;
 [![Version](https://img.shields.io/pypi/v/fast_arrow.svg)](https://pypi.org/project/fast-arrow/)
 
-## NOTE - changes coming with version >= 1.0
+## PLEASE NOTE - breaking changes introduced in 1.0.0 release
 
 Sometime during Spring 2019, Robinhood changed how their API handles
 authentication. In order to adapt to those changes, I've moved
@@ -21,9 +21,8 @@ detailed account of the issue
 - [this comment](https://github.com/westonplatter/fast_arrow/issues/85#issuecomment-513834267) for the approach I've taken to remediate auth issues
 - [this PR](https://github.com/westonplatter/fast_arrow/pull/94) for a run down on exact code changes
 
-I will be releasing these changes under version 1.0.0 to follow semantic
+I have released these changes under version 1.0.0 to follow semantic
 version guidelines (since auth changes are incompatible API changes).
-
 
 ## example
 
@@ -31,7 +30,7 @@ version guidelines (since auth changes are incompatible API changes).
 from fast_arrow import Client, Stock, OptionChain, Option
 
 #
-# new auth process as of 1.0.0.rc1
+# new auth process as of 1.0.0
 # get auth_data (see https://github.com/westonplatter/fast_arrow_auth)
 #
 with open("fast_arrow_auth.json") as f:
@@ -85,7 +84,7 @@ there. What's different about this one?"
 
 `fast_arrow` holds to these __design principles__,  
 - focus on simple features that expose data. Don't interpret data.  
-- make __stock__ & __option__ operations easy to talk about and do with code  
+- make __stock__ & __option__ operations easy to reason through & execute with code  
 - organize code in small and discrete python classes  
 - use [fast_arrow_auth](https://github.com/westonplatter/fast_arrow_auth) to handle authentication process
 
