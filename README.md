@@ -1,5 +1,5 @@
 # fast_arrow
-A simple yet robust API client for Robinhood
+A simple yet robust (stock+options) API client for Robinhood
 
 [![Build Status](https://travis-ci.com/westonplatter/fast_arrow.svg?branch=master)](https://travis-ci.com/westonplatter/fast_arrow)
 &nbsp;
