@@ -120,7 +120,7 @@ class OptionOrder(object):
             assert(cls._validate_legs(legs) is True)
 
         account_url = ("https://api.robinhood.com/accounts/{}/".
-            format(client.account_id))
+                       format(client.account_id))
 
         payload = json.dumps({
             "account": account_url,
@@ -175,7 +175,7 @@ class OptionOrder(object):
             raise TradeExecutionError(msg)
 
         account_url = ("https://api.robinhood.com/accounts/{}/".
-            format(client.account_id))
+                       format(client.account_id))
 
         payload = json.dumps({
             "account": account_url,

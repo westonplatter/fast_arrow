@@ -4,7 +4,7 @@ import math
 
 from fast_arrow import (
     Client,
-    Stock,
+    StockMarketdata,
     Option,
     OptionChain,
     OptionMarketdata
@@ -24,17 +24,18 @@ with open("fast_arrow_auth.json") as f:
 #
 client = Client(auth_data)
 
+
 #
 # get TLT options
 #
 symbol = "TLT"
-stock = Stock.fetch(client, symbol)
-
-stock_id = stock["id"]
+md = StockMarketdata.quote_by_symbol(client, symbol)
+stock_id = md["instrument"].split("/")[-2]
 oc = OptionChain.fetch(client, stock_id, symbol)
 oc_id = oc["id"]
 next_2_eds = oc['expiration_dates'][0:1]
 ops = Option.in_chain(client, oc_id, expiration_dates=next_2_eds)
+
 
 #
 # get TLT in the middle of the current TLT trading range
@@ -45,6 +46,7 @@ diff = math.floor(len(urls) * 0.7)
 lower_end = middle - diff
 higher_end = middle + diff
 urls_subset = urls[lower_end:higher_end]
+
 
 #
 # get historical data for TLT options
