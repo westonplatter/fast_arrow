@@ -125,7 +125,7 @@ Here's what you can do with `fast_arrow` (some features still in development)
 **Authentication/Security**
 - [x] Authentication has moved to [fast_arrow_auth](https://github.com/westonplatter/fast_arrow_auth).
 - [x] pin SSL certificate (see [this PR](https://github.com/westonplatter/fast_arrow/pull/35))
-- [x] automatically refreshes oauth2
+- [x] exposes token refresh method ([example](examples/auth.py#L25))
 
 __Want to propose a feature?__ [Open a feature request](https://github.com/westonplatter/fast_arrow/issues/new/choose) or open a Pull Request.
 

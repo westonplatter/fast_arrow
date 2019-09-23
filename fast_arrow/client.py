@@ -7,8 +7,6 @@ from fast_arrow.exceptions import AuthenticationError
 from fast_arrow.exceptions import NotImplementedError
 from fast_arrow.exceptions import AuthDataError
 
-HTTP_ATTEMPTS_MAX = 2
-
 CLIENT_ID = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS"
 
 
@@ -39,22 +37,14 @@ class Client(object):
         Execute HTTP GET
         '''
         headers = self._gen_headers(self.access_token, url)
-        attempts = 1
-        while attempts <= HTTP_ATTEMPTS_MAX:
-            try:
-                res = requests.get(url,
-                                   headers=headers,
-                                   params=params,
-                                   timeout=15,
-                                   verify=self.certs)
-                res.raise_for_status()
-                return res.json()
-            except requests.exceptions.RequestException as e:
-                attempts += 1
-                if res.status_code in [400, 401]:
-                    raise e
-                elif retry and res.status_code in [403]:
-                    self.relogin_oauth2()
+        res = requests.get(url,
+                           headers=headers,
+                           params=params,
+                           timeout=15,
+                           verify=self.certs)
+        res.raise_for_status()
+        return res.json()
+
 
     def post(self, url=None, payload=None, retry=True):
         '''
@@ -62,24 +52,16 @@ class Client(object):
         '''
         headers = self._gen_headers(self.access_token, url)
         attempts = 1
-        while attempts <= HTTP_ATTEMPTS_MAX:
-            try:
-                res = requests.post(url,
-                                    headers=headers,
-                                    data=payload,
-                                    timeout=15,
-                                    verify=self.certs)
-                res.raise_for_status()
-                if res.headers['Content-Length'] == '0':
-                    return None
-                else:
-                    return res.json()
-            except requests.exceptions.RequestException as e:
-                attempts += 1
-                if res.status_code in [400, 429]:
-                    raise e
-                elif retry and res.status_code in [403]:
-                    self.relogin_oauth2()
+        res = requests.post(url,
+                            headers=headers,
+                            data=payload,
+                            timeout=15,
+                            verify=self.certs)
+        res.raise_for_status()
+        if res.headers['Content-Length'] == '0':
+            return None
+        else:
+            return res.json()
 
     def _gen_headers(self, bearer, url):
         '''
