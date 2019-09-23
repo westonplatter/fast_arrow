@@ -45,13 +45,11 @@ class Client(object):
         res.raise_for_status()
         return res.json()
 
-
     def post(self, url=None, payload=None, retry=True):
         '''
         Execute HTTP POST
         '''
         headers = self._gen_headers(self.access_token, url)
-        attempts = 1
         res = requests.post(url,
                             headers=headers,
                             data=payload,
