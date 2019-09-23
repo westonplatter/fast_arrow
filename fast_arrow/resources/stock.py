@@ -1,19 +1,24 @@
+from fast_arrow.version import VERSION
+from fast_arrow.exceptions import ApiDoesNotSupportError
 from fast_arrow.resources.stock_marketdata import StockMarketdata
+
+import deprecation
 
 
 class Stock(object):
 
     @classmethod
+    @deprecation.deprecated(
+        deprecated_in="1.0.0",
+        removed_in="1.1",
+        current_version=VERSION,
+        details="Use 'StockMarketdata.quote_by_symbol'")
     def fetch(cls, client, symbol):
-        """
-        fetch data for stock
-        """
-        assert(type(symbol) is str)
-
-        url = ("https://api.robinhood.com/instruments/?symbol={0}".
-               format(symbol))
-        data = client.get(url)
-        return data["results"][0]
+        message = '''
+            Robinhood API seems to not support this endpoint.
+            Use fast_arrow.StockMarketdata.quote_by_symbol
+        '''
+        raise ApiDoesNotSupportError(message)
 
     @classmethod
     def mergein_marketdata_list(cls, client, stocks):
@@ -38,17 +43,14 @@ class Stock(object):
         return results
 
     @classmethod
+    @deprecation.deprecated(
+        deprecated_in="1.0.0",
+        removed_in="1.1",
+        current_version=VERSION,
+        details="Use 'StockMarketdata.quote_by_symbols'")
     def all(cls, client, symbols):
-        """"
-        fetch data for multiple stocks
-        """
-        params = {"symbol": ",".join(symbols)}
-        request_url = "https://api.robinhood.com/instruments/"
-
-        data = client.get(request_url, params=params)
-        results = data["results"]
-
-        while data["next"]:
-            data = client.get(data["next"])
-            results.extend(data["results"])
-        return results
+        message = '''
+            Robinhood API seems to not support this endpoint.
+            Use fast_arrow.StockMarketdata.quote_by_symbols
+        '''
+        raise ApiDoesNotSupportError(message)

@@ -2,7 +2,7 @@ import configparser
 import json
 from fast_arrow import (
     Client,
-    Stock,
+    StockMarketdata,
     OptionChain,
     Option,
 )
@@ -26,13 +26,13 @@ client = Client(auth_data)
 # fetch the stock info for TLT
 #
 symbol = "TLT"
-stock = Stock.fetch(client, symbol)
+md = StockMarketdata.quote_by_symbol(client, symbol)
 
 
 #
 # get the TLT option chain info
 #
-stock_id = stock["id"]
+stock_id = md["instrument"].split("/")[-2]
 option_chain = OptionChain.fetch(client, stock_id, symbol)
 option_chain_id = option_chain["id"]
 expiration_dates = option_chain['expiration_dates']
