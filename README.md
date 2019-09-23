@@ -45,12 +45,12 @@ client = Client(auth_data)
 # fetch the stock info for TLT
 #
 symbol = "TLT"
-stock = Stock.fetch(client, symbol)
+md = StockMarketdata.quote_by_symbol(client, symbol)
 
 #
 # get the TLT option chain
 #
-stock_id = stock["id"]
+stock_id = md["instrument"].split("/")[-2]
 option_chain = OptionChain.fetch(client, stock_id)
 
 #
