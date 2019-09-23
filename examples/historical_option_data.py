@@ -4,7 +4,6 @@ import math
 
 from fast_arrow import (
     Client,
-    Stock,
     StockMarketdata,
     Option,
     OptionChain,
