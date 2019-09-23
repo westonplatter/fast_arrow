@@ -100,7 +100,7 @@ Here's what you can do with `fast_arrow` (some features still in development)
 - [ ] fetch earning events (past and future)
 - [ ] fetch company news articles
 - [ ] fetch company fundamentals
-- [ ] fetch popularity data
+- [x] fetch popularity data
 
 **Options**
 - [x] fetch option quotes ([example](examples/option_chain.py))
