@@ -21,6 +21,19 @@ class Stock(object):
         raise ApiDoesNotSupportError(message)
 
     @classmethod
+    @deprecation.deprecated(
+        deprecated_in="1.0.0",
+        removed_in="1.1",
+        current_version=VERSION,
+        details="Use 'StockMarketdata.quote_by_symbols'")
+    def all(cls, client, symbols):
+        message = '''
+            Robinhood API seems to not support this endpoint.
+            Use fast_arrow.StockMarketdata.quote_by_symbols
+        '''
+        raise ApiDoesNotSupportError(message)
+
+    @classmethod
     def mergein_marketdata_list(cls, client, stocks):
         ids = [x["id"] for x in stocks]
         mds = StockMarketdata.quote_by_instruments(client, ids)
@@ -43,14 +56,12 @@ class Stock(object):
         return results
 
     @classmethod
-    @deprecation.deprecated(
-        deprecated_in="1.0.0",
-        removed_in="1.1",
-        current_version=VERSION,
-        details="Use 'StockMarketdata.quote_by_symbols'")
-    def all(cls, client, symbols):
-        message = '''
-            Robinhood API seems to not support this endpoint.
-            Use fast_arrow.StockMarketdata.quote_by_symbols
-        '''
-        raise ApiDoesNotSupportError(message)
+    def popularity(cls, client, instrument_ids):
+        url = "https://api.robinhood.com/instruments/popularity/"
+        params = {"ids": ",".join(instrument_ids)}
+        data = client.get(url, params)
+        results = data["results"]
+        while data["next"]:
+            data = client.get(data["next"])
+            results.extend(data["results"])
+        return results
