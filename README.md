@@ -51,7 +51,7 @@ md = StockMarketdata.quote_by_symbol(client, symbol)
 # get the TLT option chain
 #
 stock_id = md["instrument"].split("/")[-2]
-option_chain = OptionChain.fetch(client, stock_id)
+option_chain = OptionChain.fetch(client, stock_id, symbol)
 
 #
 # let's get TLT options (calls and puts) for next 4 expiration dates
