@@ -1,6 +1,7 @@
 # PLEASE NOTE - PROJECT IS UNMAINTAINED
-There are some other fantastic Robinhood focused python clients out there. I'd suggest 
-finding them and using them going forward. Cheers!
+There are some other fantastic Robinhood focused python clients out there. 
+
+I'd suggest finding them and using them going forward.
 
 
 # fast_arrow
