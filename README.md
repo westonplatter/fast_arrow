@@ -1,3 +1,8 @@
+# PLEASE NOTE - PROJECT IS UNMAINTAINED
+There are some other fantastic Robinhood focused python clients out there. I'd suggest 
+finding them and using them going forward. Cheers!
+
+
 # fast_arrow
 A simple yet robust (stock+options) API client for Robinhood
 
@@ -8,7 +13,7 @@ Status](https://coveralls.io/repos/github/westonplatter/fast_arrow/badge.svg?bra
 &nbsp;
 [![Version](https://img.shields.io/pypi/v/fast_arrow.svg)](https://pypi.org/project/fast-arrow/)
 
-## PLEASE NOTE - breaking changes introduced in 1.0.0 release
+## please note - breaking changes introduced in 1.0.0 release
 
 Sometime during Spring 2019, Robinhood changed how their API handles
 authentication. In order to adapt to those changes, I've moved
