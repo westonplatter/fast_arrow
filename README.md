@@ -1,9 +1,5 @@
 # PLEASE NOTE - PROJECT IS UNMAINTAINED
-I've made a personal choice to use a different brokerage due to Robinhood's outages during the Covid19 market moves.
-
-There are some other fantastic Robinhood focused python clients out there. I'd suggest finding them and using them going forward.
-
-Best of luck.
+I've made a personal choice to use a different brokerage due to Robinhood's outages during the Covid19 market moves. There are some other fantastic Robinhood focused python clients out there. I'd suggest finding them and using them going forward. Best of luck.
 
 
 # fast_arrow
